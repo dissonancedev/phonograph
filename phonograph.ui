@@ -18,7 +18,7 @@
     <item row="0" column="0">
      <widget class="QFrame" name="mainframe">
       <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
+       <enum>QFrame::NoFrame</enum>
       </property>
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
@@ -46,7 +46,7 @@
            <enum>QFrame::StyledPanel</enum>
           </property>
           <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
+           <enum>QFrame::Sunken</enum>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout">
            <property name="leftMargin">
@@ -88,23 +88,23 @@
          </widget>
          <widget class="QFrame" name="content">
           <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
+           <enum>QFrame::NoFrame</enum>
           </property>
           <property name="frameShadow">
            <enum>QFrame::Raised</enum>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_2">
            <property name="leftMargin">
-            <number>6</number>
+            <number>3</number>
            </property>
            <property name="topMargin">
-            <number>6</number>
+            <number>3</number>
            </property>
            <property name="rightMargin">
-            <number>6</number>
+            <number>3</number>
            </property>
            <property name="bottomMargin">
-            <number>6</number>
+            <number>3</number>
            </property>
            <item>
             <widget class="QFrame" name="playerframe">
@@ -141,7 +141,7 @@
                </spacer>
               </item>
               <item>
-               <widget class="QToolButton" name="toolButton_6">
+               <widget class="QToolButton" name="skip_backward">
                 <property name="text">
                  <string>...</string>
                 </property>
@@ -161,7 +161,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QToolButton" name="toolButton_7">
+               <widget class="QToolButton" name="seek_backward">
                 <property name="text">
                  <string>...</string>
                 </property>
@@ -181,7 +181,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QToolButton" name="toolButton_9">
+               <widget class="QToolButton" name="play">
                 <property name="text">
                  <string>...</string>
                 </property>
@@ -201,7 +201,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QToolButton" name="toolButton_10">
+               <widget class="QToolButton" name="stop">
                 <property name="text">
                  <string>...</string>
                 </property>
@@ -221,7 +221,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QToolButton" name="toolButton_8">
+               <widget class="QToolButton" name="seek_forward">
                 <property name="text">
                  <string>...</string>
                 </property>
@@ -241,7 +241,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QToolButton" name="toolButton">
+               <widget class="QToolButton" name="skip_forward">
                 <property name="text">
                  <string>...</string>
                 </property>
@@ -295,7 +295,29 @@
                   <number>0</number>
                  </property>
                  <item>
-                  <widget class="QDial" name="dial"/>
+                  <widget class="QDial" name="volume">
+                   <property name="autoFillBackground">
+                    <bool>false</bool>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">image: url(:/multimedia/player/icons/kmixdocked_mute-2.png);</string>
+                   </property>
+                   <property name="maximum">
+                    <number>100</number>
+                   </property>
+                   <property name="value">
+                    <number>50</number>
+                   </property>
+                   <property name="wrapping">
+                    <bool>true</bool>
+                   </property>
+                   <property name="notchTarget">
+                    <double>5.000000000000000</double>
+                   </property>
+                   <property name="notchesVisible">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
                  </item>
                  <item>
                   <widget class="QLabel" name="volume_label">
@@ -314,7 +336,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QToolButton" name="toolButton_11">
+               <widget class="QToolButton" name="mute">
                 <property name="text">
                  <string>...</string>
                 </property>
@@ -348,21 +370,68 @@
              <property name="tabPosition">
               <enum>QTabWidget::South</enum>
              </property>
+             <property name="tabShape">
+              <enum>QTabWidget::Rounded</enum>
+             </property>
              <property name="currentIndex">
               <number>0</number>
              </property>
-             <widget class="QWidget" name="playlist">
+             <property name="iconSize">
+              <size>
+               <width>24</width>
+               <height>24</height>
+              </size>
+             </property>
+             <property name="documentMode">
+              <bool>false</bool>
+             </property>
+             <widget class="QWidget" name="tabplaylist">
+              <attribute name="icon">
+               <iconset resource="icons.qrc">
+                <normaloff>:/phonograph/tabs/icons/tabs/view-media-playlist-3.png</normaloff>:/phonograph/tabs/icons/tabs/view-media-playlist-3.png</iconset>
+              </attribute>
               <attribute name="title">
                <string>Playlist</string>
               </attribute>
               <layout class="QVBoxLayout" name="verticalLayout_5">
+               <item>
+                <widget class="QFrame" name="frame_3">
+                 <property name="frameShape">
+                  <enum>QFrame::NoFrame</enum>
+                 </property>
+                 <property name="frameShadow">
+                  <enum>QFrame::Raised</enum>
+                 </property>
+                 <layout class="QHBoxLayout" name="horizontalLayout_2">
+                  <property name="leftMargin">
+                   <number>3</number>
+                  </property>
+                  <property name="topMargin">
+                   <number>3</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>3</number>
+                  </property>
+                  <property name="bottomMargin">
+                   <number>3</number>
+                  </property>
+                  <item>
+                   <widget class="QLineEdit" name="lineEdit_2">
+                    <property name="placeholderText">
+                     <string>Search...</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
                <item>
                 <widget class="QListView" name="listView"/>
                </item>
                <item>
                 <widget class="QFrame" name="frame">
                  <property name="frameShape">
-                  <enum>QFrame::StyledPanel</enum>
+                  <enum>QFrame::NoFrame</enum>
                  </property>
                  <property name="frameShadow">
                   <enum>QFrame::Raised</enum>
@@ -383,7 +452,7 @@
                   <item>
                    <widget class="QFrame" name="frame_2">
                     <property name="frameShape">
-                     <enum>QFrame::StyledPanel</enum>
+                     <enum>QFrame::NoFrame</enum>
                     </property>
                     <property name="frameShadow">
                      <enum>QFrame::Raised</enum>
@@ -406,6 +475,16 @@
                        <property name="text">
                         <string>...</string>
                        </property>
+                       <property name="icon">
+                        <iconset resource="icons.qrc">
+                         <normaloff>:/multimedia/playlist/icons/playlist/edit-delete-5.png</normaloff>:/multimedia/playlist/icons/playlist/edit-delete-5.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>24</width>
+                         <height>24</height>
+                        </size>
+                       </property>
                       </widget>
                      </item>
                      <item row="0" column="0">
@@ -413,12 +492,15 @@
                        <property name="text">
                         <string>...</string>
                        </property>
-                      </widget>
-                     </item>
-                     <item row="0" column="2">
-                      <widget class="QToolButton" name="toolButton_4">
-                       <property name="text">
-                        <string>...</string>
+                       <property name="icon">
+                        <iconset resource="icons.qrc">
+                         <normaloff>:/multimedia/playlist/icons/playlist/edit-add.png</normaloff>:/multimedia/playlist/icons/playlist/edit-add.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>24</width>
+                         <height>24</height>
+                        </size>
                        </property>
                       </widget>
                      </item>
@@ -435,37 +517,61 @@
                        </property>
                       </spacer>
                      </item>
-                    </layout>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QFrame" name="frame_3">
-                    <property name="frameShape">
-                     <enum>QFrame::StyledPanel</enum>
-                    </property>
-                    <property name="frameShadow">
-                     <enum>QFrame::Raised</enum>
-                    </property>
-                    <layout class="QHBoxLayout" name="horizontalLayout_2">
-                     <property name="leftMargin">
-                      <number>3</number>
-                     </property>
-                     <property name="topMargin">
-                      <number>3</number>
-                     </property>
-                     <property name="rightMargin">
-                      <number>3</number>
-                     </property>
-                     <property name="bottomMargin">
-                      <number>3</number>
-                     </property>
-                     <item>
-                      <widget class="QLineEdit" name="lineEdit_2"/>
+                     <item row="0" column="6">
+                      <widget class="QToolButton" name="toolButton_4">
+                       <property name="text">
+                        <string>...</string>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="icons.qrc">
+                         <normaloff>:/multimedia/playlist/icons/playlist/document-save-5.png</normaloff>:/multimedia/playlist/icons/playlist/document-save-5.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>24</width>
+                         <height>24</height>
+                        </size>
+                       </property>
+                      </widget>
                      </item>
-                     <item>
+                     <item row="0" column="5">
                       <widget class="QToolButton" name="toolButton_5">
                        <property name="text">
                         <string>...</string>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="icons.qrc">
+                         <normaloff>:/multimedia/playlist/icons/playlist/document-new-5.png</normaloff>:/multimedia/playlist/icons/playlist/document-new-5.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>24</width>
+                         <height>24</height>
+                        </size>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="7">
+                      <widget class="QToolButton" name="toolButton">
+                       <property name="text">
+                        <string>...</string>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="icons.qrc">
+                         <normaloff>:/multimedia/playlist/icons/playlist/edit-clear-list.png</normaloff>:/multimedia/playlist/icons/playlist/edit-clear-list.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>24</width>
+                         <height>24</height>
+                        </size>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="4">
+                      <widget class="QLineEdit" name="lineEdit_3">
+                       <property name="placeholderText">
+                        <string>Type the playlist's name</string>
                        </property>
                       </widget>
                      </item>
@@ -477,22 +583,54 @@
                </item>
               </layout>
              </widget>
-             <widget class="QWidget" name="playingnow">
+             <widget class="QWidget" name="tabplayingnow">
+              <attribute name="icon">
+               <iconset resource="icons.qrc">
+                <normaloff>:/phonograph/tabs/icons/tabs/dialog-information-2.png</normaloff>:/phonograph/tabs/icons/tabs/dialog-information-2.png</iconset>
+              </attribute>
               <attribute name="title">
                <string>Playing now</string>
               </attribute>
              </widget>
-             <widget class="QWidget" name="wikipedia">
+             <widget class="QWidget" name="tablyrics">
+              <attribute name="icon">
+               <iconset resource="icons.qrc">
+                <normaloff>:/phonograph/tabs/icons/tabs/view-media-lyrics.png</normaloff>:/phonograph/tabs/icons/tabs/view-media-lyrics.png</iconset>
+              </attribute>
+              <attribute name="title">
+               <string>Lyrics</string>
+              </attribute>
+              <layout class="QVBoxLayout" name="verticalLayout_7">
+               <item>
+                <widget class="QLabel" name="lyrics_source_label">
+                 <property name="text">
+                  <string>Lyrics from www.stixoi.info</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QTextBrowser" name="lyrics_display"/>
+               </item>
+              </layout>
+             </widget>
+             <widget class="QWidget" name="tabwikipedia">
+              <attribute name="icon">
+               <iconset resource="icons.qrc">
+                <normaloff>:/phonograph/tabs/icons/tabs/emblem-web.png</normaloff>:/phonograph/tabs/icons/tabs/emblem-web.png</iconset>
+              </attribute>
               <attribute name="title">
                <string>Wikipedia</string>
               </attribute>
               <layout class="QVBoxLayout" name="verticalLayout_6">
                <item>
-                <widget class="QWebView" name="webView">
+                <widget class="QWebView" name="wiki_view">
                  <property name="url">
                   <url>
                    <string>http://en.wikipedia.org/wiki/Main_Page</string>
                   </url>
+                 </property>
+                 <property name="renderHints">
+                  <set>QPainter::HighQualityAntialiasing|QPainter::SmoothPixmapTransform|QPainter::TextAntialiasing</set>
                  </property>
                 </widget>
                </item>
@@ -541,15 +679,23 @@
                    </widget>
                   </item>
                   <item>
-                   <widget class="QComboBox" name="comboBox">
+                   <widget class="QComboBox" name="wikipedia_select_lang">
                     <item>
                      <property name="text">
                       <string>en</string>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="icons.qrc">
+                       <normaloff>:/language/flags/icons/lang/flag-gb.png</normaloff>:/language/flags/icons/lang/flag-gb.png</iconset>
                      </property>
                     </item>
                     <item>
                      <property name="text">
                       <string>gr</string>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="icons.qrc">
+                       <normaloff>:/language/flags/icons/lang/flag-gr.png</normaloff>:/language/flags/icons/lang/flag-gr.png</iconset>
                      </property>
                     </item>
                    </widget>
@@ -583,6 +729,9 @@
     <property name="title">
      <string>Phonograph</string>
     </property>
+    <addaction name="actionPreferences"/>
+    <addaction name="separator"/>
+    <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuPlaylist">
     <property name="title">
@@ -597,8 +746,14 @@
     <addaction name="actionPhonograph_website"/>
     <addaction name="actionAbout_Phonograph"/>
    </widget>
+   <widget class="QMenu" name="menuSound">
+    <property name="title">
+     <string>Sound</string>
+    </property>
+   </widget>
    <addaction name="menuPhonograph"/>
    <addaction name="menuPlaylist"/>
+   <addaction name="menuSound"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
@@ -615,6 +770,16 @@
   <action name="actionAbout_Phonograph">
    <property name="text">
     <string>About Phonograph...</string>
+   </property>
+  </action>
+  <action name="actionPreferences">
+   <property name="text">
+    <string>Preferences</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>Quit</string>
    </property>
   </action>
  </widget>

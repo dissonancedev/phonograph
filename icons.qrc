@@ -10,5 +10,25 @@
         <file>icons/kmixdocked_error-2.png</file>
         <file>icons/kmixdocked_mute-2.png</file>
     </qresource>
-    <qresource prefix="/language/flags"/>
+    <qresource prefix="/language/flags">
+        <file>icons/lang/flag-gb.png</file>
+        <file>icons/lang/flag-gr.png</file>
+    </qresource>
+    <qresource prefix="/multimedia/playlist">
+        <file>icons/playlist/document-new-5.png</file>
+        <file>icons/playlist/document-save-5.png</file>
+        <file>icons/playlist/edit-add.png</file>
+        <file>icons/playlist/edit-clear-list.png</file>
+        <file>icons/playlist/edit-clear-locationbar-rtl.png</file>
+        <file>icons/playlist/edit-delete-5.png</file>
+    </qresource>
+    <qresource prefix="/phonograph/general">
+        <file>icons/help-about-3.png</file>
+    </qresource>
+    <qresource prefix="/phonograph/tabs">
+        <file>icons/tabs/dialog-information-2.png</file>
+        <file>icons/tabs/emblem-web.png</file>
+        <file>icons/tabs/view-media-lyrics.png</file>
+        <file>icons/tabs/view-media-playlist-3.png</file>
+    </qresource>
 </RCC>
