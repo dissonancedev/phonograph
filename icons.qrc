@@ -24,6 +24,7 @@
     </qresource>
     <qresource prefix="/phonograph/general">
         <file>icons/help-about-3.png</file>
+        <file>icons/view-media-artist.png</file>
     </qresource>
     <qresource prefix="/phonograph/tabs">
         <file>icons/tabs/dialog-information-2.png</file>
