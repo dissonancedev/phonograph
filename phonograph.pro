@@ -18,3 +18,6 @@ SOURCES += main.cpp\
 HEADERS  += phonograph.h
 
 FORMS    += phonograph.ui
+
+RESOURCES += \
+    icons.qrc

@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/multimedia/player">
+        <file>icons/media-playback-pause-8.png</file>
+        <file>icons/media-playback-start-8.png</file>
+        <file>icons/media-playback-stop-8.png</file>
+        <file>icons/media-seek-backward-8.png</file>
+        <file>icons/media-seek-forward-8.png</file>
+        <file>icons/media-skip-backward-8.png</file>
+        <file>icons/media-skip-forward-8.png</file>
+        <file>icons/kmixdocked_error-2.png</file>
+        <file>icons/kmixdocked_mute-2.png</file>
+    </qresource>
+    <qresource prefix="/language/flags"/>
+</RCC>
