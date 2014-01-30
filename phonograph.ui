@@ -43,7 +43,7 @@
          </property>
          <widget class="QFrame" name="sidebarleft">
           <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
+           <enum>QFrame::NoFrame</enum>
           </property>
           <property name="frameShadow">
            <enum>QFrame::Sunken</enum>
@@ -64,7 +64,7 @@
            <item>
             <widget class="QFrame" name="frame_6">
              <property name="frameShape">
-              <enum>QFrame::StyledPanel</enum>
+              <enum>QFrame::NoFrame</enum>
              </property>
              <property name="frameShadow">
               <enum>QFrame::Raised</enum>
@@ -346,11 +346,14 @@
                    <property name="value">
                     <number>50</number>
                    </property>
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
                    <property name="wrapping">
-                    <bool>true</bool>
+                    <bool>false</bool>
                    </property>
                    <property name="notchTarget">
-                    <double>5.000000000000000</double>
+                    <double>10.000000000000000</double>
                    </property>
                    <property name="notchesVisible">
                     <bool>true</bool>
@@ -823,6 +826,10 @@
    </property>
   </action>
   <action name="actionAbout_Phonograph">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/phonograph/general/icons/help-about-3.png</normaloff>:/phonograph/general/icons/help-about-3.png</iconset>
+   </property>
    <property name="text">
     <string>About Phonograph...</string>
    </property>
