@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/images/background">
+        <file>theme/bouzoukidrawing.jpg</file>
+    </qresource>
+</RCC>
