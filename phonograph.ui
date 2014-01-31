@@ -65,7 +65,7 @@
             <number>3</number>
            </property>
            <item>
-            <widget class="QFrame" name="frame_6">
+            <widget class="QFrame" name="librarySearchFrame">
              <property name="frameShape">
               <enum>QFrame::NoFrame</enum>
              </property>
@@ -357,7 +357,7 @@
                </spacer>
               </item>
               <item>
-               <widget class="QFrame" name="frame_5">
+               <widget class="QFrame" name="volumeFrame">
                 <property name="frameShape">
                  <enum>QFrame::NoFrame</enum>
                 </property>
@@ -506,6 +506,46 @@
             </widget>
            </item>
            <item>
+            <widget class="QFrame" name="playingNowFrame">
+             <property name="frameShape">
+              <enum>QFrame::NoFrame</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_8">
+              <property name="leftMargin">
+               <number>1</number>
+              </property>
+              <property name="topMargin">
+               <number>1</number>
+              </property>
+              <property name="rightMargin">
+               <number>1</number>
+              </property>
+              <property name="bottomMargin">
+               <number>1</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="playingNowLabel">
+                <property name="frameShape">
+                 <enum>QFrame::NoFrame</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Plain</enum>
+                </property>
+                <property name="text">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Μάρκος Βαμβακάρης - Μια όμορφη μελαγχροινη&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+                <property name="textFormat">
+                 <enum>Qt::RichText</enum>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
             <widget class="QTabWidget" name="tabWidget">
              <property name="enabled">
               <bool>true</bool>
@@ -521,7 +561,7 @@
               <enum>QTabWidget::Rounded</enum>
              </property>
              <property name="currentIndex">
-              <number>3</number>
+              <number>0</number>
              </property>
              <property name="iconSize">
               <size>
@@ -542,7 +582,7 @@
               </attribute>
               <layout class="QVBoxLayout" name="verticalLayout_5">
                <item>
-                <widget class="QFrame" name="frame_3">
+                <widget class="QFrame" name="playlistSearchFrame">
                  <property name="frameShape">
                   <enum>QFrame::NoFrame</enum>
                  </property>
@@ -594,7 +634,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="QFrame" name="frame">
+                <widget class="QFrame" name="playlistEditFrame">
                  <property name="frameShape">
                   <enum>QFrame::NoFrame</enum>
                  </property>
@@ -821,7 +861,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="QFrame" name="frame_4">
+                <widget class="QFrame" name="wikipediaLangFrame">
                  <property name="frameShape">
                   <enum>QFrame::NoFrame</enum>
                  </property>

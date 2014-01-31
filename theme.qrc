@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/images/background">
         <file>theme/bouzoukidrawing.jpg</file>
+        <file>theme/il_fullxfull.314382327.jpg</file>
+        <file>theme/phonograph-karl-addison.jpg</file>
     </qresource>
 </RCC>
