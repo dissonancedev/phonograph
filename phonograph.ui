@@ -151,7 +151,7 @@
              </item>
              <item>
               <property name="text">
-               <string>Year</string>
+               <string>Year / Artist</string>
               </property>
               <property name="icon">
                <iconset resource="icons.qrc">
