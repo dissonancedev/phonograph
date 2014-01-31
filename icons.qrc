@@ -9,6 +9,8 @@
         <file>icons/media-skip-forward-8.png</file>
         <file>icons/kmixdocked_error-2.png</file>
         <file>icons/kmixdocked_mute-2.png</file>
+        <file>icons/media-playlist-repeat-2.png</file>
+        <file>icons/media-playlist-shuffle-3.png</file>
     </qresource>
     <qresource prefix="/language/flags">
         <file>icons/lang/flag-gb.png</file>
@@ -23,13 +25,21 @@
         <file>icons/playlist/edit-delete-5.png</file>
     </qresource>
     <qresource prefix="/phonograph/general">
-        <file>icons/help-about-3.png</file>
         <file>icons/view-media-artist.png</file>
+        <file>icons/folder-sound.png</file>
+        <file>icons/radio-old.png</file>
     </qresource>
     <qresource prefix="/phonograph/tabs">
         <file>icons/tabs/dialog-information-2.png</file>
         <file>icons/tabs/emblem-web.png</file>
         <file>icons/tabs/view-media-lyrics.png</file>
         <file>icons/tabs/view-media-playlist-3.png</file>
+    </qresource>
+    <qresource prefix="/phonograph/menu">
+        <file>icons/menu/application-exit-2.png</file>
+        <file>icons/menu/configure-2.png</file>
+        <file>icons/menu/help-2.png</file>
+        <file>icons/menu/help-about-3.png</file>
+        <file>icons/menu/audio-card.png</file>
     </qresource>
 </RCC>
