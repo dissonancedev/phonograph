@@ -20,4 +20,5 @@ HEADERS  += phonograph.h
 FORMS    += phonograph.ui
 
 RESOURCES += \
-    icons.qrc
+    icons.qrc \
+    theme.qrc

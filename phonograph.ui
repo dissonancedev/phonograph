@@ -104,6 +104,9 @@
   <property name="windowTitle">
    <string>Phonograph</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
@@ -599,7 +602,8 @@
               <bool>true</bool>
              </property>
              <property name="styleSheet">
-              <string notr="true">font: 10pt &quot;Sans Serif&quot;;</string>
+              <string notr="true">font: 10pt &quot;Sans Serif&quot;;
+</string>
              </property>
              <property name="tabPosition">
               <enum>QTabWidget::South</enum>
@@ -674,7 +678,11 @@
                 </widget>
                </item>
                <item>
-                <widget class="QListView" name="playlist"/>
+                <widget class="QListView" name="playlist">
+                 <property name="styleSheet">
+                  <string notr="true"/>
+                 </property>
+                </widget>
                </item>
                <item>
                 <widget class="QFrame" name="frame">
