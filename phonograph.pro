@@ -13,9 +13,13 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        phonograph.cpp
+        phonograph.cpp \
+    system/musicdatabase.cpp \
+    system/song.cpp
 
-HEADERS  += phonograph.h
+HEADERS  += phonograph.h \
+    system/musicdatabase.h \
+    system/song.h
 
 FORMS    += phonograph.ui
 
