@@ -10,6 +10,8 @@ Phonograph::Phonograph(QWidget *parent) :
     // Setup the UI
     ui->setupUi(this);
 
+    ui->mainframe->setStyleSheet( "QFrame#mainframe { background-image: url(:/images/background/theme/diskos-25-leivadia.jpg); }" );
+
     // Update library
     this->updateLibrary();
 }
@@ -28,7 +30,7 @@ bool Phonograph::updateLibrary() {
     QString dbname("phpbb2");
 
     // Get username and password from file
-    QFile credentialsFile("/home/verminoz/phonograph/src/bin/credentials.txt");
+    QFile credentialsFile("credentials.txt");
     credentialsFile.open(QFile::ReadOnly); // Open file
     QTextStream fileStream(&credentialsFile); // Set stream
     QString line = fileStream.readAll().trimmed(); // Get the data trimmed

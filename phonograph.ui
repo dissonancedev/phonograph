@@ -17,9 +17,6 @@
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
      <widget class="QFrame" name="mainframe">
-      <property name="styleSheet">
-       <string notr="true"/>
-      </property>
       <property name="frameShape">
        <enum>QFrame::NoFrame</enum>
       </property>
@@ -129,16 +126,25 @@
             </widget>
            </item>
            <item>
-            <widget class="QTreeView" name="library">
-             <property name="styleSheet">
-              <string notr="true">background-color: #201F1F;</string>
-             </property>
+            <widget class="QTreeView" name="libraryView">
              <property name="iconSize">
               <size>
                <width>24</width>
                <height>24</height>
               </size>
              </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QTreeWidget" name="library">
+             <attribute name="headerVisible">
+              <bool>false</bool>
+             </attribute>
+             <column>
+              <property name="text">
+               <string>Songs</string>
+              </property>
+             </column>
             </widget>
            </item>
            <item>
