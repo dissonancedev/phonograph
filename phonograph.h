@@ -21,6 +21,7 @@ public:
 
     bool updateLibrary();
     void addItemToPlaylist(Song song);
+    void addItemToLibrary(QTreeWidgetItem *topLevel, Song song);
 
 private slots:
 
