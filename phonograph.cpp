@@ -58,10 +58,10 @@ bool Phonograph::updateLibrary() {
                  }
              }
 
-             QTreeWidgetItem *newSong = new QTreeWidgetItem();
+             QSongItem *newSong = new QSongItem();
              newSong->setText(0, this->library->songs[i].title);
              newSong->setIcon(0, QIcon(":/phonograph/general/icons/songbird.png"));
-
+             newSong->song = this->library->songs[i];
 
              if (found == -1) {
 
@@ -88,4 +88,17 @@ bool Phonograph::updateLibrary() {
     }
 
     return true;
+}
+
+void Phonograph::addItemToPlaylist(Song song) {
+    QListWidgetItem *newItem = new QListWidgetItem();
+    newItem->setText( song.composer + QString(" - ") + song.year + QString(" - ") + song.title );
+    newItem->setIcon( QIcon(":/phonograph/general/icons/songbird.png") );
+    this->ui->playlist->addItem( newItem );
+}
+
+
+void Phonograph::on_library_itemDoubleClicked(QTreeWidgetItem *item, int column) {
+    QSongItem *itemClicked = (QSongItem *)item;
+    this->addItemToPlaylist( itemClicked->song );
 }

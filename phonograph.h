@@ -5,6 +5,7 @@
 #include <QTreeWidgetItem>
 #include <QFile>
 #include "system/musicdatabase.h"
+#include "system/qsongitem.h"
 
 namespace Ui {
 class Phonograph;
@@ -19,6 +20,11 @@ public:
     ~Phonograph();
 
     bool updateLibrary();
+    void addItemToPlaylist(Song song);
+
+private slots:
+
+    void on_library_itemDoubleClicked(QTreeWidgetItem *item, int column);
 
 private:
     // UI variable
@@ -26,8 +32,6 @@ private:
 
     // Music library variable
     MusicDatabase *library;
-
-    QList<QTreeWidgetItem *> songlist;
 };
 
 #endif // PHONOGRAPH_H

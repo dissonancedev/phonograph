@@ -15,11 +15,13 @@ TEMPLATE = app
 SOURCES += main.cpp\
         phonograph.cpp \
     system/musicdatabase.cpp \
-    system/song.cpp
+    system/song.cpp \
+    system/qsongitem.cpp
 
 HEADERS  += phonograph.h \
     system/musicdatabase.h \
-    system/song.h
+    system/song.h \
+    system/qsongitem.h
 
 FORMS    += phonograph.ui
 
