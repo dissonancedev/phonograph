@@ -59,6 +59,8 @@ bool Phonograph::updateLibrary() {
 
         }
 
+        // Sort and expand
+        this->ui->library->sortItems(0, Qt::AscendingOrder);
         this->ui->library->expandItem( topLevel );
     } else {
         qDebug() << this->library->getLastError();

@@ -123,7 +123,11 @@ bool MusicDatabase::update() {
                 temp.title = resultSet.value(2).toString();
                 temp.info = resultSet.value(3).toString();
                 temp.year = resultSet.value(4).toString();
-                temp.composer = resultSet.value(5).toString();
+                if (resultSet.value(5).toString().isEmpty()) {
+                    temp.composer = "Unknown";
+                } else {
+                    temp.composer = resultSet.value(5).toString();
+                }
                 temp.performer1 = resultSet.value(6).toString();
                 temp.performer2 = resultSet.value(7).toString();
 
