@@ -2,6 +2,7 @@
 #define PHONOGRAPH_H
 
 #include <QMainWindow>
+#include <QTreeWidgetItem>
 #include <QFile>
 #include "system/musicdatabase.h"
 
@@ -25,6 +26,8 @@ private:
 
     // Music library variable
     MusicDatabase *library;
+
+    QList<QTreeWidgetItem *> songlist;
 };
 
 #endif // PHONOGRAPH_H

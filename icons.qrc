@@ -28,6 +28,8 @@
         <file>icons/view-media-artist.png</file>
         <file>icons/folder-sound.png</file>
         <file>icons/radio-old.png</file>
+        <file>icons/folder-multimedia.png</file>
+        <file>icons/songbird.png</file>
     </qresource>
     <qresource prefix="/phonograph/tabs">
         <file>icons/tabs/dialog-information-2.png</file>
