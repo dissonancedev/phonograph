@@ -8,14 +8,11 @@ MusicDatabase::MusicDatabase(QString url, int port, QString username, QString pa
     MusicDatabase();
 
     // Set all the info
-    this->setUrl(url);
+    this->setHost(url);
     this->setPort(port);
     this->setUsername(username);
     this->setPassword(password);
     this->setDBName(dbname);
-
-    // Try to connect
-    this->connect();
 }
 
 
@@ -27,8 +24,8 @@ MusicDatabase::~MusicDatabase() {
 
 /* Getters and setters */
 // Getters
-QString MusicDatabase::getUrl() {
-    return this->url;
+QString MusicDatabase::getHost() {
+    return this->host;
 }
 
 int MusicDatabase::getPort() {
@@ -44,9 +41,9 @@ QString MusicDatabase::getDBName() {
 }
 
 // Setters
-void MusicDatabase::setUrl(QString url) {
-    if (QUrl(url).isValid()) {
-        this->url = url;
+void MusicDatabase::setHost(QString host) {
+    if (QUrl(host).isValid()) {
+        this->host = host;
     }
 }
 
@@ -87,7 +84,7 @@ bool MusicDatabase::connect() {
     this->database = new QSqlDatabase();
 
     // Set all the settings
-    this->database->setHostName ( this->url );
+    this->database->setHostName ( this->host );
     this->database->setPort ( this->port );
     this->database->setUserName ( this->username );
     this->database->setPassword ( this->password );
@@ -102,7 +99,47 @@ bool MusicDatabase::connect() {
 }
 
 bool MusicDatabase::update() {
-    return true;
+    // Try to connect
+    if (this->connect()) {
+        // Query to fetch all songs
+        QString sqlQuery = "SELECT rec_id, file_name, name, description, date_rec, composer, singer1, singer2 FROM phpbb2.public.song";
+
+        // Execute the query
+        QSqlQuery resultSet = this->database->exec(sqlQuery);
+
+        // Check if the resultset has any items
+        if (resultSet.size() > 0) {
+
+            // Clear list
+            this->songs.clear();
+
+            // Add all items to the list again
+            while (resultSet.next()) {
+                // Create a temporary song object
+                Song temp;
+
+                // Set all the data on it
+                temp.id = resultSet.value(0).toInt();
+                temp.filename = resultSet.value(1).toString();
+                temp.title = resultSet.value(2).toString();
+                temp.info = resultSet.value(3).toString();
+                temp.year = resultSet.value(4).toString();
+                temp.composer = resultSet.value(5).toString();
+                temp.performer1 = resultSet.value(6).toString();
+                temp.performer2 = resultSet.value(7).toString();
+
+                // Append it to the list
+                this->songs.push_back(temp);
+            }
+
+        }
+
+        this->disconnect();
+
+        return true;
+    }
+
+    return false;
 }
 
 void MusicDatabase::disconnect() {

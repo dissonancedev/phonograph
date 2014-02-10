@@ -2,13 +2,17 @@
 #define SONG_H
 
 #include <QString>
-#include <QAbstractItemModel>
 
-class Song: public QAbstractItemModel {
+class Song {
 public:
+    int id;
     QString title;
-    QString artist;
+    QString composer;
+    QString performer1;
+    QString performer2;
     QString year;
+    QString info;
+    QString filename;
 };
 
 #endif // SONG_H

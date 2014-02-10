@@ -1,18 +1,20 @@
 #ifndef MUSICDATABASE_H
 #define MUSICDATABASE_H
 
+#include <QVariant>
 #include <QUrl>
 #include <QList>
 #include "song.h"
 #include <QtSql/QSqlError>
 #include <QtSql/QSqlDatabase>
+#include <QtSql/QSqlQuery>
 
 class MusicDatabase {
 private:
     QSqlDatabase *database;
 
     // Database login info
-    QString url;
+    QString host;
     int port;
     QString username;
     QString password;
@@ -24,17 +26,17 @@ private:
 public:
     /* Constructors & Destructors */
     MusicDatabase();
-    MusicDatabase(QString url, int port, QString username, QString password, QString dbname);
+    MusicDatabase(QString host, int port, QString username, QString password, QString dbname);
     ~MusicDatabase();
 
     /* Getters and setters */
     // Getters
-    QString getUrl();
+    QString getHost();
     int getPort();
     QString getUsername();
     QString getDBName();
     // Setters
-    void setUrl(QString url);
+    void setHost(QString host);
     void setPort(int port);
     void setUsername(QString username);
     void setPassword(QString password);
@@ -50,7 +52,7 @@ public:
     void disconnect();
     bool isConnected();
 
-    // QList<Song> songs;
+    QList<Song> songs;
 };
 
 #endif // MUSICDATABASE_H
