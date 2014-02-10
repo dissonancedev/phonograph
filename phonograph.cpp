@@ -99,6 +99,9 @@ void Phonograph::addItemToPlaylist(Song song) {
 
 
 void Phonograph::on_library_itemDoubleClicked(QTreeWidgetItem *item, int column) {
-    QSongItem *itemClicked = (QSongItem *)item;
-    this->addItemToPlaylist( itemClicked->song );
+    QSongItem *itemClicked = dynamic_cast<QSongItem *>(item);
+
+    if (itemClicked) {
+        this->addItemToPlaylist( itemClicked->song );
+    }
 }
