@@ -26,3 +26,5 @@ FORMS    += phonograph.ui
 RESOURCES += \
     icons.qrc \
     theme.qrc
+
+OTHER_FILES +=

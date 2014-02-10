@@ -1,6 +1,8 @@
 #ifndef MUSICDATABASE_H
 #define MUSICDATABASE_H
 
+#include <QDebug>
+
 #include <QVariant>
 #include <QUrl>
 #include <QList>
@@ -11,7 +13,7 @@
 
 class MusicDatabase {
 private:
-    QSqlDatabase *database;
+    QSqlDatabase database;
 
     // Database login info
     QString host;

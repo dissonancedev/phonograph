@@ -1,7 +1,6 @@
 #include "musicdatabase.h"
 
 MusicDatabase::MusicDatabase() {
-    this->database = 0;
 }
 
 MusicDatabase::MusicDatabase(QString url, int port, QString username, QString password, QString dbname) {
@@ -81,21 +80,21 @@ QString MusicDatabase::getLastError() {
 /* API functions */
 bool MusicDatabase::connect() {
     // Create database connection object
-    this->database = new QSqlDatabase();
+    this->database = QSqlDatabase::addDatabase("QPSQL");
 
     // Set all the settings
-    this->database->setHostName ( this->host );
-    this->database->setPort ( this->port );
-    this->database->setUserName ( this->username );
-    this->database->setPassword ( this->password );
-    this->database->setDatabaseName ( this->dbname );
+    this->database.setHostName ( this->host );
+    this->database.setPort ( this->port );
+    this->database.setUserName ( this->username );
+    this->database.setPassword ( this->password );
+    this->database.setDatabaseName ( this->dbname );
 
     // Open the connection
-    if (!this->database->open()) {
-        this->errors.push_back( QString(this->database->lastError().number()) + QString(": ") + QString((this->database->lastError().text())) );
+    if (!this->database.open()) {
+        this->errors.push_back( QString(this->database.lastError().number()) + QString(": ") + QString((this->database.lastError().text())) );
     }
 
-    return this->database->isOpen();
+    return this->database.isOpen();
 }
 
 bool MusicDatabase::update() {
@@ -105,7 +104,7 @@ bool MusicDatabase::update() {
         QString sqlQuery = "SELECT rec_id, file_name, name, description, date_rec, composer, singer1, singer2 FROM phpbb2.public.song";
 
         // Execute the query
-        QSqlQuery resultSet = this->database->exec(sqlQuery);
+        QSqlQuery resultSet = this->database.exec(sqlQuery);
 
         // Check if the resultset has any items
         if (resultSet.size() > 0) {
@@ -144,17 +143,11 @@ bool MusicDatabase::update() {
 
 void MusicDatabase::disconnect() {
     // Check if object exists
-    if (this->database) {
-        this->database->close();
-        delete this->database;
-        this->database = 0;
+    if (this->database.isOpen()) {
+        this->database.close();
     }
 }
 
 bool MusicDatabase::isConnected() {
-    if (this->database) {
-        return this->database->isOpen();
-    }
-
-    return false;
+    return this->database.isOpen();
 }
