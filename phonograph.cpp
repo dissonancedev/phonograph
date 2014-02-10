@@ -114,9 +114,10 @@ void Phonograph::addItemToLibrary(QTreeWidgetItem *topLevel, Song song) {
 }
 
 void Phonograph::addItemToPlaylist(Song song) {
-    QListWidgetItem *newItem = new QListWidgetItem();
+    QPlaylistItem *newItem = new QPlaylistItem();
     newItem->setText( song.composer + QString(" - ") + song.year + QString(" - ") + song.title );
     newItem->setIcon( QIcon(":/phonograph/general/icons/songbird.png") );
+    newItem->song = song;
     this->ui->playlist->addItem( newItem );
 }
 

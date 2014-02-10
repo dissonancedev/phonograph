@@ -6,6 +6,7 @@
 #include <QFile>
 #include "system/musicdatabase.h"
 #include "system/qsongitem.h"
+#include "system/qplaylistitem.h"
 
 namespace Ui {
 class Phonograph;
