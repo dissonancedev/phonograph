@@ -112,6 +112,9 @@ bool MusicDatabase::update() {
             // Clear list
             this->songs.clear();
 
+            // Base URL for files
+            QString base_url("http://rebetiko.sealabs.net/fd.php?d=1&s=2690deaa1c0c6cb3257a54b068f25aee485b&f=");
+
             // Add all items to the list again
             while (resultSet.next()) {
                 // Create a temporary song object
@@ -119,7 +122,7 @@ bool MusicDatabase::update() {
 
                 // Set all the data on it
                 temp.id = resultSet.value(0).toInt();
-                temp.filename = resultSet.value(1).toString();
+                temp.filename = QString( QUrl( base_url + resultSet.value(1).toString() ).toEncoded() );
                 temp.title = resultSet.value(2).toString();
                 temp.info = resultSet.value(3).toString();
                 temp.year = resultSet.value(4).toString();

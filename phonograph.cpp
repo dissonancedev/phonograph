@@ -10,7 +10,19 @@ Phonograph::Phonograph(QWidget *parent) :
     // Setup the UI
     ui->setupUi(this);
 
+    // Setup some CSS
     ui->mainframe->setStyleSheet( "QFrame#mainframe { background-image: url(:/images/background/theme/diskos-25-leivadia.jpg); }" );
+
+    // Setup player and playlist
+    this->playlist = new QMediaPlaylist;
+    //playlist->addMedia( QUrl("http://rebetiko.sealabs.net/fd.php?d=1&f=Tha%20Spasw%20To%20Mbouzouki%20Mou%20-%20Markos%20Bambakarhs%20_%20Apostolos%20Xartzhxrhstos.mp3&s=2690a9b4e9f5547d484968b56ca65cca20c8") );
+    //playlist->addMedia( QUrl("http://echidna-band.com/manifest/mp3/Manifests_Of_Human_Existence/08-Pendulum.mp3") );
+    playlist->addMedia( QUrl::fromLocalFile("/home/verminoz/Music/giaf-giouf.mp3") );
+    playlist->setCurrentIndex(0);
+    this->player = new QMediaPlayer;
+    //this->player->setPlaylist( this->playlist );
+    player->setMedia(QUrl::fromLocalFile("/home/verminoz/Music/giaf-giouf.mp3"));
+    this->player->play();
 
     // Update library
     this->updateLibrary();
@@ -18,8 +30,15 @@ Phonograph::Phonograph(QWidget *parent) :
 
 Phonograph::~Phonograph()
 {
+    delete library;
+    delete player;
+    delete playlist;
     delete ui;
 }
+
+/**************/
+/*** Functions ***/
+/**************/
 
 /**
  * Update function
@@ -114,13 +133,39 @@ void Phonograph::addItemToLibrary(QTreeWidgetItem *topLevel, Song song) {
 }
 
 void Phonograph::addItemToPlaylist(Song song) {
+    // Create the item object
     QPlaylistItem *newItem = new QPlaylistItem();
     newItem->setText( song.composer + QString(" - ") + song.year + QString(" - ") + song.title );
     newItem->setIcon( QIcon(":/phonograph/general/icons/songbird.png") );
     newItem->song = song;
+
+    // Put the item on the list and update media playlist
     this->ui->playlist->addItem( newItem );
+    updatePlaylist();
 }
 
+/**
+ * @brief Phonograph::updatePlaylist
+ * This function updates the QMediaPlaylist object with the list's contents
+ * Should be called everytime the playlist has been changed
+ */
+void Phonograph::updatePlaylist() {
+    this->playlist->clear();
+
+    int i;
+    for (i = 0; i < this->ui->playlist->count(); i++) {
+        QPlaylistItem *item = dynamic_cast<QPlaylistItem *>(this->ui->playlist->item(i));
+        if (item) {
+            this->playlist->addMedia( QUrl(item->song.filename) );
+        }
+    }
+
+    this->player->setPlaylist(this->playlist);
+}
+
+/************/
+/*** Events ***/
+/************/
 
 void Phonograph::on_library_itemDoubleClicked(QTreeWidgetItem *item, int column) {
     QSongItem *itemClicked = dynamic_cast<QSongItem *>(item);
@@ -128,4 +173,23 @@ void Phonograph::on_library_itemDoubleClicked(QTreeWidgetItem *item, int column)
     if (itemClicked) {
         this->addItemToPlaylist( itemClicked->song );
     }
+}
+
+void Phonograph::on_play_toggled(bool checked) {
+
+    // Check if button is checked or not
+    if (checked) {
+
+        if (!this->playlist->isEmpty()) {
+
+            int current = this->ui->playlist->currentRow();
+            this->playlist->setCurrentIndex( current );
+            this->player->play();
+
+        }
+
+    } else {
+
+    }
+
 }

@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QTreeWidgetItem>
 #include <QFile>
+#include <QtMultimedia/QMediaPlayer>
+#include <QtMultimedia/QMediaPlaylist>
 #include "system/musicdatabase.h"
 #include "system/qsongitem.h"
 #include "system/qplaylistitem.h"
@@ -23,10 +25,13 @@ public:
     bool updateLibrary();
     void addItemToPlaylist(Song song);
     void addItemToLibrary(QTreeWidgetItem *topLevel, Song song);
+    void updatePlaylist();
 
 private slots:
 
     void on_library_itemDoubleClicked(QTreeWidgetItem *item, int column);
+
+    void on_play_toggled(bool checked);
 
 private:
     // UI variable
@@ -34,6 +39,10 @@ private:
 
     // Music library variable
     MusicDatabase *library;
+
+    // Media player stuff
+    QMediaPlayer *player;
+    QMediaPlaylist *playlist;
 };
 
 #endif // PHONOGRAPH_H
