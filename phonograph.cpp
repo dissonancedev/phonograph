@@ -15,14 +15,11 @@ Phonograph::Phonograph(QWidget *parent) :
 
     // Setup player and playlist
     this->playlist = new QMediaPlaylist;
-    //playlist->addMedia( QUrl("http://rebetiko.sealabs.net/fd.php?d=1&f=Tha%20Spasw%20To%20Mbouzouki%20Mou%20-%20Markos%20Bambakarhs%20_%20Apostolos%20Xartzhxrhstos.mp3&s=2690a9b4e9f5547d484968b56ca65cca20c8") );
-    //playlist->addMedia( QUrl("http://echidna-band.com/manifest/mp3/Manifests_Of_Human_Existence/08-Pendulum.mp3") );
-    playlist->addMedia( QUrl::fromLocalFile("/home/verminoz/Music/giaf-giouf.mp3") );
-    playlist->setCurrentIndex(0);
-    this->player = new QMediaPlayer;
-    //this->player->setPlaylist( this->playlist );
-    player->setMedia(QUrl::fromLocalFile("/home/verminoz/Music/giaf-giouf.mp3"));
-    this->player->play();
+    this->player = new QMediaPlayer(this, QMediaPlayer::StreamPlayback);
+    this->player->setPlaylist( this->playlist );
+    this->player->setVolume( this->ui->volume->value() );
+    //player->setMedia(QUrl("http://echidna-band.com/manifest/mp3/Manifests_Of_Human_Existence/08-Pendulum.mp3"));
+    //this->player->play();
 
     // Update library
     this->updateLibrary();
@@ -175,8 +172,28 @@ void Phonograph::on_library_itemDoubleClicked(QTreeWidgetItem *item, int column)
     }
 }
 
-void Phonograph::on_play_toggled(bool checked) {
+void Phonograph::on_stop_clicked() {
 
+    if ( this->player->state() == QMediaPlayer::PlayingState || this->player->state() == QMediaPlayer::PausedState) {
+        this->player->stop();
+        this->ui->play->setChecked( false );
+    }
+
+}
+
+void Phonograph::on_volume_valueChanged(int value) {
+
+    this->player->setVolume( value );
+
+}
+
+void Phonograph::on_mute_toggled(bool checked) {
+
+    this->player->setMuted( checked );
+
+}
+
+void Phonograph::on_play_clicked(bool checked) {
     // Check if button is checked or not
     if (checked) {
 
@@ -190,6 +207,16 @@ void Phonograph::on_play_toggled(bool checked) {
 
     } else {
 
-    }
+        if (this->player->state() == QMediaPlayer::PlayingState) {
 
+            this->player->pause();
+
+        }
+
+    }
+}
+
+void Phonograph::on_skip_backward_clicked() {
+    qDebug() << "State: " << player->state();
+    qDebug() << "Media State: " << player->mediaStatus();
 }

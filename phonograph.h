@@ -31,7 +31,15 @@ private slots:
 
     void on_library_itemDoubleClicked(QTreeWidgetItem *item, int column);
 
-    void on_play_toggled(bool checked);
+    void on_stop_clicked();
+
+    void on_volume_valueChanged(int value);
+
+    void on_mute_toggled(bool checked);
+
+    void on_play_clicked(bool checked);
+
+    void on_skip_backward_clicked();
 
 private:
     // UI variable
