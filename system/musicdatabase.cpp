@@ -113,7 +113,7 @@ bool MusicDatabase::update() {
             this->songs.clear();
 
             // Base URL for files
-            QString base_url("http://rebetiko.sealabs.net/fd.php?d=1&s=2690deaa1c0c6cb3257a54b068f25aee485b&f=");
+            QString base_url("http://rebetiko.sealabs.net/str.php?flok=");
 
             // Add all items to the list again
             while (resultSet.next()) {
