@@ -18,9 +18,13 @@ Phonograph::Phonograph(QWidget *parent) :
     this->player = new QMediaPlayer(this, QMediaPlayer::StreamPlayback);
     this->player->setPlaylist( this->playlist );
     this->player->setVolume( this->ui->volume->value() );
-    //player->setMedia(QUrl("http://echidna-band.com/manifest/mp3/Manifests_Of_Human_Existence/08-Pendulum.mp3"));
+    //player->setMedia(QUrl("http://rebetiko.sealabs.net/str.php?flok=08_-_Koula_fragosyriani.MP3"));
     //this->player->play();
 
+
+    this->player->setNotifyInterval(100);
+    connect(this->player, SIGNAL(positionChanged(qint64)), this, SLOT(setSliderPosition(qint64)));
+    connect(this->ui->seeker, SIGNAL(sliderMoved(int)), this, SLOT(setMediaPosition(int)));
     // Update library
     this->updateLibrary();
 }
@@ -33,9 +37,28 @@ Phonograph::~Phonograph()
     delete ui;
 }
 
-/**************/
+/*****************/
 /*** Functions ***/
-/**************/
+/*****************/
+
+/* Function used as slot for enabling media seeking with QSlider */
+void Phonograph::setMediaPosition(int position) {
+
+    if(this->player->isSeekable()){
+        double pos = (position/100.0) * (this->player->duration()+0.0000000001);
+        this->player->setPosition(pos);
+    }
+
+}
+
+/* Function used as slot for setting QSlider's position according to the
+   song being played */
+void Phonograph::setSliderPosition(qint64 position) {
+
+    this->ui->seeker->setSliderPosition((position/( this->player->duration()+0.0000000001))*100);
+    if (((position/( this->player->duration()+0.0000000001))*100) >= 99) this->ui->seeker->setSliderPosition(100); // song finished
+
+}
 
 /**
  * Update function
