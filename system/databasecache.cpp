@@ -3,7 +3,12 @@
 DatabaseCache::DatabaseCache() {
 
     // Set filename
-    filename =  "dbcache.dat";
+    #ifdef Q_OS_WIN32
+        filename =  QCoreApplication::applicationDirPath() + QString("\dbcache.dat");
+    #endif
+    #ifdef Q_OS_LINUX
+        filename =  QCoreApplication::applicationDirPath() + QString("/dbcache.dat");
+    #endif
 
     // Load the data from the file
     this->loadCache();
@@ -66,7 +71,7 @@ void DatabaseCache::loadCache() {
 void DatabaseCache::saveCache() {
     // Open stream
     file = new QFile( filename );
-    file->open(QIODevice::ReadOnly);
+    file->open(QIODevice::WriteOnly);
 
     if (file->isOpen()) {
         stream.setDevice( file );

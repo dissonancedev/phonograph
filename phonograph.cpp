@@ -217,6 +217,11 @@ void Phonograph::on_play_clicked(bool checked) {
 }
 
 void Phonograph::on_skip_backward_clicked() {
+    player->setPlaylist(0);
+    player->setMedia(QUrl("http://echidna-band.com/manifest/mp3/Manifests_Of_Human_Existence/08-Pendulum.mp3"));
+    //player->setMedia(QUrl::fromLocalFile("/home/verminoz/Music/giaf-giouf.mp3"));
+    this->player->play();
     qDebug() << "State: " << player->state();
     qDebug() << "Media State: " << player->mediaStatus();
+    qDebug() << "Error: " << player->error() << " " << player->errorString();
 }

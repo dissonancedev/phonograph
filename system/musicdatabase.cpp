@@ -109,6 +109,7 @@ bool MusicDatabase::update() {
             // If they are equal we can just load from cache and return
             this->songs = this->cache->getContent();
             this->disconnect();
+            qDebug() << "Loaded from cache";
 
             return true;
         }
@@ -150,6 +151,10 @@ bool MusicDatabase::update() {
                 // Append it to the list
                 this->songs.push_back(temp);
             }
+
+            // If we had to fetch let's also store it in cache
+            this->cache->setContent( this->songs );
+            this->cache->saveCache();
 
         }
 

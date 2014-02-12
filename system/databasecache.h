@@ -1,10 +1,12 @@
 #ifndef DATABASECACHE_H
 #define DATABASECACHE_H
 
+#include <QDebug>
 #include <QString>
 #include <QFile>
 #include "song.h"
 #include <QDataStream>
+#include <QCoreApplication>
 
 class DatabaseCache
 {
