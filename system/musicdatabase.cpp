@@ -100,6 +100,19 @@ bool MusicDatabase::connect() {
 bool MusicDatabase::update() {
     // Try to connect
     if (this->connect()) {
+
+        // Check first if we can load from cache
+        this->cache = new DatabaseCache(); // Load cache
+
+        // See if the number of records is the same
+        if (this->cache->count() == this->getRecordCount()) {
+            // If they are equal we can just load from cache and return
+            this->songs = this->cache->getContent();
+            this->disconnect();
+
+            return true;
+        }
+
         // Query to fetch all songs
         QString sqlQuery = "SELECT rec_id, file_name, name, description, date_rec, composer, singer1, singer2 FROM phpbb2.public.song";
 
@@ -157,4 +170,14 @@ void MusicDatabase::disconnect() {
 
 bool MusicDatabase::isConnected() {
     return this->database.isOpen();
+}
+
+int MusicDatabase::getRecordCount() {
+    QString sqlQuery = "SELECT count(*) FROM phpbb2.public.song";
+
+    // Execute the query
+    QSqlQuery resultSet = this->database.exec(sqlQuery);
+    resultSet.first();
+
+    return resultSet.value(0).toInt();
 }

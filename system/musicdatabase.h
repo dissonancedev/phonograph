@@ -10,10 +10,12 @@
 #include <QtSql/QSqlError>
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlQuery>
+#include "databasecache.h"
 
 class MusicDatabase {
 private:
     QSqlDatabase database;
+    DatabaseCache *cache;
 
     // Database login info
     QString host;
@@ -53,6 +55,7 @@ public:
     bool update();
     void disconnect();
     bool isConnected();
+    int getRecordCount();
 
     QList<Song> songs;
 };
