@@ -1,5 +1,7 @@
 #include "phonograph.h"
 #include "ui_phonograph.h"
+#include <string>
+#include <sstream>
 
 /*** Constructor & destructor ***/
 
@@ -21,10 +23,17 @@ Phonograph::Phonograph(QWidget *parent) :
     //player->setMedia(QUrl("http://rebetiko.sealabs.net/str.php?flok=08_-_Koula_fragosyriani.MP3"));
     //this->player->play();
 
-
-    this->player->setNotifyInterval(100);
+    // Useful signals
     connect(this->player, SIGNAL(positionChanged(qint64)), this, SLOT(setSliderPosition(qint64)));
+    connect(this->player, SIGNAL(positionChanged(qint64)), this, SLOT(setPlaybackTimer(qint64)));
     connect(this->ui->seeker, SIGNAL(sliderMoved(int)), this, SLOT(setMediaPosition(int)));
+    connect(this->playlist, SIGNAL(currentMediaChanged(QMediaContent)), this, SLOT(setMediaTime(QMediaContent)));
+
+    // Enable drag and drop for QListWidget and QTreeWidget
+    /** TO-DO: Difficulties in implementing the drag & drop functionality **/
+    this->ui->library->setDragEnabled(true);
+    this->ui->playlist->setDragDropMode(QAbstractItemView::DropOnly);
+
     // Update library
     this->updateLibrary();
 }
@@ -40,6 +49,38 @@ Phonograph::~Phonograph()
 /*****************/
 /*** Functions ***/
 /*****************/
+
+/* Functions that sets the current playing media's current playback time */
+void Phonograph::setPlaybackTimer(qint64 position) {
+
+    int seconds = (position/1000)%60;
+    long minutes = ((position-seconds)/1000)/60;
+    std::ostringstream stm_sec;
+    std::ostringstream stm_min;
+    stm_sec << seconds ;
+    stm_min << minutes ;
+    if (seconds>10 && minutes>10) this->ui->startTimeLabel->setText(QString::fromStdString(stm_min.str() + ":" + stm_sec.str()));
+    else if (seconds>10 && minutes<10) this->ui->startTimeLabel->setText(QString::fromStdString("0" + stm_min.str() + ":" + stm_sec.str()));
+    else if (seconds<10 && minutes>10) this->ui->startTimeLabel->setText(QString::fromStdString(stm_min.str() + ":0" + stm_sec.str()));
+    else this->ui->startTimeLabel->setText(QString::fromStdString("0" + stm_min.str() + ":0" + stm_sec.str()));
+
+}
+
+/* Functions that sets the current playing media's total playback time */
+void Phonograph::setMediaTime(QMediaContent currMedia) {
+
+    int seconds = (this->player->duration()/1000)%60;
+    long minutes = ((this->player->duration()-seconds)/1000)/60;
+    std::ostringstream stm_sec;
+    std::ostringstream stm_min;
+    stm_sec << seconds ;
+    stm_min << minutes ;
+    if (seconds>10 && minutes>10) this->ui->endTimeLabel->setText(QString::fromStdString(stm_min.str() + ":" + stm_sec.str()));
+    else if (seconds>10 && minutes<10) this->ui->endTimeLabel->setText(QString::fromStdString("0" + stm_min.str() + ":" + stm_sec.str()));
+    else if (seconds<10 && minutes>10) this->ui->endTimeLabel->setText(QString::fromStdString(stm_min.str() + ":0" + stm_sec.str()));
+    else this->ui->endTimeLabel->setText(QString::fromStdString("0" + stm_min.str() + ":0" + stm_sec.str()));
+
+}
 
 /* Function used as slot for enabling media seeking with QSlider */
 void Phonograph::setMediaPosition(int position) {
@@ -183,9 +224,9 @@ void Phonograph::updatePlaylist() {
     this->player->setPlaylist(this->playlist);
 }
 
-/************/
+/**************/
 /*** Events ***/
-/************/
+/**************/
 
 void Phonograph::on_library_itemDoubleClicked(QTreeWidgetItem *item, int column) {
     QSongItem *itemClicked = dynamic_cast<QSongItem *>(item);
@@ -219,7 +260,6 @@ void Phonograph::on_mute_toggled(bool checked) {
 void Phonograph::on_play_clicked(bool checked) {
     // Check if button is checked or not
     if (checked) {
-
         if (!this->playlist->isEmpty()) {
 
             int current = this->ui->playlist->currentRow();
@@ -227,7 +267,6 @@ void Phonograph::on_play_clicked(bool checked) {
             this->player->play();
 
         }
-
     } else {
 
         if (this->player->state() == QMediaPlayer::PlayingState) {
@@ -235,7 +274,14 @@ void Phonograph::on_play_clicked(bool checked) {
             this->player->pause();
 
         }
+    }
+}
 
+void Phonograph::on_playlist_itemDoubleClicked(QListWidgetItem *item){
+    if (!this->playlist->isEmpty()) {
+        int current = this->ui->playlist->currentRow();
+        this->playlist->setCurrentIndex( current );
+        this->player->play();
     }
 }
 
