@@ -29,6 +29,14 @@ public:
 
 private slots:
 
+    void setPlaybackTimer(qint64 position);
+
+    void setMediaTime(QMediaContent currMedia);
+
+    void setMediaPosition(int position);
+
+    void setSliderPosition(qint64 position);
+
     void on_library_itemDoubleClicked(QTreeWidgetItem *item, int column);
 
     void on_stop_clicked();
@@ -38,6 +46,8 @@ private slots:
     void on_mute_toggled(bool checked);
 
     void on_play_clicked(bool checked);
+
+    void on_playlist_itemDoubleClicked(QListWidgetItem *item);
 
     void on_skip_backward_clicked();
 
