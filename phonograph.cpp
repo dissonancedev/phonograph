@@ -225,3 +225,9 @@ void Phonograph::on_skip_backward_clicked() {
     qDebug() << "Media State: " << player->mediaStatus();
     qDebug() << "Error: " << player->error() << " " << player->errorString();
 }
+
+void Phonograph::on_skip_forward_clicked() {
+    qDebug() << player->position();
+    qDebug() << player->bufferStatus();
+    qDebug() << player->error();
+}

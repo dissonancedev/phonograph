@@ -41,6 +41,8 @@ private slots:
 
     void on_skip_backward_clicked();
 
+    void on_skip_forward_clicked();
+
 private:
     // UI variable
     Ui::Phonograph *ui;
