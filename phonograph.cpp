@@ -65,8 +65,7 @@ void Phonograph::setPlaybackTimer(qint64 position) {
     if (!this->ui->seeker->isSliderDown()) {
         this->ui->seeker->setSliderPosition( round(position / 100) );
     }
-    //this->ui->seeker->setSliderPosition((position/( this->player->duration()+0.0000000001))*100);
-    //if (((position/( this->player->duration()+0.0000000001))*100) >= 99) this->ui->seeker->setSliderPosition(100); // song finished
+
 }
 
 /* Functions that sets the current playing media's total playback time */
@@ -110,15 +109,6 @@ void Phonograph::setMediaPosition(int position) {
     if (this->player->isSeekable()){
         this->player->setPosition( 100 * position);
     }
-
-}
-
-/* Function used as slot for setting QSlider's position according to the
-   song being played */
-void Phonograph::setSliderPosition(qint64 position) {
-
-    this->ui->seeker->setSliderPosition((position/( this->player->duration()+0.0000000001))*100);
-    if (((position/( this->player->duration()+0.0000000001))*100) >= 99) this->ui->seeker->setSliderPosition(100); // song finished
 
 }
 

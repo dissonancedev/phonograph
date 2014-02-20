@@ -36,8 +36,6 @@ private slots:
 
     void setMediaPosition(int position);
 
-    void setSliderPosition(qint64 position);
-
     void on_library_itemDoubleClicked(QTreeWidgetItem *item, int column);
 
     void on_stop_clicked();
