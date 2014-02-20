@@ -104,8 +104,10 @@ bool MusicDatabase::update() {
         // Check first if we can load from cache
         this->cache = new DatabaseCache(); // Load cache
 
+        // qDebug() << "Found " << this->cache->count() << " in cache.";
+        // qDebug() << "Found " << this->getRecordCount() << " in database.";
         // See if the number of records is the same
-        if (this->cache->count() == this->getRecordCount()) {
+        if (this->cache->count() >= this->getRecordCount()) {
             // If they are equal we can just load from cache and return
             this->songs = this->cache->getContent();
             this->disconnect();
@@ -130,6 +132,7 @@ bool MusicDatabase::update() {
             QString base_url("http://rebetiko.sealabs.net/str.php?flok=");
 
             // Add all items to the list again
+            resultSet.first();
             while (resultSet.next()) {
                 // Create a temporary song object
                 Song temp;
@@ -156,6 +159,8 @@ bool MusicDatabase::update() {
             this->cache->setContent( this->songs );
             this->cache->saveCache();
 
+        } else {
+            qDebug() << "Empty result set fetching songs";
         }
 
         this->disconnect();
@@ -182,7 +187,11 @@ int MusicDatabase::getRecordCount() {
 
     // Execute the query
     QSqlQuery resultSet = this->database.exec(sqlQuery);
-    resultSet.first();
 
-    return resultSet.value(0).toInt();
+    if (resultSet.size() > 0) {
+        resultSet.first();
+        return resultSet.value(0).toInt();
+    }
+
+    return 0;
 }

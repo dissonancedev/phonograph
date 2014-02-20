@@ -1,6 +1,7 @@
 #ifndef PHONOGRAPH_H
 #define PHONOGRAPH_H
 
+#include <cmath>
 #include <QMainWindow>
 #include <QTreeWidgetItem>
 #include <QFile>
@@ -31,7 +32,7 @@ private slots:
 
     void setPlaybackTimer(qint64 position);
 
-    void setMediaTime(QMediaContent currMedia);
+    void setMediaTime(qint64 duration);
 
     void setMediaPosition(int position);
 

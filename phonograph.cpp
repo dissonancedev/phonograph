@@ -24,10 +24,10 @@ Phonograph::Phonograph(QWidget *parent) :
     //this->player->play();
 
     // Useful signals
-    connect(this->player, SIGNAL(positionChanged(qint64)), this, SLOT(setSliderPosition(qint64)));
+    //connect(this->player, SIGNAL(positionChanged(qint64)), this, SLOT(setSliderPosition(qint64)));
     connect(this->player, SIGNAL(positionChanged(qint64)), this, SLOT(setPlaybackTimer(qint64)));
     connect(this->ui->seeker, SIGNAL(sliderMoved(int)), this, SLOT(setMediaPosition(int)));
-    connect(this->playlist, SIGNAL(currentMediaChanged(QMediaContent)), this, SLOT(setMediaTime(QMediaContent)));
+    connect(this->player, SIGNAL(durationChanged(qint64)), this, SLOT(setMediaTime(qint64)));
 
     // Enable drag and drop for QListWidget and QTreeWidget
     /** TO-DO: Difficulties in implementing the drag & drop functionality **/
@@ -53,41 +53,62 @@ Phonograph::~Phonograph()
 /* Functions that sets the current playing media's current playback time */
 void Phonograph::setPlaybackTimer(qint64 position) {
 
-    int seconds = (position/1000)%60;
-    long minutes = ((position-seconds)/1000)/60;
-    std::ostringstream stm_sec;
-    std::ostringstream stm_min;
-    stm_sec << seconds ;
-    stm_min << minutes ;
-    if (seconds>10 && minutes>10) this->ui->startTimeLabel->setText(QString::fromStdString(stm_min.str() + ":" + stm_sec.str()));
-    else if (seconds>10 && minutes<10) this->ui->startTimeLabel->setText(QString::fromStdString("0" + stm_min.str() + ":" + stm_sec.str()));
-    else if (seconds<10 && minutes>10) this->ui->startTimeLabel->setText(QString::fromStdString(stm_min.str() + ":0" + stm_sec.str()));
-    else this->ui->startTimeLabel->setText(QString::fromStdString("0" + stm_min.str() + ":0" + stm_sec.str()));
+    // Calculate times
+    int seconds = ( position / 1000 ) % 60;
+    int minutes = round( ((position - seconds) / 1000) / 60 );
 
+    // Set the label
+    this->ui->startTimeLabel->setText( QString().sprintf("%02d", minutes) + QString(":") + QString().sprintf("%02d", seconds) );
+
+    // Kata vasi den yparxei logos na mi setaristei ki auto edw. Kalytera to signal na einai syndedemeno me mia synartisi
+    // Set new slider position, since we set it to tenths of seconds we can just apply directly
+    if (!this->ui->seeker->isSliderDown()) {
+        this->ui->seeker->setSliderPosition( round(position / 100) );
+    }
+    //this->ui->seeker->setSliderPosition((position/( this->player->duration()+0.0000000001))*100);
+    //if (((position/( this->player->duration()+0.0000000001))*100) >= 99) this->ui->seeker->setSliderPosition(100); // song finished
 }
 
 /* Functions that sets the current playing media's total playback time */
-void Phonograph::setMediaTime(QMediaContent currMedia) {
+void Phonograph::setMediaTime(qint64 duration) {
 
-    int seconds = (this->player->duration()/1000)%60;
-    long minutes = ((this->player->duration()-seconds)/1000)/60;
+    // Calculate times
+    int seconds = ( duration / 1000 ) % 60;
+    int minutes = round( ((duration - seconds) / 1000) / 60 );
+
+    // Dyo paratiriseis
+    // 1. To if / else if / else den einai aparaitito giati paizoun synartisi pou formataroun arithmous me sygkekrimeno arithmo psifion.
+    // Etsi mporeis na syriknwseis ton kwdika se mia grammi xwris if
+    // 2. Xrhsimopoieis polu emeso tropo gia na setareis ena QString to opoio sto constructor tou dexetai diaforous typous kai tous metatrepei se string
+    // Episis to QString sou parexei string concatenation me to + pragma pou alliws de ginetai sti C++
+    // Set the label
+    this->ui->endTimeLabel->setText( QString().sprintf("%02d", minutes) + QString(":") + QString().sprintf("%02d", seconds) );
+
+    // Change the seeker range to achieve smoother scrolling. Set to tenths of seconds.
+    this->ui->seeker->setRange(0, round(duration / 100) - 1);
+
+    /*
     std::ostringstream stm_sec;
     std::ostringstream stm_min;
     stm_sec << seconds ;
     stm_min << minutes ;
-    if (seconds>10 && minutes>10) this->ui->endTimeLabel->setText(QString::fromStdString(stm_min.str() + ":" + stm_sec.str()));
-    else if (seconds>10 && minutes<10) this->ui->endTimeLabel->setText(QString::fromStdString("0" + stm_min.str() + ":" + stm_sec.str()));
-    else if (seconds<10 && minutes>10) this->ui->endTimeLabel->setText(QString::fromStdString(stm_min.str() + ":0" + stm_sec.str()));
-    else this->ui->endTimeLabel->setText(QString::fromStdString("0" + stm_min.str() + ":0" + stm_sec.str()));
-
+    if (seconds>10 && minutes>10) {
+        this->ui->endTimeLabel->setText(QString::fromStdString(stm_min.str() + ":" + stm_sec.str()));
+    } else if (seconds>10 && minutes<10) {
+        this->ui->endTimeLabel->setText(QString::fromStdString("0" + stm_min.str() + ":" + stm_sec.str()));
+    } else if (seconds<10 && minutes>10) {
+        this->ui->endTimeLabel->setText(QString::fromStdString(stm_min.str() + ":0" + stm_sec.str()));
+    } else {
+        this->ui->endTimeLabel->setText(QString::fromStdString("0" + stm_min.str() + ":0" + stm_sec.str()));
+    }
+    */
 }
 
 /* Function used as slot for enabling media seeking with QSlider */
 void Phonograph::setMediaPosition(int position) {
 
-    if(this->player->isSeekable()){
-        double pos = (position/100.0) * (this->player->duration()+0.0000000001);
-        this->player->setPosition(pos);
+    if (this->player->isSeekable()){
+        this->player->setPosition( 100 * position);
     }
 
 }
@@ -286,9 +307,9 @@ void Phonograph::on_playlist_itemDoubleClicked(QListWidgetItem *item){
 }
 
 void Phonograph::on_skip_backward_clicked() {
-    player->setPlaylist(0);
-    player->setMedia(QUrl("http://echidna-band.com/manifest/mp3/Manifests_Of_Human_Existence/08-Pendulum.mp3"));
-    //player->setMedia(QUrl::fromLocalFile("/home/verminoz/Music/giaf-giouf.mp3"));
+    //player->setPlaylist(0);
+    //player->setMedia(QUrl("http://echidna-band.com/manifest/mp3/Manifests_Of_Human_Existence/08-Pendulum.mp3"));
+    playlist->addMedia( QUrl::fromLocalFile("/home/verminoz/Music/giaf-giouf.mp3") );
     this->player->play();
     qDebug() << "State: " << player->state();
     qDebug() << "Media State: " << player->mediaStatus();
