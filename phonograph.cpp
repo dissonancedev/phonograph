@@ -65,7 +65,6 @@ void Phonograph::setPlaybackTimer(qint64 position) {
     if (!this->ui->seeker->isSliderDown()) {
         this->ui->seeker->setSliderPosition( round(position / 100) );
     }
-
 }
 
 /* Functions that sets the current playing media's total playback time */
@@ -310,4 +309,44 @@ void Phonograph::on_skip_forward_clicked() {
     qDebug() << player->position();
     qDebug() << player->bufferStatus();
     qDebug() << player->error();
+}
+
+void Phonograph::on_clearPlaylist_clicked()
+{
+    this->ui->playlist->clear();
+    updatePlaylist();
+}
+
+void Phonograph::on_addPlaylistItem_clicked()
+{
+    QList<QTreeWidgetItem *> selectedSongs = this->ui->library->selectedItems();
+
+    int i;
+    for(i = 0; i < selectedSongs.count(); i++){
+        QSongItem *itemSelected = dynamic_cast<QSongItem *>(selectedSongs[i]);
+        if (itemSelected) {
+            this->addItemToPlaylist( itemSelected->song );
+        }
+    }
+}
+
+void Phonograph::on_removePlaylistItem_clicked()
+{
+    QList<QListWidgetItem *> selectedSongs = this->ui->playlist->selectedItems();
+
+    if (!this->playlist->isEmpty()) {
+        int i;
+        for(i = 0; i < selectedSongs.count(); i++){
+            QPlaylistItem *itemSelected = dynamic_cast<QPlaylistItem *>(selectedSongs[i]);
+            int j;
+            for(j = 0; j < this->ui->playlist->count(); j++){
+                QPlaylistItem *playlistItem = dynamic_cast<QPlaylistItem *>(this->ui->playlist->item(j));
+                if (itemSelected->song.id == playlistItem->song.id) {
+                    delete this->ui->playlist->item(j);
+                    updatePlaylist();
+                }
+            }
+        }
+    }
+
 }
