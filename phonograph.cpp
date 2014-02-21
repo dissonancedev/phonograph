@@ -38,8 +38,7 @@ Phonograph::Phonograph(QWidget *parent) :
     this->updateLibrary();
 }
 
-Phonograph::~Phonograph()
-{
+Phonograph::~Phonograph() {
     delete library;
     delete player;
     delete playlist;
@@ -288,18 +287,22 @@ void Phonograph::on_play_clicked(bool checked) {
     }
 }
 
-void Phonograph::on_playlist_itemDoubleClicked(QListWidgetItem *item){
+void Phonograph::on_playlist_itemDoubleClicked(QListWidgetItem *item) {
+
     if (!this->playlist->isEmpty()) {
         int current = this->ui->playlist->currentRow();
         this->playlist->setCurrentIndex( current );
         this->player->play();
     }
+
 }
 
 void Phonograph::on_skip_backward_clicked() {
     //player->setPlaylist(0);
-    //player->setMedia(QUrl("http://echidna-band.com/manifest/mp3/Manifests_Of_Human_Existence/08-Pendulum.mp3"));
+    playlist->addMedia( QUrl("http://echidna-band.com/manifest/mp3/Manifests_Of_Human_Existence/08-Pendulum.mp3") );
     playlist->addMedia( QUrl::fromLocalFile("/home/verminoz/Music/giaf-giouf.mp3") );
+    playlist->setCurrentIndex(0);
+
     this->player->play();
     qDebug() << "State: " << player->state();
     qDebug() << "Media State: " << player->mediaStatus();
@@ -307,7 +310,7 @@ void Phonograph::on_skip_backward_clicked() {
 }
 
 void Phonograph::on_skip_forward_clicked() {
-    qDebug() << player->position();
-    qDebug() << player->bufferStatus();
-    qDebug() << player->error();
+
+    this->playlist->next();
+
 }
