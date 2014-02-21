@@ -52,6 +52,12 @@ private slots:
 
     void on_skip_forward_clicked();
 
+    void on_clearPlaylist_clicked();
+
+    void on_addPlaylistItem_clicked();
+
+    void on_removePlaylistItem_clicked();
+
 private:
     // UI variable
     Ui::Phonograph *ui;

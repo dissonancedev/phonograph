@@ -1,4 +1,5 @@
 #include "phonograph.h"
+#include "system/musicdatabase.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
