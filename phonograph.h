@@ -7,6 +7,7 @@
 #include <QFile>
 #include <QtMultimedia/QMediaPlayer>
 #include <QtMultimedia/QMediaPlaylist>
+#include <QSettings>
 #include "system/musicdatabase.h"
 #include "system/qsongitem.h"
 #include "system/qplaylistitem.h"
@@ -68,6 +69,10 @@ private:
     // Media player stuff
     QMediaPlayer *player;
     QMediaPlaylist *playlist;
+
+    // Settings implementation function
+    void loadSettings();
+    void saveSettings();
 };
 
 #endif // PHONOGRAPH_H

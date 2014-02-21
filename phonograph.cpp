@@ -36,9 +36,16 @@ Phonograph::Phonograph(QWidget *parent) :
 
     // Update library
     this->updateLibrary();
+
+    // Load application settings
+    this->loadSettings();
 }
 
 Phonograph::~Phonograph() {
+
+    // Save settings when going out
+    this->saveSettings();
+
     delete library;
     delete player;
     delete playlist;
@@ -48,6 +55,34 @@ Phonograph::~Phonograph() {
 /*****************/
 /*** Functions ***/
 /*****************/
+
+/**
+ * @brief loadSettings loads all settings saved with QSettings
+ */
+void Phonograph::loadSettings() {
+
+    // Initialize a QSettings object
+    QSettings settings("RebetikoSealabs", "Phonograph");
+
+    // Player settings
+    this->ui->volume->setValue( settings.value( "player/volume" ).toInt() );
+    this->ui->mute->setChecked( settings.value( "player/mute").toBool() );
+
+}
+
+/**
+ * @brief saveSettings saves all the application's settings using QSettings
+ */
+void Phonograph::saveSettings() {
+
+    // Initialize a QSettings object
+    QSettings settings("RebetikoSealabs", "Phonograph");
+
+    // Player settings
+    settings.setValue( "player/volume" , this->ui->volume->value() );
+    settings.setValue( "player/mute" , this->ui->mute->isChecked() );
+
+}
 
 /* Functions that sets the current playing media's current playback time */
 void Phonograph::setPlaybackTimer(qint64 position) {
