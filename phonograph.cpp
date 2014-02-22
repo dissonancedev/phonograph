@@ -341,6 +341,7 @@ void Phonograph::on_skip_backward_clicked() {
     qDebug() << "State: " << player->state();
     qDebug() << "Media State: " << player->mediaStatus();
     qDebug() << "Error: " << player->error() << " " << player->errorString();
+    qDebug() << "Error: " << playlist->error() << " " << playlist->errorString();
 }
 
 void Phonograph::on_skip_forward_clicked() {

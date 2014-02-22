@@ -18,14 +18,16 @@ SOURCES += main.cpp\
     system/song.cpp \
     system/qsongitem.cpp \
     system/qplaylistitem.cpp \
-    system/databasecache.cpp
+    system/databasecache.cpp \
+    system/qplaylist.cpp
 
 HEADERS  += phonograph.h \
     system/musicdatabase.h \
     system/song.h \
     system/qsongitem.h \
     system/qplaylistitem.h \
-    system/databasecache.h
+    system/databasecache.h \
+    system/qplaylist.h
 
 FORMS    += phonograph.ui
 
