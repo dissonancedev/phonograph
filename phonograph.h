@@ -66,6 +66,12 @@ private slots:
 
     void on_removePlaylistItem_clicked();
 
+    void setPlayingSongLabel(QMediaContent content);
+
+    void on_shuffle_clicked(bool checked);
+
+    void on_toolButton_clicked(bool checked);
+
 private:
     // UI variable
     Ui::Phonograph *ui;

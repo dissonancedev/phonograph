@@ -28,10 +28,11 @@ Phonograph::Phonograph(QWidget *parent) :
     //this->player->play();
 
     // Useful signals
-    //connect(this->player, SIGNAL(positionChanged(qint64)), this, SLOT(setSliderPosition(qint64)));
+    connect(this->player, SIGNAL(currentMediaChanged(QMediaContent)), this, SLOT(setPlayingSongLabel(QMediaContent)));
     connect(this->player, SIGNAL(positionChanged(qint64)), this, SLOT(setPlaybackTimer(qint64)));
     connect(this->ui->seeker, SIGNAL(sliderMoved(int)), this, SLOT(setMediaPosition(int)));
     connect(this->player, SIGNAL(durationChanged(qint64)), this, SLOT(setMediaTime(qint64)));
+
 
     // Enable drag and drop for QListWidget and QTreeWidget
     /** TO-DO: Difficulties in implementing the drag & drop functionality **/
@@ -147,6 +148,25 @@ void Phonograph::setMediaPosition(int position) {
         this->player->setPosition( 100 * position);
     }
 
+}
+
+/* Slot that receives a signal when the media changes, so that several ui elements are updated */
+void Phonograph::setPlayingSongLabel(QMediaContent content){
+    QUrl url = content.canonicalUrl();
+    int i = this->playlist->mediaCount();
+    int j;
+    for(j = 0; j < i; j++){
+        if(url == this->playlist->media(j).canonicalUrl()){
+            break;
+        }
+    }
+
+    QPlaylistItem *currItem = (QPlaylistItem*)this->ui->playlist->item(j);
+    this->ui->playingNowLabel->setText(currItem->song.composer + " - " + currItem->song.title);
+    this->ui->playingNowLabel->setAlignment(Qt::AlignCenter);
+    QFont font("MS Shell Dlg 2", 12, QFont::Bold);
+    this->ui->playingNowLabel->setFont(font);
+    this->ui->playlist->setCurrentRow(j);
 }
 
 /**
@@ -276,6 +296,7 @@ void Phonograph::updatePlaylist() {
     this->player->setPlaylist(this->playlist);
 }
 
+/* Function that encodes the greek filenames to the proper format */
 QString Phonograph::normalizeUrl(QString url) {
     url.replace("Α", "%C1");
     url.replace("Β", "%C2");
@@ -400,23 +421,26 @@ void Phonograph::on_mute_toggled(bool checked) {
 }
 
 void Phonograph::on_play_clicked(bool checked) {
+
     // Check if button is checked or not
     if (checked) {
-        if (!this->playlist->isEmpty()) {
 
+        if (this->player->state() == QMediaPlayer::PausedState) {
+            this->player->play();
+        }
+
+        else if (!this->playlist->isEmpty()) {
             int current = this->ui->playlist->currentRow();
             this->playlist->setCurrentIndex( current );
-            this->player->play();
-
+            this->player->play();            
         }
+
     } else {
-
         if (this->player->state() == QMediaPlayer::PlayingState) {
-
             this->player->pause();
-
         }
     }
+
 }
 
 void Phonograph::on_playlist_itemDoubleClicked(QListWidgetItem *item) {
@@ -425,27 +449,20 @@ void Phonograph::on_playlist_itemDoubleClicked(QListWidgetItem *item) {
         int current = this->ui->playlist->currentRow();
         this->playlist->setCurrentIndex( current );
         this->player->play();
+        this->ui->play->setChecked(true);
     }
 
 }
 
 void Phonograph::on_skip_backward_clicked() {
-    //player->setPlaylist(0);
-    playlist->addMedia( QUrl("http://echidna-band.com/manifest/mp3/Manifests_Of_Human_Existence/08-Pendulum.mp3") );
-    playlist->addMedia( QUrl::fromLocalFile("/home/verminoz/Music/giaf-giouf.mp3") );
-    playlist->setCurrentIndex(0);
+    if(this->playlist->previousIndex() != -1)
+        this->playlist->previous();
 
-    this->player->play();
-    qDebug() << "State: " << player->state();
-    qDebug() << "Media State: " << player->mediaStatus();
-    qDebug() << "Error: " << player->error() << " " << player->errorString();
-    qDebug() << "Error: " << playlist->error() << " " << playlist->errorString();
 }
 
 void Phonograph::on_skip_forward_clicked() {
-
-    this->playlist->next();
-
+    if(this->playlist->nextIndex() != -1)
+        this->playlist->next();
 }
 
 void Phonograph::on_clearPlaylist_clicked()
@@ -486,4 +503,22 @@ void Phonograph::on_removePlaylistItem_clicked()
         }
     }
 
+}
+
+void Phonograph::on_shuffle_clicked(bool checked)
+{
+    if(checked) {
+        this->ui->toolButton->setChecked(false);
+        this->playlist->shuffle();
+    }
+    else this->playlist->setPlaybackMode(QMediaPlaylist::Sequential);
+}
+
+void Phonograph::on_toolButton_clicked(bool checked)
+{
+    if(checked) {
+        this->ui->shuffle->setChecked(false);
+        this->playlist->setPlaybackMode(QMediaPlaylist::Loop);
+    }
+    else this->playlist->setPlaybackMode(QMediaPlaylist::Sequential);
 }
