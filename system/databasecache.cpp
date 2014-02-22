@@ -52,6 +52,7 @@ void DatabaseCache::loadCache() {
 
         int i;
         Song tmp;
+        songs.clear();
         for (i = 0; i < count; i++) {
             stream >> tmp.composer;
             stream >> tmp.filename;

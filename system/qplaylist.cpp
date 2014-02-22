@@ -68,30 +68,37 @@ void QPlaylist::load() {
     this->modified = QDateTime::currentDateTime();
 
     // Open stream
-    file.open(QIODevice::WriteOnly);
+    file.open(QIODevice::ReadOnly);
 
     if (file.isOpen()) {
         QDataStream stream( &file );
 
-        // Store first the info
+        // Read first the info
         // 1. name
         // 2. created
         // 3. modified
-        stream << this->name << this->created << this->modified;
+        stream >> this->name;
+        stream >> this->created;
+        stream >> this->modified;
 
         // Store 4. number of songs
-        stream << this->playlist.count();
+        int count;
+        stream >> count;
 
         int i;
-        for (i = 0; i < this->playlist.count(); i++) {
-            stream << playlist[i].composer;
-            stream << playlist[i].filename;
-            stream << playlist[i].id;
-            stream << playlist[i].info;
-            stream << playlist[i].performer1;
-            stream << playlist[i].performer2;
-            stream << playlist[i].title;
-            stream << playlist[i].year;
+        Song tmp;
+        this->playlist.clear();
+        for (i = 0; i < count; i++) {
+            stream >> tmp.composer;
+            stream >> tmp.filename;
+            stream >> tmp.id;
+            stream >> tmp.info;
+            stream >> tmp.performer1;
+            stream >> tmp.performer2;
+            stream >> tmp.title;
+            stream >> tmp.year;
+
+            this->playlist.push_back( tmp );
         }
 
         file.close();

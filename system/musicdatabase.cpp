@@ -139,7 +139,7 @@ bool MusicDatabase::update() {
 
                 // Set all the data on it
                 temp.id = resultSet.value(0).toInt();
-                temp.filename = base_url + resultSet.value(1).toString();
+                temp.filename = base_url + resultSet.value(1).toString().toUtf8();
                 temp.title = resultSet.value(2).toString();
                 temp.info = resultSet.value(3).toString();
                 temp.year = resultSet.value(4).toString();
