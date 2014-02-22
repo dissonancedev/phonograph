@@ -1,5 +1,4 @@
 #include "qplaylistitem.h"
 
-QPlaylistItem::QPlaylistItem()
-{
+QPlaylistItem::QPlaylistItem() {
 }

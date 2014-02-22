@@ -250,7 +250,9 @@ void Phonograph::addItemToPlaylist(Song song) {
 
     // Put the item on the list and update media playlist
     this->ui->playlist->addItem( newItem );
-    updatePlaylist();
+
+    // And to the media playlist
+    this->playlist->addMedia( QUrl(song.filename) );
 }
 
 /**
@@ -273,6 +275,7 @@ void Phonograph::updatePlaylist() {
     this->player->setPlaylist(this->playlist);
 }
 
+<<<<<<< HEAD
 QString Phonograph::normalizeUrl(QString url) {
     url.replace("Α", "%C1");
     url.replace("Β", "%C2");
@@ -348,6 +351,18 @@ QString Phonograph::normalizeUrl(QString url) {
     url.replace("'", "%5C%27");
 
     return url;
+=======
+void Phonograph::loadPlaylists() {
+
+}
+
+void Phonograph::loadPlaylist() {
+
+}
+
+void Phonograph::savePlaylist() {
+
+>>>>>>> d770e151a56ffe381e7f8bce93efa04cbc1fd57b
 }
 
 /**************/

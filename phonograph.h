@@ -11,6 +11,7 @@
 #include "system/musicdatabase.h"
 #include "system/qsongitem.h"
 #include "system/qplaylistitem.h"
+#include "system/qplaylist.h"
 
 namespace Ui {
 class Phonograph;
@@ -28,6 +29,11 @@ public:
     void addItemToPlaylist(Song song);
     void addItemToLibrary(QTreeWidgetItem *topLevel, Song song);
     void updatePlaylist();
+
+    // Playlist functiom
+    void loadPlaylists();
+    void loadPlaylist();
+    void savePlaylist();
 
 private slots:
     QString normalizeUrl(QString url);
