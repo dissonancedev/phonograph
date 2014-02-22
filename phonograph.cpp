@@ -246,7 +246,9 @@ void Phonograph::addItemToPlaylist(Song song) {
 
     // Put the item on the list and update media playlist
     this->ui->playlist->addItem( newItem );
-    updatePlaylist();
+
+    // And to the media playlist
+    this->playlist->addMedia( QUrl(song.filename) );
 }
 
 /**
@@ -266,6 +268,18 @@ void Phonograph::updatePlaylist() {
     }
 
     this->player->setPlaylist(this->playlist);
+}
+
+void Phonograph::loadPlaylists() {
+
+}
+
+void Phonograph::loadPlaylist() {
+
+}
+
+void Phonograph::savePlaylist() {
+
 }
 
 /**************/
