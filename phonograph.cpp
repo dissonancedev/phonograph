@@ -152,21 +152,26 @@ void Phonograph::setMediaPosition(int position) {
 
 /* Slot that receives a signal when the media changes, so that several ui elements are updated */
 void Phonograph::setPlayingSongLabel(QMediaContent content){
-    QUrl url = content.canonicalUrl();
-    int i = this->playlist->mediaCount();
-    int j;
-    for(j = 0; j < i; j++){
-        if(url == this->playlist->media(j).canonicalUrl()){
-            break;
+    if (content.isNull() == false){
+        QUrl url = content.canonicalUrl();
+        int i = this->playlist->mediaCount();
+        int j;
+        for(j = 0; j < i; j++){
+            if(url == this->playlist->media(j).canonicalUrl()){
+                break;
+            }
         }
-    }
 
-    QPlaylistItem *currItem = (QPlaylistItem*)this->ui->playlist->item(j);
-    this->ui->playingNowLabel->setText(currItem->song.composer + " - " + currItem->song.title);
-    this->ui->playingNowLabel->setAlignment(Qt::AlignCenter);
-    QFont font("MS Shell Dlg 2", 12, QFont::Bold);
-    this->ui->playingNowLabel->setFont(font);
-    this->ui->playlist->setCurrentRow(j);
+        QPlaylistItem *currItem = (QPlaylistItem*)this->ui->playlist->item(j);
+        this->ui->playingNowLabel->setText(currItem->song.composer + " - " + currItem->song.title);
+        this->ui->playingNowLabel->setAlignment(Qt::AlignCenter);
+        QFont font("MS Shell Dlg 2", 12, QFont::Bold);
+        this->ui->playingNowLabel->setFont(font);
+        this->ui->playlist->setCurrentRow(j);
+    }
+    else { //the playlist has finished
+        this->ui->play->setChecked(false);
+    }
 }
 
 /**
