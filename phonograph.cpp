@@ -20,7 +20,11 @@ Phonograph::Phonograph(QWidget *parent) :
     this->player = new QMediaPlayer(this, QMediaPlayer::StreamPlayback);
     this->player->setPlaylist( this->playlist );
     this->player->setVolume( this->ui->volume->value() );
-    //player->setMedia(QUrl("http://rebetiko.sealabs.net/str.php?flok=08_-_Koula_fragosyriani.MP3"));
+    //QString ss = "http://rebetiko.sealabs.net/str.php?flok=Î\221Î Î\225Î\233Î Î\231Î£Î\234Î\225Î\235Î\237Î£(Î¡Î\231";
+    //player->setMedia(QUrl(QString::from(ss.toStdString().c_str())));
+    //this->player->play();
+    //QString url("http://rebetiko.sealabs.net/str.php?flok=ΓΑΛΑΝΟΜΑΤΑ-.mp3");
+    //player->setMedia(QUrl::fromAce(url));
     //this->player->play();
 
     // Useful signals
@@ -261,11 +265,89 @@ void Phonograph::updatePlaylist() {
     for (i = 0; i < this->ui->playlist->count(); i++) {
         QPlaylistItem *item = dynamic_cast<QPlaylistItem *>(this->ui->playlist->item(i));
         if (item) {
-            this->playlist->addMedia( QUrl(item->song.filename) );
+            QString url = normalizeUrl(item->song.filename);
+            this->playlist->addMedia( QUrl(url) );
         }
     }
 
     this->player->setPlaylist(this->playlist);
+}
+
+QString Phonograph::normalizeUrl(QString url) {
+    url.replace("Α", "%C1");
+    url.replace("Β", "%C2");
+    url.replace("Γ", "%C3");
+    url.replace("Δ", "%C4");
+    url.replace("Ε", "%C5");
+    url.replace("Ζ", "%C6");
+    url.replace("Η", "%C7");
+    url.replace("Θ", "%C8");
+    url.replace("Ι", "%C9");
+    url.replace("Κ", "%CA");
+    url.replace("Λ", "%CB");
+    url.replace("Μ", "%CC");
+    url.replace("Ν", "%CD");
+    url.replace("Ξ", "%CE");
+    url.replace("Ο", "%CF");
+    url.replace("Π", "%D0");
+    url.replace("Ρ", "%D1");
+    url.replace("Ό", "%D2");
+    url.replace("Σ", "%D3");
+    url.replace("Τ", "%D4");
+    url.replace("Υ", "%D5");
+    url.replace("Φ", "%D6");
+    url.replace("Χ", "%D7");
+    url.replace("Ψ", "%D8");
+    url.replace("Ω", "%D9");
+
+    url.replace("Ϊ",  "%DA");
+    url.replace("Ϋ",  "%DB");
+    url.replace("ά",  "%DC");
+    url.replace("έ",  "%DD");
+    url.replace("ή",  "%DE");
+    url.replace("ί",  "%DF");
+    url.replace("ΰ",  "%E0");
+    url.replace("α",  "%E1");
+    url.replace("β",  "%E2");
+    url.replace("γ",  "%E3");
+    url.replace("δ",  "%E4");
+    url.replace("ε",  "%E5");
+    url.replace("ζ",  "%E6");
+    url.replace("η",  "%E7");
+    url.replace("θ",  "%E8");
+    url.replace("ι",  "%E9");
+    url.replace("κ",  "%EA");
+    url.replace("λ",  "%EB");
+    url.replace("μ",  "%EC");
+    url.replace("ν",  "%ED");
+    url.replace("ξ",  "%EE");
+    url.replace("ο",  "%EF");
+    url.replace("π",  "%F0");
+    url.replace("ρ",  "%F1");
+    url.replace("ς",  "%F2");
+    url.replace("σ",  "%F3");
+    url.replace("τ",  "%F4");
+    url.replace("υ",  "%F5");
+    url.replace("φ",  "%F6");
+    url.replace("χ",  "%F7");
+    url.replace("ψ",  "%F8");
+    url.replace("ω",  "%F9");
+    url.replace("ϊ",  "%FA");
+    url.replace("ϋ",  "%FB");
+    url.replace("ό",  "%FC");
+    url.replace("ύ",  "%FD");
+    url.replace("ώ",  "%FE");
+    url.replace("Ά",  "%B6");
+    url.replace("Έ",  "%B8");
+    url.replace("Ή",  "%B9");
+    url.replace("Ί",  "%BA");
+    url.replace("Ό",  "%BC");
+    url.replace("Ύ",  "%BE");
+    url.replace("Ώ",  "%BF");
+
+    url.replace("'", "%5C%27");
+
+    return url;
 }
 
 /**************/

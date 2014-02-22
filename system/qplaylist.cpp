@@ -54,7 +54,7 @@ void QPlaylist::setPlayist(QList<Song> playlist) {
 void QPlaylist::load() {
 
     #ifdef Q_OS_WIN32
-        QString filename = QCoreApplication::applicationDirPath() + QString("\playlists\") + this->name + QString(".spl");
+        QString filename = QCoreApplication::applicationDirPath() + QString("\playlists\\") + this->name + QString(".spl");
     #endif
     #ifdef Q_OS_LINUX
         QString filename = QCoreApplication::applicationDirPath() + QString("/playlists/") + this->name + QString(".spl");
@@ -109,7 +109,7 @@ void QPlaylist::load() {
 void QPlaylist::save() {
 
     #ifdef Q_OS_WIN32
-        QString filename = QCoreApplication::applicationDirPath() + QString("\playlists\") + this->name + QString(".spl");
+        QString filename = QCoreApplication::applicationDirPath() + QString("\playlists\\") + this->name + QString(".spl");
     #endif
     #ifdef Q_OS_LINUX
         QString filename = QCoreApplication::applicationDirPath() + QString("/playlists/") + this->name + QString(".spl");
