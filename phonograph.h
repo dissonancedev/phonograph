@@ -36,6 +36,7 @@ public:
     void savePlaylist();
 
 private slots:
+    QString normalizeUrl(QString url);
 
     void setPlaybackTimer(qint64 position);
 
@@ -64,6 +65,16 @@ private slots:
     void on_addPlaylistItem_clicked();
 
     void on_removePlaylistItem_clicked();
+
+    void setPlayingSongLabel(QMediaContent content);
+
+    void on_shuffle_clicked(bool checked);
+
+    void on_toolButton_clicked(bool checked);
+
+    void on_seek_forward_clicked();
+
+    void on_seek_backward_clicked();
 
 private:
     // UI variable

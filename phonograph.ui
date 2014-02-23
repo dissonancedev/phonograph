@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>976</width>
-    <height>599</height>
+    <width>1080</width>
+    <height>550</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -96,6 +96,9 @@
               </property>
               <item>
                <widget class="QLineEdit" name="searchLibraryText">
+                <property name="styleSheet">
+                 <string notr="true">background-color: rgb(226, 226, 226);</string>
+                </property>
                 <property name="maxLength">
                  <number>256</number>
                 </property>
@@ -126,6 +129,15 @@
            </item>
            <item>
             <widget class="QLabel" name="libraryLabel">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">color: rgb(255, 255, 255);</string>
+             </property>
              <property name="frameShape">
               <enum>QFrame::NoFrame</enum>
              </property>
@@ -139,6 +151,28 @@
            </item>
            <item>
             <widget class="QTreeWidget" name="library">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>300</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: qconicalgradient(cx:1, cy:0.21, angle:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(236, 236, 236, 191));
+color: rgb(238, 238, 238);</string>
+             </property>
              <property name="selectionMode">
               <enum>QAbstractItemView::ExtendedSelection</enum>
              </property>
@@ -160,8 +194,17 @@
            </item>
            <item>
             <widget class="QLabel" name="categorizeByLabel">
+             <property name="font">
+              <font>
+               <family>MS Shell Dlg 2</family>
+               <pointsize>8</pointsize>
+               <weight>75</weight>
+               <italic>false</italic>
+               <bold>true</bold>
+              </font>
+             </property>
              <property name="styleSheet">
-              <string notr="true">background-color: transparent;</string>
+              <string notr="true">color: rgb(255, 255, 255);</string>
              </property>
              <property name="text">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Categorize by:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -174,8 +217,7 @@
            <item>
             <widget class="QComboBox" name="categorizeBySelect">
              <property name="styleSheet">
-              <string notr="true">font: 10pt &quot;Sans Serif&quot;;
-background-color: #201F1F;</string>
+              <string notr="true">font: 10pt &quot;Sans Serif&quot;;</string>
              </property>
              <item>
               <property name="text">
@@ -288,7 +330,7 @@ background-color: #201F1F;</string>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QToolButton" name="toolButton_2">
+                  <widget class="QToolButton" name="shuffle">
                    <property name="text">
                     <string>...</string>
                    </property>
@@ -304,6 +346,9 @@ background-color: #201F1F;</string>
                    </property>
                    <property name="checkable">
                     <bool>true</bool>
+                   </property>
+                   <property name="checked">
+                    <bool>false</bool>
                    </property>
                    <property name="autoRaise">
                     <bool>true</bool>
@@ -384,6 +429,9 @@ background-color: #201F1F;</string>
                 </property>
                 <property name="checkable">
                  <bool>true</bool>
+                </property>
+                <property name="checked">
+                 <bool>false</bool>
                 </property>
                 <property name="autoRaise">
                  <bool>true</bool>
@@ -514,6 +562,9 @@ background-color: #201F1F;</string>
                  </item>
                  <item>
                   <widget class="QLabel" name="volume_label">
+                   <property name="styleSheet">
+                    <string notr="true">color: rgb(255, 255, 255);</string>
+                   </property>
                    <property name="text">
                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Volume&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                    </property>
@@ -584,6 +635,15 @@ background-color: #201F1F;</string>
               </property>
               <item>
                <widget class="QLabel" name="startTimeLabel">
+                <property name="font">
+                 <font>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(255, 255, 255);</string>
+                </property>
                 <property name="text">
                  <string>00:00</string>
                 </property>
@@ -604,6 +664,15 @@ background-color: #201F1F;</string>
               </item>
               <item>
                <widget class="QLabel" name="endTimeLabel">
+                <property name="font">
+                 <font>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(255, 255, 255);</string>
+                </property>
                 <property name="text">
                  <string>00:00</string>
                 </property>
@@ -641,6 +710,9 @@ background-color: #201F1F;</string>
                   <height>0</height>
                  </size>
                 </property>
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(255, 255, 255);</string>
+                </property>
                 <property name="frameShape">
                  <enum>QFrame::NoFrame</enum>
                 </property>
@@ -648,7 +720,7 @@ background-color: #201F1F;</string>
                  <enum>QFrame::Plain</enum>
                 </property>
                 <property name="text">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Μάρκος Βαμβακάρης - Μια όμορφη μελαγχροινη&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;Artist - Title&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="textFormat">
                  <enum>Qt::RichText</enum>
@@ -664,7 +736,7 @@ background-color: #201F1F;</string>
               <bool>true</bool>
              </property>
              <property name="styleSheet">
-              <string notr="true">font: 10pt &quot;Sans Serif&quot;;</string>
+              <string notr="true">background-color: rgb(117, 117, 117);</string>
              </property>
              <property name="tabPosition">
               <enum>QTabWidget::South</enum>
@@ -685,6 +757,9 @@ background-color: #201F1F;</string>
               <bool>false</bool>
              </property>
              <widget class="QWidget" name="tabplaylist">
+              <property name="styleSheet">
+               <string notr="true"/>
+              </property>
               <attribute name="icon">
                <iconset resource="icons.qrc">
                 <normaloff>:/phonograph/tabs/icons/tabs/view-media-playlist-3.png</normaloff>:/phonograph/tabs/icons/tabs/view-media-playlist-3.png</iconset>
@@ -716,6 +791,9 @@ background-color: #201F1F;</string>
                   </property>
                   <item>
                    <widget class="QLineEdit" name="searchPlaylistText">
+                    <property name="styleSheet">
+                     <string notr="true">background-color: rgb(226, 226, 226);</string>
+                    </property>
                     <property name="placeholderText">
                      <string>Search...</string>
                     </property>
@@ -740,6 +818,16 @@ background-color: #201F1F;</string>
                </item>
                <item>
                 <widget class="QListWidget" name="playlist">
+                 <property name="font">
+                  <font>
+                   <weight>75</weight>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">color: rgb(255, 255, 255);
+background-color: rgb(172, 172, 172);</string>
+                 </property>
                  <property name="selectionMode">
                   <enum>QAbstractItemView::ExtendedSelection</enum>
                  </property>
@@ -908,6 +996,9 @@ background-color: #201F1F;</string>
                      </item>
                      <item row="0" column="4">
                       <widget class="QLineEdit" name="playlistName">
+                       <property name="styleSheet">
+                        <string notr="true">background-color: rgb(226, 226, 226);</string>
+                       </property>
                        <property name="placeholderText">
                         <string>Type the playlist's name</string>
                        </property>
@@ -1065,7 +1156,7 @@ background-color: #201F1F;</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>976</width>
+     <width>1080</width>
      <height>21</height>
     </rect>
    </property>
