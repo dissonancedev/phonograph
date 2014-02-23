@@ -98,6 +98,23 @@ bool MusicDatabase::connect() {
 }
 
 bool MusicDatabase::update() {
+    //********* TEMPORARY ***************//
+    // Check first if we can load from cache
+    this->cache = new DatabaseCache(); // Load cache
+
+    // qDebug() << "Found " << this->cache->count() << " in cache.";
+    // qDebug() << "Found " << this->getRecordCount() << " in database.";
+    // See if the number of records is the same
+    if (this->cache->count() >= this->getRecordCount()) {
+        // If they are equal we can just load from cache and return
+        this->songs = this->cache->getContent();
+        this->disconnect();
+        qDebug() << "Loaded from cache";
+
+        return true;
+    }
+    //***********************************//
+
     // Try to connect
     if (this->connect()) {
 

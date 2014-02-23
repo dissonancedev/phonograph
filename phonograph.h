@@ -72,6 +72,10 @@ private slots:
 
     void on_toolButton_clicked(bool checked);
 
+    void on_seek_forward_clicked();
+
+    void on_seek_backward_clicked();
+
 private:
     // UI variable
     Ui::Phonograph *ui;

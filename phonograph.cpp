@@ -2,6 +2,8 @@
 #include "ui_phonograph.h"
 #include <string>
 #include <sstream>
+#include <QGraphicsDropShadowEffect>
+#include <qscrollbar.h>
 
 /*** Constructor & destructor ***/
 
@@ -44,6 +46,45 @@ Phonograph::Phonograph(QWidget *parent) :
 
     // Load application settings
     this->loadSettings();
+
+    // Add shadow effects to several GUI elements for better visualization
+    QGraphicsDropShadowEffect *nowPLayingEffect = new QGraphicsDropShadowEffect(this);
+    QGraphicsDropShadowEffect *libraryLabelEffect = new QGraphicsDropShadowEffect(this);
+    QGraphicsDropShadowEffect *categorizeByLabelEffect = new QGraphicsDropShadowEffect(this);
+    QGraphicsDropShadowEffect *volumeLabelEffect = new QGraphicsDropShadowEffect(this);
+    QGraphicsDropShadowEffect *startTimeLabelEffect = new QGraphicsDropShadowEffect(this);
+    QGraphicsDropShadowEffect *endTimeLabelEffect = new QGraphicsDropShadowEffect(this);
+
+    nowPLayingEffect->setBlurRadius(0);
+    nowPLayingEffect->setColor(QColor("#000000"));
+    nowPLayingEffect->setOffset(2,2);
+
+    libraryLabelEffect->setBlurRadius(0);
+    libraryLabelEffect->setColor(QColor("#000000"));
+    libraryLabelEffect->setOffset(1,1);
+
+    categorizeByLabelEffect->setBlurRadius(0);
+    categorizeByLabelEffect->setColor(QColor("#000000"));
+    categorizeByLabelEffect->setOffset(1,1);
+
+    volumeLabelEffect->setBlurRadius(0);
+    volumeLabelEffect->setColor(QColor("#000000"));
+    volumeLabelEffect->setOffset(1,1);
+
+    startTimeLabelEffect->setBlurRadius(0);
+    startTimeLabelEffect->setColor(QColor("#000000"));
+    startTimeLabelEffect->setOffset(1,1);
+
+    endTimeLabelEffect->setBlurRadius(0);
+    endTimeLabelEffect->setColor(QColor("#000000"));
+    endTimeLabelEffect->setOffset(1,1);
+
+    this->ui->playingNowLabel->setGraphicsEffect(nowPLayingEffect);
+    this->ui->libraryLabel->setGraphicsEffect(libraryLabelEffect);
+    this->ui->categorizeByLabel->setGraphicsEffect(categorizeByLabelEffect);
+    this->ui->volume_label->setGraphicsEffect(volumeLabelEffect);
+    this->ui->startTimeLabel->setGraphicsEffect(startTimeLabelEffect);
+    this->ui->endTimeLabel->setGraphicsEffect(endTimeLabelEffect);
 }
 
 Phonograph::~Phonograph() {
@@ -145,7 +186,7 @@ void Phonograph::setMediaTime(qint64 duration) {
 void Phonograph::setMediaPosition(int position) {
 
     if (this->player->isSeekable()){
-        this->player->setPosition( 100 * position);
+        this->player->setPosition(100 * position);
     }
 
 }
@@ -526,4 +567,16 @@ void Phonograph::on_toolButton_clicked(bool checked)
         this->playlist->setPlaybackMode(QMediaPlaylist::Loop);
     }
     else this->playlist->setPlaybackMode(QMediaPlaylist::Sequential);
+}
+
+void Phonograph::on_seek_forward_clicked()
+{
+    int pos = this->ui->seeker->sliderPosition();
+    setMediaPosition(pos+100);
+}
+
+void Phonograph::on_seek_backward_clicked()
+{
+    int pos = this->ui->seeker->sliderPosition();
+    setMediaPosition(pos-100);
 }
