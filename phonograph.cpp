@@ -347,7 +347,13 @@ void Phonograph::on_playlist_itemDoubleClicked(QListWidgetItem *item) {
 
 void Phonograph::on_skip_backward_clicked() {
     //player->setPlaylist(0);
-    playlist->addMedia( QUrl("http://echidna-band.com/manifest/mp3/Manifests_Of_Human_Existence/08-Pendulum.mp3") );
+    QHttp http;
+    QFile file();
+    //QUrl("http://echidna-band.com/manifest/mp3/Manifests_Of_Human_Existence/08-Pendulum.mp3")
+    http->setHost("echidna-band.com");
+    http->get(QUrl::toPercentEncoding("/manifest/mp3/Manifests_Of_Human_Existence/08-Pendulum.mp3"));
+
+    playlist->addMedia(  );
     playlist->addMedia( QUrl::fromLocalFile("/home/verminoz/Music/giaf-giouf.mp3") );
     playlist->setCurrentIndex(0);
 
