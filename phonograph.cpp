@@ -3,7 +3,7 @@
 #include <string>
 #include <sstream>
 #include <QGraphicsDropShadowEffect>
-#include <qscrollbar.h>
+#include <QStyleFactory>
 
 /*** Constructor & destructor ***/
 
@@ -11,6 +11,9 @@ Phonograph::Phonograph(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Phonograph)
 {
+    QStyleFactory styleFactory;
+    this->setStyle(styleFactory.create("plastiq ue"));
+
     // Setup the UI
     ui->setupUi(this);
 
@@ -49,7 +52,6 @@ Phonograph::Phonograph(QWidget *parent) :
 
     // Add shadow effects to several GUI elements for better visualization
     QGraphicsDropShadowEffect *nowPLayingEffect = new QGraphicsDropShadowEffect(this);
-    QGraphicsDropShadowEffect *libraryLabelEffect = new QGraphicsDropShadowEffect(this);
     QGraphicsDropShadowEffect *categorizeByLabelEffect = new QGraphicsDropShadowEffect(this);
     QGraphicsDropShadowEffect *volumeLabelEffect = new QGraphicsDropShadowEffect(this);
     QGraphicsDropShadowEffect *startTimeLabelEffect = new QGraphicsDropShadowEffect(this);
@@ -58,10 +60,6 @@ Phonograph::Phonograph(QWidget *parent) :
     nowPLayingEffect->setBlurRadius(0);
     nowPLayingEffect->setColor(QColor("#000000"));
     nowPLayingEffect->setOffset(2,2);
-
-    libraryLabelEffect->setBlurRadius(0);
-    libraryLabelEffect->setColor(QColor("#000000"));
-    libraryLabelEffect->setOffset(1,1);
 
     categorizeByLabelEffect->setBlurRadius(0);
     categorizeByLabelEffect->setColor(QColor("#000000"));
@@ -80,11 +78,14 @@ Phonograph::Phonograph(QWidget *parent) :
     endTimeLabelEffect->setOffset(1,1);
 
     this->ui->playingNowLabel->setGraphicsEffect(nowPLayingEffect);
-    this->ui->libraryLabel->setGraphicsEffect(libraryLabelEffect);
     this->ui->categorizeByLabel->setGraphicsEffect(categorizeByLabelEffect);
     this->ui->volume_label->setGraphicsEffect(volumeLabelEffect);
     this->ui->startTimeLabel->setGraphicsEffect(startTimeLabelEffect);
     this->ui->endTimeLabel->setGraphicsEffect(endTimeLabelEffect);
+
+    this->ui->libraryTabWidget->setStyleSheet("QTabWidget,QTabWidget::pane,QTabBar { background-color: rgb(117, 117, 117, 200); border: 0px; }");
+    this->ui->tabWidget->setStyleSheet("QTabWidget,QTabWidget::pane,QTabBar { background-color: rgb(117, 117, 117, 200); border: 0px; }");
+
 }
 
 Phonograph::~Phonograph() {
@@ -314,12 +315,20 @@ void Phonograph::addItemToPlaylist(Song song) {
     newItem->setIcon( QIcon(":/phonograph/general/icons/songbird.png") );
     newItem->song = song;
 
-    // Put the item on the list and update media playlist
-    this->ui->playlist->addItem( newItem );
+    //If the song does not exists in the current playlist...
+    bool exists = false;
+    for(int i = 0; i < this->ui->playlist->count(); i++){
+        QPlaylistItem *tmp = dynamic_cast<QPlaylistItem *>(this->ui->playlist->item(i));
+        if (newItem->song.filename == tmp->song.filename) exists = true;
+    }
 
-    // And to the media playlist
-    QString url = normalizeUrl(song.filename);
-    this->playlist->addMedia( QUrl(url) );
+    if(!exists){
+        // ...put the item on the list and update media playlist...
+        this->ui->playlist->addItem( newItem );
+        // ...and to the media playlist
+        QString url = normalizeUrl(song.filename);
+        this->playlist->addMedia( QUrl(url) );
+    }
 }
 
 /**
