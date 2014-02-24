@@ -1058,10 +1058,10 @@ color: rgb(255, 255, 255);</string>
               <item row="1" column="0" colspan="11">
                <widget class="QFrame" name="nowPLayingFrame">
                 <property name="frameShape">
-                 <enum>QFrame::StyledPanel</enum>
+                 <enum>QFrame::NoFrame</enum>
                 </property>
                 <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
+                 <enum>QFrame::Plain</enum>
                 </property>
                 <property name="lineWidth">
                  <number>0</number>
