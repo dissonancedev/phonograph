@@ -17,14 +17,61 @@ Phonograph::Phonograph(QWidget *parent) :
     // Setup the UI
     ui->setupUi(this);
 
-    // Setup some CSS
-    ui->mainframe->setStyleSheet( "QFrame#mainframe { background-image: url(:/images/background/theme/diskos-25-leivadia.jpg); }" );
+    /** Setup some CSS **/
+    ui->mainframe->setStyleSheet( "QFrame#mainframe { border-image: url(:/images/background/theme/diskos-25-leivadia.jpg); }" );
+    ui->playerFrame->setStyleSheet("QFrame#playerFrame { background-color: qconicalgradient(cx:1, cy:1, angle:286.6, stop:0.170455 rgba(0, 0, 0, 185),"
+                                   "stop:0.806818 rgba(236, 236, 236, 191)); }");
+
+    // Add shadow effects to several GUI elements for better visualization
+    QGraphicsDropShadowEffect *nowPLayingEffect = new QGraphicsDropShadowEffect(this);
+    QGraphicsDropShadowEffect *categorizeByLabelEffect = new QGraphicsDropShadowEffect(this);
+    QGraphicsDropShadowEffect *volumeLabelEffect = new QGraphicsDropShadowEffect(this);
+    QGraphicsDropShadowEffect *startTimeLabelEffect = new QGraphicsDropShadowEffect(this);
+    QGraphicsDropShadowEffect *endTimeLabelEffect = new QGraphicsDropShadowEffect(this);
+
+    nowPLayingEffect->setBlurRadius(1);
+    nowPLayingEffect->setColor(QColor("#000000"));
+    nowPLayingEffect->setOffset(1,1);
+
+    categorizeByLabelEffect->setBlurRadius(1);
+    categorizeByLabelEffect->setColor(QColor("#000000"));
+    categorizeByLabelEffect->setOffset(1,1);
+
+    volumeLabelEffect->setBlurRadius(1);
+    volumeLabelEffect->setColor(QColor("#000000"));
+    volumeLabelEffect->setOffset(1,1);
+
+    startTimeLabelEffect->setBlurRadius(1);
+    startTimeLabelEffect->setColor(QColor("#000000"));
+    startTimeLabelEffect->setOffset(1,1);
+
+    endTimeLabelEffect->setBlurRadius(1);
+    endTimeLabelEffect->setColor(QColor("#000000"));
+    endTimeLabelEffect->setOffset(1,1);
+
+    this->ui->playingNowLabel->setGraphicsEffect(nowPLayingEffect);
+    this->ui->categorizeByLabel->setGraphicsEffect(categorizeByLabelEffect);
+    this->ui->volume_label->setGraphicsEffect(volumeLabelEffect);
+    this->ui->startTimeLabel->setGraphicsEffect(startTimeLabelEffect);
+    this->ui->endTimeLabel->setGraphicsEffect(endTimeLabelEffect);
+
+    this->ui->libraryTabWidget->setStyleSheet("QTabWidget,QTabWidget::pane,QTabBar { background-color: rgb(117, 117, 117, 200); border: 0px; }");
+    this->ui->tabWidget->setStyleSheet("QTabWidget,QTabWidget::pane,QTabBar { background-color: rgb(117, 117, 117, 200); border: 0px; }");
+
+    /** --------------------- **/
+
 
     // Setup player and playlist
     this->playlist = new QMediaPlaylist;
     this->player = new QMediaPlayer(this, QMediaPlayer::StreamPlayback);
     this->player->setPlaylist( this->playlist );
     this->player->setVolume( this->ui->volume->value() );
+    //QString ss = "http://rebetiko.sealabs.net/str.php?flok=Î\221Î Î\225Î\233Î Î\231Î£Î\234Î\225Î\235Î\237Î£(Î¡Î\231";
+    //player->setMedia(QUrl(QString::from(ss.toStdString().c_str())));
+    //this->player->play();
+    //QString url("http://rebetiko.sealabs.net/str.php?flok=ΓΑΛΑΝΟΜΑΤΑ-.mp3");
+    //player->setMedia(QUrl::fromAce(url));
+    //this->player->play();
 
     // Useful signals
     connect(this->player, SIGNAL(currentMediaChanged(QMediaContent)), this, SLOT(setPlayingSongLabel(QMediaContent)));
@@ -42,44 +89,7 @@ Phonograph::Phonograph(QWidget *parent) :
     this->updateLibrary();
 
     // Load application settings
-    this->loadSettings();
-
-    // Add shadow effects to several GUI elements for better visualization
-    QGraphicsDropShadowEffect *nowPLayingEffect = new QGraphicsDropShadowEffect(this);
-    QGraphicsDropShadowEffect *categorizeByLabelEffect = new QGraphicsDropShadowEffect(this);
-    QGraphicsDropShadowEffect *volumeLabelEffect = new QGraphicsDropShadowEffect(this);
-    QGraphicsDropShadowEffect *startTimeLabelEffect = new QGraphicsDropShadowEffect(this);
-    QGraphicsDropShadowEffect *endTimeLabelEffect = new QGraphicsDropShadowEffect(this);
-
-    nowPLayingEffect->setBlurRadius(0);
-    nowPLayingEffect->setColor(QColor("#000000"));
-    nowPLayingEffect->setOffset(2,2);
-
-    categorizeByLabelEffect->setBlurRadius(0);
-    categorizeByLabelEffect->setColor(QColor("#000000"));
-    categorizeByLabelEffect->setOffset(1,1);
-
-    volumeLabelEffect->setBlurRadius(0);
-    volumeLabelEffect->setColor(QColor("#000000"));
-    volumeLabelEffect->setOffset(1,1);
-
-    startTimeLabelEffect->setBlurRadius(0);
-    startTimeLabelEffect->setColor(QColor("#000000"));
-    startTimeLabelEffect->setOffset(1,1);
-
-    endTimeLabelEffect->setBlurRadius(0);
-    endTimeLabelEffect->setColor(QColor("#000000"));
-    endTimeLabelEffect->setOffset(1,1);
-
-    this->ui->playingNowLabel->setGraphicsEffect(nowPLayingEffect);
-    this->ui->categorizeByLabel->setGraphicsEffect(categorizeByLabelEffect);
-    this->ui->volume_label->setGraphicsEffect(volumeLabelEffect);
-    this->ui->startTimeLabel->setGraphicsEffect(startTimeLabelEffect);
-    this->ui->endTimeLabel->setGraphicsEffect(endTimeLabelEffect);
-
-    this->ui->libraryTabWidget->setStyleSheet("QTabWidget,QTabWidget::pane,QTabBar { background-color: rgb(117, 117, 117, 200); border: 0px; }");
-    this->ui->tabWidget->setStyleSheet("QTabWidget,QTabWidget::pane,QTabBar { background-color: rgb(117, 117, 117, 200); border: 0px; }");
-
+    this->loadSettings();    
 }
 
 Phonograph::~Phonograph() {
@@ -420,12 +430,14 @@ QString Phonograph::normalizeUrl(QString url) {
     url.replace("Ώ",  "%BF");
 
     url.replace("'", "%5C%27");
+    url.replace("΄", "%B4");
 
     return url;
 }
 
 void Phonograph::loadPlaylists() {
     // Create the new item
+    /*
     QSongItem *newSong = new QSongItem();
     newSong->setText(0, song.title);
     newSong->setIcon(0, QIcon(":/phonograph/general/icons/songbird.png"));
@@ -464,6 +476,7 @@ void Phonograph::loadPlaylists() {
 
     // Finally add the song to it
     newArtist->addChild( newSong );
+    */
 }
 
 void Phonograph::loadPlaylist() {
