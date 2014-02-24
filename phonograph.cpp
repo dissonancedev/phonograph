@@ -25,12 +25,6 @@ Phonograph::Phonograph(QWidget *parent) :
     this->player = new QMediaPlayer(this, QMediaPlayer::StreamPlayback);
     this->player->setPlaylist( this->playlist );
     this->player->setVolume( this->ui->volume->value() );
-    //QString ss = "http://rebetiko.sealabs.net/str.php?flok=Î\221Î Î\225Î\233Î Î\231Î£Î\234Î\225Î\235Î\237Î£(Î¡Î\231";
-    //player->setMedia(QUrl(QString::from(ss.toStdString().c_str())));
-    //this->player->play();
-    //QString url("http://rebetiko.sealabs.net/str.php?flok=ΓΑΛΑΝΟΜΑΤΑ-.mp3");
-    //player->setMedia(QUrl::fromAce(url));
-    //this->player->play();
 
     // Useful signals
     connect(this->player, SIGNAL(currentMediaChanged(QMediaContent)), this, SLOT(setPlayingSongLabel(QMediaContent)));
@@ -193,13 +187,14 @@ void Phonograph::setMediaPosition(int position) {
 }
 
 /* Slot that receives a signal when the media changes, so that several ui elements are updated */
-void Phonograph::setPlayingSongLabel(QMediaContent content){
+void Phonograph::setPlayingSongLabel(QMediaContent content) {
+    return;
     if (content.isNull() == false){
         QUrl url = content.canonicalUrl();
-        int i = this->playlist->mediaCount();
+
         int j;
-        for(j = 0; j < i; j++){
-            if(url == this->playlist->media(j).canonicalUrl()){
+        for (j = 0; j < this->playlist->mediaCount(); j++){
+            if (url == this->playlist->media(j).canonicalUrl()){
                 break;
             }
         }
@@ -430,7 +425,45 @@ QString Phonograph::normalizeUrl(QString url) {
 }
 
 void Phonograph::loadPlaylists() {
+    // Create the new item
+    QSongItem *newSong = new QSongItem();
+    newSong->setText(0, song.title);
+    newSong->setIcon(0, QIcon(":/phonograph/general/icons/songbird.png"));
+    newSong->song = song;
 
+    int j;
+
+    // Look if the same artist is there
+    int found = -1;
+    for (j = 0; j < topLevel->childCount(); j++) {
+        if ( topLevel->child(j)->text(0) == song.composer) {
+            found = j;
+            break;
+        }
+    }
+
+    QTreeWidgetItem *newArtist;
+    if (found == -1) {
+
+        // If artist not found there add it
+        newArtist = new QTreeWidgetItem();
+        newArtist->setText(0, song.composer);
+        topLevel->addChild( newArtist );
+
+        // Add icon to it
+        newArtist->setIcon(0, QIcon(":/phonograph/general/icons/view-media-artist.png"));
+
+        // Finally add the song to it
+        newArtist->addChild( newSong );
+
+    } else {
+
+       newArtist = topLevel->child(j);
+
+    }
+
+    // Finally add the song to it
+    newArtist->addChild( newSong );
 }
 
 void Phonograph::loadPlaylist() {
@@ -482,18 +515,18 @@ void Phonograph::on_play_clicked(bool checked) {
 
         if (this->player->state() == QMediaPlayer::PausedState) {
             this->player->play();
-        }
-
-        else if (!this->playlist->isEmpty()) {
+        }  else if (!this->playlist->isEmpty()) {
             int current = this->ui->playlist->currentRow();
             this->playlist->setCurrentIndex( current );
             this->player->play();            
         }
 
     } else {
+
         if (this->player->state() == QMediaPlayer::PlayingState) {
             this->player->pause();
         }
+
     }
 
 }
@@ -511,14 +544,7 @@ void Phonograph::on_playlist_itemDoubleClicked(QListWidgetItem *item) {
 
 void Phonograph::on_skip_backward_clicked() {
 
-    //player->setPlaylist(0);
-    ///QHttp http;
-    QFile file();
-    //QUrl("http://echidna-band.com/manifest/mp3/Manifests_Of_Human_Existence/08-Pendulum.mp3")
-    //http->setHost("echidna-band.com");
-    //http->get(QUrl::toPercentEncoding("/manifest/mp3/Manifests_Of_Human_Existence/08-Pendulum.mp3"));
-
-    //playlist->addMedia(  );
+    playlist->addMedia( QUrl("http://echidna-band.com/manifest/mp3/Manifests_Of_Human_Existence/08-Pendulum.mp3") );
     playlist->addMedia( QUrl::fromLocalFile("/home/verminoz/Music/giaf-giouf.mp3") );
     playlist->setCurrentIndex(0);
 
@@ -534,8 +560,9 @@ void Phonograph::on_skip_backward_clicked() {
 }
 
 void Phonograph::on_skip_forward_clicked() {
-    if(this->playlist->nextIndex() != -1)
+    if(this->playlist->nextIndex() != -1) {
         this->playlist->next();
+    }
 }
 
 void Phonograph::on_clearPlaylist_clicked()
@@ -580,30 +607,33 @@ void Phonograph::on_removePlaylistItem_clicked()
 
 void Phonograph::on_shuffle_clicked(bool checked)
 {
-    if(checked) {
+    if (checked) {
         this->ui->toolButton->setChecked(false);
         this->playlist->shuffle();
+    } else {
+        this->playlist->setPlaybackMode(QMediaPlaylist::Sequential);
     }
-    else this->playlist->setPlaybackMode(QMediaPlaylist::Sequential);
 }
 
 void Phonograph::on_toolButton_clicked(bool checked)
 {
-    if(checked) {
+    if (checked) {
         this->ui->shuffle->setChecked(false);
         this->playlist->setPlaybackMode(QMediaPlaylist::Loop);
     }
-    else this->playlist->setPlaybackMode(QMediaPlaylist::Sequential);
+    else {
+        this->playlist->setPlaybackMode(QMediaPlaylist::Sequential);
+    }
 }
 
 void Phonograph::on_seek_forward_clicked()
 {
     int pos = this->ui->seeker->sliderPosition();
-    setMediaPosition(pos+100);
+    setMediaPosition(pos + 100);
 }
 
 void Phonograph::on_seek_backward_clicked()
 {
     int pos = this->ui->seeker->sliderPosition();
-    setMediaPosition(pos-100);
+    setMediaPosition(pos - 100);
 }
