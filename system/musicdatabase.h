@@ -56,6 +56,7 @@ public:
     void disconnect();
     bool isConnected();
     int getRecordCount();
+    QString getFilename(int id);
 
     QList<Song> songs;
 };

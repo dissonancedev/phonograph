@@ -196,10 +196,25 @@ color: rgb(255, 255, 255);</string>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
+                 <property name="font">
+                  <font>
+                   <weight>75</weight>
+                   <bold>true</bold>
+                  </font>
+                 </property>
                  <property name="styleSheet">
                   <string notr="true">color: rgb(238, 238, 238);
 background-color: qconicalgradient(cx:1, cy:1, angle:286.6, stop:0.170455 rgba(0, 0, 0, 171), stop:0.806818 rgba(236, 236, 236, 160));
 color: rgb(255, 255, 255);</string>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>24</width>
+                   <height>24</height>
+                  </size>
+                 </property>
+                 <property name="viewMode">
+                  <enum>QListView::IconMode</enum>
                  </property>
                 </widget>
                </item>

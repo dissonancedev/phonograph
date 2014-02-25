@@ -88,6 +88,9 @@ Phonograph::Phonograph(QWidget *parent) :
     // Update library
     this->updateLibrary();
 
+    // Load the user's playlists
+    this->loadPlaylists();
+
     // Load application settings
     this->loadSettings();    
 }
@@ -159,32 +162,12 @@ void Phonograph::setMediaTime(qint64 duration) {
     int seconds = ( duration / 1000 ) % 60;
     int minutes = round( ((duration - seconds) / 1000) / 60 );
 
-    // Dyo paratiriseis
-    // 1. To if / else if / else den einai aparaitito giati paizoun synartisi pou formataroun arithmous me sygkekrimeno arithmo psifion.
-    // Etsi mporeis na syriknwseis ton kwdika se mia grammi xwris if
-    // 2. Xrhsimopoieis polu emeso tropo gia na setareis ena QString to opoio sto constructor tou dexetai diaforous typous kai tous metatrepei se string
-    // Episis to QString sou parexei string concatenation me to + pragma pou alliws de ginetai sti C++
     // Set the label
     this->ui->endTimeLabel->setText( QString().sprintf("%02d", minutes) + QString(":") + QString().sprintf("%02d", seconds) );
 
     // Change the seeker range to achieve smoother scrolling. Set to tenths of seconds.
     this->ui->seeker->setRange(0, round(duration / 100) - 1);
 
-    /*
-    std::ostringstream stm_sec;
-    std::ostringstream stm_min;
-    stm_sec << seconds ;
-    stm_min << minutes ;
-    if (seconds>10 && minutes>10) {
-        this->ui->endTimeLabel->setText(QString::fromStdString(stm_min.str() + ":" + stm_sec.str()));
-    } else if (seconds>10 && minutes<10) {
-        this->ui->endTimeLabel->setText(QString::fromStdString("0" + stm_min.str() + ":" + stm_sec.str()));
-    } else if (seconds<10 && minutes>10) {
-        this->ui->endTimeLabel->setText(QString::fromStdString(stm_min.str() + ":0" + stm_sec.str()));
-    } else {
-        this->ui->endTimeLabel->setText(QString::fromStdString("0" + stm_min.str() + ":0" + stm_sec.str()));
-    }
-    */
 }
 
 /* Function used as slot for enabling media seeking with QSlider */
@@ -322,16 +305,19 @@ void Phonograph::addItemToPlaylist(Song song) {
 
     //If the song does not exists in the current playlist...
     bool exists = false;
-    for(int i = 0; i < this->ui->playlist->count(); i++){
+    for (int i = 0; i < this->ui->playlist->count(); i++){
         QPlaylistItem *tmp = dynamic_cast<QPlaylistItem *>(this->ui->playlist->item(i));
-        if (newItem->song.filename == tmp->song.filename) exists = true;
+        if (newItem->song.filename == tmp->song.filename) {
+            exists = true;
+            break;
+        }
     }
 
-    if(!exists){
+    if (!exists){
         // ...put the item on the list and update media playlist...
         this->ui->playlist->addItem( newItem );
         // ...and to the media playlist
-        QString url = normalizeUrl(song.filename);
+        QString url = song.filename + normalizeUrl( this->library->getFilename( song.id ) );
         this->playlist->addMedia( QUrl(url) );
     }
 }
@@ -436,47 +422,23 @@ QString Phonograph::normalizeUrl(QString url) {
 }
 
 void Phonograph::loadPlaylists() {
-    // Create the new item
-    /*
-    QSongItem *newSong = new QSongItem();
-    newSong->setText(0, song.title);
-    newSong->setIcon(0, QIcon(":/phonograph/general/icons/songbird.png"));
-    newSong->song = song;
+#ifdef Q_OS_WIN32
+    QDir directory( QCoreApplication::applicationDirPath() + QString("\\playlists"));
+#endif
+#ifdef Q_OS_LINUX
+    QDir directory( QCoreApplication::applicationDirPath() + QString("/playlists"));
+#endif
 
-    int j;
+    QStringList files = directory.entryList( QStringList("*.spl") );
 
-    // Look if the same artist is there
-    int found = -1;
-    for (j = 0; j < topLevel->childCount(); j++) {
-        if ( topLevel->child(j)->text(0) == song.composer) {
-            found = j;
-            break;
-        }
-    }
+    int i;
+    for (i = 0; i < files.count(); i++) {
 
-    QTreeWidgetItem *newArtist;
-    if (found == -1) {
-
-        // If artist not found there add it
-        newArtist = new QTreeWidgetItem();
-        newArtist->setText(0, song.composer);
-        topLevel->addChild( newArtist );
-
-        // Add icon to it
-        newArtist->setIcon(0, QIcon(":/phonograph/general/icons/view-media-artist.png"));
-
-        // Finally add the song to it
-        newArtist->addChild( newSong );
-
-    } else {
-
-       newArtist = topLevel->child(j);
+        QListWidgetItem *newItem = new QListWidgetItem( this->ui->savedPlaylists );
+        newItem->setText( files[i] );
+        newItem->setIcon( QIcon(":/phonograph/general/icons/folder_multimedia.png") );
 
     }
-
-    // Finally add the song to it
-    newArtist->addChild( newSong );
-    */
 }
 
 void Phonograph::loadPlaylist() {
@@ -493,6 +455,7 @@ void Phonograph::savePlaylist() {
 /**************/
 
 void Phonograph::on_library_itemDoubleClicked(QTreeWidgetItem *item, int column) {
+    qDebug() << "Poutses";
     QSongItem *itemClicked = dynamic_cast<QSongItem *>(item);
 
     if (itemClicked) {

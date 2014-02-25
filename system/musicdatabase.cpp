@@ -94,16 +94,15 @@ bool MusicDatabase::connect() {
         this->errors.push_back( QString(this->database.lastError().number()) + QString(": ") + QString((this->database.lastError().text())) );
     }
 
+    qDebug() << "Connected to database";
+
     return this->database.isOpen();
 }
 
 bool MusicDatabase::update() {
-    //********* TEMPORARY ***************//
     // Check first if we can load from cache
     this->cache = new DatabaseCache(); // Load cache
 
-    // qDebug() << "Found " << this->cache->count() << " in cache.";
-    // qDebug() << "Found " << this->getRecordCount() << " in database.";
     // See if the number of records is the same
     if (this->cache->count() >= this->getRecordCount()) {
         // If they are equal we can just load from cache and return
@@ -113,7 +112,6 @@ bool MusicDatabase::update() {
 
         return true;
     }
-    //***********************************//
 
     // Try to connect
     if (this->connect()) {
@@ -121,8 +119,6 @@ bool MusicDatabase::update() {
         // Check first if we can load from cache
         this->cache = new DatabaseCache(); // Load cache
 
-        // qDebug() << "Found " << this->cache->count() << " in cache.";
-        // qDebug() << "Found " << this->getRecordCount() << " in database.";
         // See if the number of records is the same
         if (this->cache->count() >= this->getRecordCount()) {
             // If they are equal we can just load from cache and return
@@ -134,7 +130,7 @@ bool MusicDatabase::update() {
         }
 
         // Query to fetch all songs
-        QString sqlQuery = "SELECT rec_id, file_name, name, description, date_rec, composer, singer1, singer2 FROM phpbb2.public.song";
+        QString sqlQuery = "SELECT rec_id, name, description, date_rec, composer, singer1, singer2 FROM phpbb2.public.song";
 
         // Execute the query
         QSqlQuery resultSet = this->database.exec(sqlQuery);
@@ -146,7 +142,7 @@ bool MusicDatabase::update() {
             this->songs.clear();
 
             // Base URL for files
-            QString base_url("http://rebetiko.sealabs.net/str.php?flok=");
+            QString base_url("http://rebetiko.sealabs.net/stream2.php?f=");
 
             // Add all items to the list again
             resultSet.first();
@@ -156,17 +152,17 @@ bool MusicDatabase::update() {
 
                 // Set all the data on it
                 temp.id = resultSet.value(0).toInt();
-                temp.filename = base_url + resultSet.value(1).toString();
-                temp.title = resultSet.value(2).toString();
-                temp.info = resultSet.value(3).toString();
-                temp.year = resultSet.value(4).toString();
-                if (resultSet.value(5).toString().isEmpty()) {
+                temp.filename = base_url;
+                temp.title = resultSet.value(1).toString();
+                temp.info = resultSet.value(2).toString();
+                temp.year = resultSet.value(3).toString();
+                if (resultSet.value(4).toString().isEmpty()) {
                     temp.composer = "Unknown";
                 } else {
-                    temp.composer = resultSet.value(5).toString();
+                    temp.composer = resultSet.value(4).toString();
                 }
-                temp.performer1 = resultSet.value(6).toString();
-                temp.performer2 = resultSet.value(7).toString();
+                temp.performer1 = resultSet.value(5).toString();
+                temp.performer2 = resultSet.value(6).toString();
 
                 // Append it to the list
                 this->songs.push_back(temp);
@@ -190,9 +186,11 @@ bool MusicDatabase::update() {
 
 void MusicDatabase::disconnect() {
     // Check if object exists
-    if (this->database.isOpen()) {
-        this->database.close();
-    }
+    this->database.close();
+
+    QSqlDatabase::removeDatabase("QPSQL");
+    qDebug() << "Disconnected from database";
+
 }
 
 bool MusicDatabase::isConnected() {
@@ -200,15 +198,38 @@ bool MusicDatabase::isConnected() {
 }
 
 int MusicDatabase::getRecordCount() {
-    QString sqlQuery = "SELECT count(*) FROM phpbb2.public.song";
+    // Try to connect
+    if (this->connect()) {
+        QString sqlQuery = "SELECT count(*) FROM phpbb2.public.song";
 
-    // Execute the query
-    QSqlQuery resultSet = this->database.exec(sqlQuery);
+        // Execute the query
+        QSqlQuery resultSet = this->database.exec(sqlQuery);
+        this->disconnect();
 
-    if (resultSet.size() > 0) {
-        resultSet.first();
-        return resultSet.value(0).toInt();
+        if (resultSet.size() > 0) {
+            resultSet.first();
+            return resultSet.value(0).toInt();
+        }
+
     }
 
     return 0;
+}
+
+QString MusicDatabase::getFilename(int id) {
+
+    if (this->connect()) {
+        QString sqlQuery = QString("SELECT file_name FROM phpbb2.public.song WHERE `id` = ") + QString(id);
+
+        // Execute the query
+        QSqlQuery resultSet = this->database.exec(sqlQuery);
+        this->disconnect();
+
+        if (resultSet.size() > 0) {
+            resultSet.first();
+            return resultSet.value(0).toString();
+        }
+
+    }
+
 }

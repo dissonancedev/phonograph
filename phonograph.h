@@ -8,6 +8,8 @@
 #include <QtMultimedia/QMediaPlayer>
 #include <QtMultimedia/QMediaPlaylist>
 #include <QSettings>
+#include <QCoreApplication>
+#include <QDir>
 #include "system/musicdatabase.h"
 #include "system/qsongitem.h"
 #include "system/qplaylistitem.h"
