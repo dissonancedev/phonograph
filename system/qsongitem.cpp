@@ -1,5 +1,5 @@
 #include "qsongitem.h"
 
-QSongItem::QSongItem()
-{
+QSongItem::QSongItem() {
+
 }

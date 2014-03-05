@@ -38,7 +38,6 @@ public:
     void savePlaylist();
 
 private slots:
-    QString normalizeUrl(QString url);
 
     void setPlaybackTimer(qint64 position);
 

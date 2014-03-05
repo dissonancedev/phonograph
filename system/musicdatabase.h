@@ -27,6 +27,8 @@ private:
     // Error stack
     QList<QString> errors;
 
+    QString normalizeUrl(QString url);
+
 public:
     /* Constructors & Destructors */
     MusicDatabase();

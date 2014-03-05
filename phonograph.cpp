@@ -299,7 +299,7 @@ void Phonograph::addItemToLibrary(QTreeWidgetItem *topLevel, Song song) {
 void Phonograph::addItemToPlaylist(Song song) {
     // Create the item object
     QPlaylistItem *newItem = new QPlaylistItem();
-    newItem->setText( song.composer + QString(" - ") + song.year + QString(" - ") + song.title );
+    newItem->setText( song.composer + QString(" - ") + song.performer1 + QString(" - ") + song.title );
     newItem->setIcon( QIcon(":/phonograph/general/icons/songbird.png") );
     newItem->song = song;
 
@@ -317,7 +317,7 @@ void Phonograph::addItemToPlaylist(Song song) {
         // ...put the item on the list and update media playlist...
         this->ui->playlist->addItem( newItem );
         // ...and to the media playlist
-        QString url = song.filename + normalizeUrl( this->library->getFilename( song.id ) );
+        QString url = this->library->getFilename( song.id );
         this->playlist->addMedia( QUrl(url) );
     }
 }
@@ -325,7 +325,7 @@ void Phonograph::addItemToPlaylist(Song song) {
 /**
  * @brief Phonograph::updatePlaylist
  * This function updates the QMediaPlaylist object with the list's contents
- * Should be called everytime the playlist has been changed
+ * Shouldn't be called everytime the playlist has been changed but only when it is loaded from scratch? Maybe useless
  */
 void Phonograph::updatePlaylist() {
     this->playlist->clear();
@@ -334,7 +334,7 @@ void Phonograph::updatePlaylist() {
     for (i = 0; i < this->ui->playlist->count(); i++) {
         QPlaylistItem *item = dynamic_cast<QPlaylistItem *>(this->ui->playlist->item(i));
         if (item) {
-            QString url = normalizeUrl(item->song.filename);
+            QString url = this->library->getFilename( item->song.id );
             this->playlist->addMedia( QUrl(url) );
         }
     }
@@ -342,86 +342,8 @@ void Phonograph::updatePlaylist() {
     this->player->setPlaylist(this->playlist);
 }
 
-/* Function that encodes the greek filenames to the proper format */
-QString Phonograph::normalizeUrl(QString url) {
-    url.replace("Α", "%C1");
-    url.replace("Β", "%C2");
-    url.replace("Γ", "%C3");
-    url.replace("Δ", "%C4");
-    url.replace("Ε", "%C5");
-    url.replace("Ζ", "%C6");
-    url.replace("Η", "%C7");
-    url.replace("Θ", "%C8");
-    url.replace("Ι", "%C9");
-    url.replace("Κ", "%CA");
-    url.replace("Λ", "%CB");
-    url.replace("Μ", "%CC");
-    url.replace("Ν", "%CD");
-    url.replace("Ξ", "%CE");
-    url.replace("Ο", "%CF");
-    url.replace("Π", "%D0");
-    url.replace("Ρ", "%D1");
-    url.replace("Ό", "%D2");
-    url.replace("Σ", "%D3");
-    url.replace("Τ", "%D4");
-    url.replace("Υ", "%D5");
-    url.replace("Φ", "%D6");
-    url.replace("Χ", "%D7");
-    url.replace("Ψ", "%D8");
-    url.replace("Ω", "%D9");
-
-    url.replace("Ϊ",  "%DA");
-    url.replace("Ϋ",  "%DB");
-    url.replace("ά",  "%DC");
-    url.replace("έ",  "%DD");
-    url.replace("ή",  "%DE");
-    url.replace("ί",  "%DF");
-    url.replace("ΰ",  "%E0");
-    url.replace("α",  "%E1");
-    url.replace("β",  "%E2");
-    url.replace("γ",  "%E3");
-    url.replace("δ",  "%E4");
-    url.replace("ε",  "%E5");
-    url.replace("ζ",  "%E6");
-    url.replace("η",  "%E7");
-    url.replace("θ",  "%E8");
-    url.replace("ι",  "%E9");
-    url.replace("κ",  "%EA");
-    url.replace("λ",  "%EB");
-    url.replace("μ",  "%EC");
-    url.replace("ν",  "%ED");
-    url.replace("ξ",  "%EE");
-    url.replace("ο",  "%EF");
-    url.replace("π",  "%F0");
-    url.replace("ρ",  "%F1");
-    url.replace("ς",  "%F2");
-    url.replace("σ",  "%F3");
-    url.replace("τ",  "%F4");
-    url.replace("υ",  "%F5");
-    url.replace("φ",  "%F6");
-    url.replace("χ",  "%F7");
-    url.replace("ψ",  "%F8");
-    url.replace("ω",  "%F9");
-    url.replace("ϊ",  "%FA");
-    url.replace("ϋ",  "%FB");
-    url.replace("ό",  "%FC");
-    url.replace("ύ",  "%FD");
-    url.replace("ώ",  "%FE");
-    url.replace("Ά",  "%B6");
-    url.replace("Έ",  "%B8");
-    url.replace("Ή",  "%B9");
-    url.replace("Ί",  "%BA");
-    url.replace("Ό",  "%BC");
-    url.replace("Ύ",  "%BE");
-    url.replace("Ώ",  "%BF");
-
-    url.replace("'", "%5C%27");
-    url.replace("΄", "%B4");
-
-    return url;
-}
-
 void Phonograph::loadPlaylists() {
+
 #ifdef Q_OS_WIN32
     QDir directory( QCoreApplication::applicationDirPath() + QString("\\playlists"));
 #endif
@@ -510,10 +432,12 @@ void Phonograph::on_play_clicked(bool checked) {
 void Phonograph::on_playlist_itemDoubleClicked(QListWidgetItem *item) {
 
     if (!this->playlist->isEmpty()) {
+
         int current = this->ui->playlist->currentRow();
         this->playlist->setCurrentIndex( current );
         this->player->play();
         this->ui->play->setChecked(true);
+
     }
 
 }

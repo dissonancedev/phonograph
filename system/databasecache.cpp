@@ -41,6 +41,11 @@ void DatabaseCache::setContent(QList<Song> newContent) {
 }
 
 void DatabaseCache::loadCache() {
+
+    if (!QFile::exists( filename )) {
+        return;
+    }
+
     file = new QFile( filename );
     file->open(QIODevice::ReadOnly);
 
@@ -54,14 +59,12 @@ void DatabaseCache::loadCache() {
         Song tmp;
         songs.clear();
         for (i = 0; i < count; i++) {
-            stream >> tmp.composer;
-            stream >> tmp.filename;
+
             stream >> tmp.id;
-            stream >> tmp.info;
-            stream >> tmp.performer1;
-            stream >> tmp.performer2;
             stream >> tmp.title;
-            stream >> tmp.year;
+            stream >> tmp.composer;
+            stream >> tmp.performer1;
+
             songs.push_back( tmp );
         }
 
@@ -72,6 +75,14 @@ void DatabaseCache::loadCache() {
 void DatabaseCache::saveCache() {
     // Open stream
     file = new QFile( filename );
+
+    // If file exists removed it first so that it is recreated
+    if (file->exists()) {
+
+        file->remove();
+
+    }
+
     file->open(QIODevice::WriteOnly);
 
     if (file->isOpen()) {
@@ -82,14 +93,12 @@ void DatabaseCache::saveCache() {
 
         int i;
         for (i = 0; i < songs.count(); i++) {
-            stream << songs[i].composer;
-            stream << songs[i].filename;
+
             stream << songs[i].id;
-            stream << songs[i].info;
-            stream << songs[i].performer1;
-            stream << songs[i].performer2;
             stream << songs[i].title;
-            stream << songs[i].year;
+            stream << songs[i].composer;
+            stream << songs[i].performer1;
+
         }
 
         file->close();

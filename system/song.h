@@ -9,10 +9,7 @@ public:
     QString title;
     QString composer;
     QString performer1;
-    QString performer2;
-    QString year;
-    QString info;
-    QString filename;
+    static QString filename;
 };
 
 #endif // SONG_H

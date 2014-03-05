@@ -1,6 +1,7 @@
 #include "musicdatabase.h"
 
 MusicDatabase::MusicDatabase() {
+
 }
 
 MusicDatabase::MusicDatabase(QString url, int port, QString username, QString password, QString dbname) {
@@ -12,6 +13,9 @@ MusicDatabase::MusicDatabase(QString url, int port, QString username, QString pa
     this->setUsername(username);
     this->setPassword(password);
     this->setDBName(dbname);
+
+    // Create database connection object
+    this->database = QSqlDatabase::addDatabase("QPSQL");
 }
 
 
@@ -79,8 +83,6 @@ QString MusicDatabase::getLastError() {
 
 /* API functions */
 bool MusicDatabase::connect() {
-    // Create database connection object
-    this->database = QSqlDatabase::addDatabase("QPSQL");
 
     // Set all the settings
     this->database.setHostName ( this->host );
@@ -92,6 +94,8 @@ bool MusicDatabase::connect() {
     // Open the connection
     if (!this->database.open()) {
         this->errors.push_back( QString(this->database.lastError().number()) + QString(": ") + QString((this->database.lastError().text())) );
+        qDebug() << errors.last();
+        return false;
     }
 
     qDebug() << "Connected to database";
@@ -102,7 +106,9 @@ bool MusicDatabase::connect() {
 bool MusicDatabase::update() {
     // Check first if we can load from cache
     this->cache = new DatabaseCache(); // Load cache
-
+qDebug() << "Cache: " << this->cache->count();
+qDebug() << "DB: " << this->getRecordCount();
+return true;
     // See if the number of records is the same
     if (this->cache->count() >= this->getRecordCount()) {
         // If they are equal we can just load from cache and return
@@ -116,21 +122,8 @@ bool MusicDatabase::update() {
     // Try to connect
     if (this->connect()) {
 
-        // Check first if we can load from cache
-        this->cache = new DatabaseCache(); // Load cache
-
-        // See if the number of records is the same
-        if (this->cache->count() >= this->getRecordCount()) {
-            // If they are equal we can just load from cache and return
-            this->songs = this->cache->getContent();
-            this->disconnect();
-            qDebug() << "Loaded from cache";
-
-            return true;
-        }
-
         // Query to fetch all songs
-        QString sqlQuery = "SELECT rec_id, name, description, date_rec, composer, singer1, singer2 FROM phpbb2.public.song";
+        QString sqlQuery = "SELECT rec_id, name, composer, singer1 FROM phpbb2.public.song";
 
         // Execute the query
         QSqlQuery resultSet = this->database.exec(sqlQuery);
@@ -141,9 +134,6 @@ bool MusicDatabase::update() {
             // Clear list
             this->songs.clear();
 
-            // Base URL for files
-            QString base_url("http://rebetiko.sealabs.net/stream2.php?f=");
-
             // Add all items to the list again
             resultSet.first();
             while (resultSet.next()) {
@@ -152,17 +142,13 @@ bool MusicDatabase::update() {
 
                 // Set all the data on it
                 temp.id = resultSet.value(0).toInt();
-                temp.filename = base_url;
                 temp.title = resultSet.value(1).toString();
-                temp.info = resultSet.value(2).toString();
-                temp.year = resultSet.value(3).toString();
-                if (resultSet.value(4).toString().isEmpty()) {
+                if (resultSet.value(2).toString().isEmpty()) {
                     temp.composer = "Unknown";
                 } else {
-                    temp.composer = resultSet.value(4).toString();
+                    temp.composer = resultSet.value(2).toString();
                 }
-                temp.performer1 = resultSet.value(5).toString();
-                temp.performer2 = resultSet.value(6).toString();
+                temp.performer1 = resultSet.value(3).toString();
 
                 // Append it to the list
                 this->songs.push_back(temp);
@@ -188,7 +174,6 @@ void MusicDatabase::disconnect() {
     // Check if object exists
     this->database.close();
 
-    QSqlDatabase::removeDatabase("QPSQL");
     qDebug() << "Disconnected from database";
 
 }
@@ -204,11 +189,13 @@ int MusicDatabase::getRecordCount() {
 
         // Execute the query
         QSqlQuery resultSet = this->database.exec(sqlQuery);
-        this->disconnect();
+
 
         if (resultSet.size() > 0) {
             resultSet.first();
-            return resultSet.value(0).toInt();
+            int value = resultSet.value(0).toInt();
+            this->disconnect();
+            return value;
         }
 
     }
@@ -219,17 +206,99 @@ int MusicDatabase::getRecordCount() {
 QString MusicDatabase::getFilename(int id) {
 
     if (this->connect()) {
-        QString sqlQuery = QString("SELECT file_name FROM phpbb2.public.song WHERE `id` = ") + QString(id);
+        QString sqlQuery = QString("SELECT file_name FROM phpbb2.public.song WHERE rec_id = ") + QString(id);
 
         // Execute the query
         QSqlQuery resultSet = this->database.exec(sqlQuery);
-        this->disconnect();
+
 
         if (resultSet.size() > 0) {
             resultSet.first();
-            return resultSet.value(0).toString();
+            QString value = resultSet.value(0).toString();
+            this->disconnect();
+            return Song::filename + normalizeUrl( value );
         }
 
     }
 
+    return QString("");
+}
+
+/* Function that encodes the greek filenames to the proper format */
+QString MusicDatabase::normalizeUrl(QString url) {
+    url.replace("Α", "%C1");
+    url.replace("Β", "%C2");
+    url.replace("Γ", "%C3");
+    url.replace("Δ", "%C4");
+    url.replace("Ε", "%C5");
+    url.replace("Ζ", "%C6");
+    url.replace("Η", "%C7");
+    url.replace("Θ", "%C8");
+    url.replace("Ι", "%C9");
+    url.replace("Κ", "%CA");
+    url.replace("Λ", "%CB");
+    url.replace("Μ", "%CC");
+    url.replace("Ν", "%CD");
+    url.replace("Ξ", "%CE");
+    url.replace("Ο", "%CF");
+    url.replace("Π", "%D0");
+    url.replace("Ρ", "%D1");
+    url.replace("Ό", "%D2");
+    url.replace("Σ", "%D3");
+    url.replace("Τ", "%D4");
+    url.replace("Υ", "%D5");
+    url.replace("Φ", "%D6");
+    url.replace("Χ", "%D7");
+    url.replace("Ψ", "%D8");
+    url.replace("Ω", "%D9");
+
+    url.replace("Ϊ",  "%DA");
+    url.replace("Ϋ",  "%DB");
+    url.replace("ά",  "%DC");
+    url.replace("έ",  "%DD");
+    url.replace("ή",  "%DE");
+    url.replace("ί",  "%DF");
+    url.replace("ΰ",  "%E0");
+    url.replace("α",  "%E1");
+    url.replace("β",  "%E2");
+    url.replace("γ",  "%E3");
+    url.replace("δ",  "%E4");
+    url.replace("ε",  "%E5");
+    url.replace("ζ",  "%E6");
+    url.replace("η",  "%E7");
+    url.replace("θ",  "%E8");
+    url.replace("ι",  "%E9");
+    url.replace("κ",  "%EA");
+    url.replace("λ",  "%EB");
+    url.replace("μ",  "%EC");
+    url.replace("ν",  "%ED");
+    url.replace("ξ",  "%EE");
+    url.replace("ο",  "%EF");
+    url.replace("π",  "%F0");
+    url.replace("ρ",  "%F1");
+    url.replace("ς",  "%F2");
+    url.replace("σ",  "%F3");
+    url.replace("τ",  "%F4");
+    url.replace("υ",  "%F5");
+    url.replace("φ",  "%F6");
+    url.replace("χ",  "%F7");
+    url.replace("ψ",  "%F8");
+    url.replace("ω",  "%F9");
+    url.replace("ϊ",  "%FA");
+    url.replace("ϋ",  "%FB");
+    url.replace("ό",  "%FC");
+    url.replace("ύ",  "%FD");
+    url.replace("ώ",  "%FE");
+    url.replace("Ά",  "%B6");
+    url.replace("Έ",  "%B8");
+    url.replace("Ή",  "%B9");
+    url.replace("Ί",  "%BA");
+    url.replace("Ό",  "%BC");
+    url.replace("Ύ",  "%BE");
+    url.replace("Ώ",  "%BF");
+
+    url.replace("'", "%5C%27");
+    url.replace("΄", "%B4");
+
+    return url;
 }
