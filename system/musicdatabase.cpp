@@ -106,9 +106,7 @@ bool MusicDatabase::connect() {
 bool MusicDatabase::update() {
     // Check first if we can load from cache
     this->cache = new DatabaseCache(); // Load cache
-qDebug() << "Cache: " << this->cache->count();
-qDebug() << "DB: " << this->getRecordCount();
-return true;
+
     // See if the number of records is the same
     if (this->cache->count() >= this->getRecordCount()) {
         // If they are equal we can just load from cache and return
@@ -135,7 +133,6 @@ return true;
             this->songs.clear();
 
             // Add all items to the list again
-            resultSet.first();
             while (resultSet.next()) {
                 // Create a temporary song object
                 Song temp;
