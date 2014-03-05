@@ -377,7 +377,7 @@ void Phonograph::savePlaylist() {
 /**************/
 
 void Phonograph::on_library_itemDoubleClicked(QTreeWidgetItem *item, int column) {
-    qDebug() << "Poutses";
+
     QSongItem *itemClicked = dynamic_cast<QSongItem *>(item);
 
     if (itemClicked) {
