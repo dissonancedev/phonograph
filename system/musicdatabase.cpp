@@ -190,7 +190,6 @@ int MusicDatabase::getRecordCount() {
         // Execute the query
         QSqlQuery resultSet = this->database.exec(sqlQuery);
 
-
         if (resultSet.size() > 0) {
             resultSet.first();
             int value = resultSet.value(0).toInt();
