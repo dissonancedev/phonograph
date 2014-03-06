@@ -193,7 +193,7 @@ void Phonograph::setPlayingSongLabel(QMediaContent content) {
         this->ui->playingNowLabel->setFont(font);
 
         // Set current row in playlist
-        this->ui->playlist->setCurrentRow(j);
+        this->ui->playlist->setCurrentRow( this->playlist->currentIndex() );
 
         // Fetch wiki article on composer or performer if composer is unknown or empty or nothing if both are empty
         if (currItem->song.composer.length() > 0 && currItem->song.composer.compare("Unknown") != 0) {
@@ -317,7 +317,7 @@ void Phonograph::addItemToPlaylist(Song song) {
     bool exists = false;
     for (int i = 0; i < this->ui->playlist->count(); i++){
         QPlaylistItem *tmp = dynamic_cast<QPlaylistItem *>(this->ui->playlist->item(i));
-        if (newItem->song.filename == tmp->song.filename) {
+        if (newItem->song.id == tmp->song.id) {
             exists = true;
             break;
         }
@@ -366,19 +366,51 @@ void Phonograph::loadPlaylists() {
     int i;
     for (i = 0; i < files.count(); i++) {
 
-        QListWidgetItem *newItem = new QListWidgetItem( this->ui->savedPlaylists );
-        newItem->setText( files[i] );
-        newItem->setIcon( QIcon(":/phonograph/general/icons/folder_multimedia.png") );
+        QListWidgetItem *newItem = new QListWidgetItem();
+        newItem->setText( files[i].replace( QString("*.spl"), QString("")) );
+        newItem->setIcon( QIcon(":/phonograph/general/icons/folder-multimedia.png") );
+        this->ui->savedPlaylists->addItem( newItem );
 
     }
 }
 
-void Phonograph::loadPlaylist() {
+void Phonograph::loadPlaylist(QString name) {
+
+        // Create a playlist object
+        this->selectedPlaylist.setName( name );
+
+        // Load the playlist
+        selectedPlaylist.load();
+        QList<Song> contents = this->selectedPlaylist.getPlaylist();
+
+        // Loop through and add them to the list after clearing it and stopping it in case it's playing the current playlist
+        this->on_stop_clicked();
+        this->ui->playlist->clear();
+
+        int i;
+        for (i = 0; i < contents.count(); i++) {
+            this->addItemToPlaylist( contents[i] );
+        }
 
 }
 
-void Phonograph::savePlaylist() {
+void Phonograph::savePlaylist(QString name) {
 
+    // Get song list from playlist items located on the list widget
+    QList<Song> contents;
+
+    int i;
+    for (i = 0; i < this->ui->playlist->count(); i++) {
+        QPlaylistItem *item = dynamic_cast<QPlaylistItem *>(this->ui->playlist->item(i));
+        if (item) {
+            contents.push_back( item->song );
+        }
+    }
+
+    // Set the nbame and contents to the playlist object and save
+    this->selectedPlaylist.setName( name );
+    this->selectedPlaylist.setPlayist( contents );
+    this->selectedPlaylist.save();
 
 }
 
@@ -450,7 +482,7 @@ void Phonograph::on_playlist_itemDoubleClicked(QListWidgetItem *item) {
 
     if (!this->playlist->isEmpty()) {
 
-        int current = this->ui->playlist->currentRow();
+        int current = this->ui->playlist->count() - 1;
         this->playlist->setCurrentIndex( current );
         this->player->play();
         this->ui->play->setChecked(true);
@@ -565,5 +597,90 @@ void Phonograph::on_wikipedia_select_lang_currentTextChanged(const QString &arg1
         // Fetch wiki article
         this->fetchWikiArticle( item->song.composer );
     }
+
+}
+
+void Phonograph::on_savePlaylist_clicked() {
+
+    QString name = this->ui->playlistName->text();
+
+    if (name.length() == 0) {
+        QMessageBox msgbox;
+        msgbox.setText( "Please enter a name for your playlist" );
+        msgbox.exec();
+        this->ui->playlistName->setFocus();
+        return;
+    }
+
+    this->savePlaylist( name );
+
+}
+
+void Phonograph::on_searchLibraryText_textChanged(const QString &arg1) {
+
+    // Check on which tab we are to search the appropriate list
+    if (this->ui->libraryTabWidget->currentIndex() == 0) {
+
+        // Take top level item of library
+        QTreeWidgetItem* topLevel = this->ui->library->topLevelItem(0);
+
+        // Loop through all of its items
+        for (int i = 0; i < topLevel->childCount(); i++) {
+
+            // If we matched the composer then show the composer and all of the songs and continue to next composer
+            if ( topLevel->child(i)->text(0).contains(arg1) ) {
+                topLevel->child(i)->setHidden( false );
+                for (int j = 0; j < topLevel->child(i)->childCount(); j++) {
+                    topLevel->child(i)->child(j)->setHidden( false );
+                }
+                continue;
+            }
+
+            // If we didn't match the composer's name let's check if we can match any of the songs
+            bool isThereMatch = false;
+            for (int j = 0; j < topLevel->child(i)->childCount(); j++) {
+
+                 topLevel->child(i)->child(j)->setHidden( ! topLevel->child(i)->child(j)->text(0).contains( arg1 ) );
+                 isThereMatch |= topLevel->child(i)->child(j)->text(0).contains( arg1 );
+
+            }
+
+            // If there was a song matched then the composer should be visible, if not then not :P
+            topLevel->child(i)->setHidden( !isThereMatch );
+        }
+
+    } else {
+
+        for (int i = 0; i < this->ui->savedPlaylists->count(); i++) {
+
+            QListWidgetItem *item = this->ui->savedPlaylists->item(i);
+            item->setHidden( !item->text().contains( arg1 ) );
+
+        }
+
+    }
+
+}
+
+void Phonograph::on_searchPlaylistText_textChanged(const QString &arg1) {
+
+    for (int i = 0; i < this->ui->playlist->count(); i++) {
+
+        QListWidgetItem *item = this->ui->playlist->item(i);
+        item->setHidden( !item->text().contains( arg1 ) );
+
+    }
+
+}
+
+void Phonograph::on_searchLibraryClear_clicked() {
+
+    this->ui->searchLibraryText->clear();
+
+}
+
+void Phonograph::on_searchPlaylistClear_clicked() {
+
+    this->ui->searchPlaylistText->clear();
 
 }

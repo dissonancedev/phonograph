@@ -97,7 +97,7 @@
               <item>
                <widget class="QLineEdit" name="searchLibraryText">
                 <property name="styleSheet">
-                 <string notr="true">background-color: rgb(226, 226, 226);</string>
+                 <string notr="true">/*background-color: rgb(226, 226, 226);*/</string>
                 </property>
                 <property name="maxLength">
                  <number>256</number>
@@ -190,12 +190,6 @@ color: rgb(255, 255, 255);</string>
               <layout class="QGridLayout" name="gridLayout_5">
                <item row="0" column="0">
                 <widget class="QListWidget" name="savedPlaylists">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
                  <property name="font">
                   <font>
                    <weight>75</weight>
@@ -212,9 +206,6 @@ color: rgb(255, 255, 255);</string>
                    <width>24</width>
                    <height>24</height>
                   </size>
-                 </property>
-                 <property name="viewMode">
-                  <enum>QListView::IconMode</enum>
                  </property>
                 </widget>
                </item>
@@ -353,7 +344,7 @@ color: rgb(255, 255, 255);</string>
                   <item>
                    <widget class="QLineEdit" name="searchPlaylistText">
                     <property name="styleSheet">
-                     <string notr="true">background-color: rgb(226, 226, 226);</string>
+                     <string notr="true">/*background-color: rgb(226, 226, 226);*/</string>
                     </property>
                     <property name="placeholderText">
                      <string>Search...</string>

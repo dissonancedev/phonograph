@@ -63,9 +63,8 @@ void QPlaylist::load() {
     // Check if playlist exists or not
     QFile file( filename );
     if (!file.exists()) {
-        this->created = this->modified = QDateTime::currentDateTime();
+        return;
     }
-    this->modified = QDateTime::currentDateTime();
 
     // Open stream
     file.open(QIODevice::ReadOnly);
@@ -112,13 +111,12 @@ void QPlaylist::save() {
         QString filename = QCoreApplication::applicationDirPath() + QString("/playlists/") + this->name + QString(".spl");
     #endif
 
-    // Check if playlist exists or not
     QFile file( filename );
+    this->modified = QDateTime::currentDateTime();
+    // Check if playlist exists or not
     if (!file.exists()) {
         this->created = this->modified = QDateTime::currentDateTime();
     }
-    this->modified = QDateTime::currentDateTime();
-
     // Open stream
     file.open(QIODevice::WriteOnly);
 
@@ -147,4 +145,26 @@ void QPlaylist::save() {
         file.close();
     }
 
+}
+
+QString QPlaylist::getOriginalPlaylistName() {
+
+#ifdef Q_OS_WIN32
+    QString path = QCoreApplication::applicationDirPath() + QString("\playlists\\");
+#endif
+#ifdef Q_OS_LINUX
+    QString path = QCoreApplication::applicationDirPath() + QString("/playlists/");
+#endif
+
+    QString attempt;
+    for (int i = 1; i < 65536; i++) {
+
+        attempt = path + QString("New playlist ") + QString(i) + QString(".spl");
+        if (!QFile::exists( attempt ) ) {
+                return attempt;
+        }
+
+    }
+
+    return attempt + QDateTime::currentDateTime().toString();
 }

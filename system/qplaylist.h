@@ -32,6 +32,9 @@ public:
     // I/O
     void load();
     void save();
+
+    // Static functions
+    static QString getOriginalPlaylistName();
 };
 
 #endif // QPLAYLIST_H

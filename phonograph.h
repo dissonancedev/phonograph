@@ -10,6 +10,7 @@
 #include <QSettings>
 #include <QCoreApplication>
 #include <QDir>
+#include <QMessageBox>
 #include "system/musicdatabase.h"
 #include "system/qsongitem.h"
 #include "system/qplaylistitem.h"
@@ -35,8 +36,8 @@ public:
 
     // Playlist functiom
     void loadPlaylists();
-    void loadPlaylist();
-    void savePlaylist();
+    void loadPlaylist(QString name);
+    void savePlaylist(QString name);
 
     // Fetch wikipedia article
     void fetchWikiArticle(QString composer);
@@ -83,6 +84,18 @@ private slots:
 
     void on_actionAbout_Phonograph_triggered();
 
+    void on_wikipedia_select_lang_currentTextChanged(const QString &arg1);
+
+    void on_savePlaylist_clicked();
+
+    void on_searchLibraryText_textChanged(const QString &arg1);
+
+    void on_searchPlaylistText_textChanged(const QString &arg1);
+
+    void on_searchLibraryClear_clicked();
+
+    void on_searchPlaylistClear_clicked();
+
 private:
     // UI variable
     Ui::Phonograph *ui;
@@ -93,6 +106,9 @@ private:
     // Media player stuff
     QMediaPlayer *player;
     QMediaPlaylist *playlist;
+
+    // Playlist handler
+    QPlaylist selectedPlaylist;
 
     // Settings implementation function
     void loadSettings();
