@@ -14,6 +14,7 @@
 #include "system/qsongitem.h"
 #include "system/qplaylistitem.h"
 #include "system/qplaylist.h"
+#include "aboutdialog.h"
 
 namespace Ui {
 class Phonograph;
@@ -76,6 +77,8 @@ private slots:
     void on_seek_forward_clicked();
 
     void on_seek_backward_clicked();
+
+    void on_actionAbout_Phonograph_triggered();
 
 private:
     // UI variable

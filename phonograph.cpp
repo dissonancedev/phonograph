@@ -66,19 +66,12 @@ Phonograph::Phonograph(QWidget *parent) :
     this->player = new QMediaPlayer(this, QMediaPlayer::StreamPlayback);
     this->player->setPlaylist( this->playlist );
     this->player->setVolume( this->ui->volume->value() );
-    //QString ss = "http://rebetiko.sealabs.net/str.php?flok=Î\221Î Î\225Î\233Î Î\231Î£Î\234Î\225Î\235Î\237Î£(Î¡Î\231";
-    //player->setMedia(QUrl(QString::from(ss.toStdString().c_str())));
-    //this->player->play();
-    //QString url("http://rebetiko.sealabs.net/str.php?flok=ΓΑΛΑΝΟΜΑΤΑ-.mp3");
-    //player->setMedia(QUrl::fromAce(url));
-    //this->player->play();
 
     // Useful signals
     connect(this->player, SIGNAL(currentMediaChanged(QMediaContent)), this, SLOT(setPlayingSongLabel(QMediaContent)));
     connect(this->player, SIGNAL(positionChanged(qint64)), this, SLOT(setPlaybackTimer(qint64)));
     connect(this->ui->seeker, SIGNAL(sliderMoved(int)), this, SLOT(setMediaPosition(int)));
     connect(this->player, SIGNAL(durationChanged(qint64)), this, SLOT(setMediaTime(qint64)));
-
 
     // Enable drag and drop for QListWidget and QTreeWidget
     /** TO-DO: Difficulties in implementing the drag & drop functionality **/
@@ -465,14 +458,12 @@ void Phonograph::on_skip_forward_clicked() {
     }
 }
 
-void Phonograph::on_clearPlaylist_clicked()
-{
+void Phonograph::on_clearPlaylist_clicked() {
     this->ui->playlist->clear();
     updatePlaylist();
 }
 
-void Phonograph::on_addPlaylistItem_clicked()
-{
+void Phonograph::on_addPlaylistItem_clicked() {
     QList<QTreeWidgetItem *> selectedSongs = this->ui->library->selectedItems();
 
     int i;
@@ -484,8 +475,7 @@ void Phonograph::on_addPlaylistItem_clicked()
     }
 }
 
-void Phonograph::on_removePlaylistItem_clicked()
-{
+void Phonograph::on_removePlaylistItem_clicked() {
     QList<QListWidgetItem *> selectedSongs = this->ui->playlist->selectedItems();
 
     if (!this->playlist->isEmpty()) {
@@ -505,8 +495,7 @@ void Phonograph::on_removePlaylistItem_clicked()
 
 }
 
-void Phonograph::on_shuffle_clicked(bool checked)
-{
+void Phonograph::on_shuffle_clicked(bool checked) {
     if (checked) {
         this->ui->toolButton->setChecked(false);
         this->playlist->shuffle();
@@ -515,8 +504,7 @@ void Phonograph::on_shuffle_clicked(bool checked)
     }
 }
 
-void Phonograph::on_toolButton_clicked(bool checked)
-{
+void Phonograph::on_toolButton_clicked(bool checked) {
     if (checked) {
         this->ui->shuffle->setChecked(false);
         this->playlist->setPlaybackMode(QMediaPlaylist::Loop);
@@ -526,14 +514,19 @@ void Phonograph::on_toolButton_clicked(bool checked)
     }
 }
 
-void Phonograph::on_seek_forward_clicked()
-{
+void Phonograph::on_seek_forward_clicked() {
     int pos = this->ui->seeker->sliderPosition();
     setMediaPosition(pos + 100);
 }
 
-void Phonograph::on_seek_backward_clicked()
-{
+void Phonograph::on_seek_backward_clicked() {
     int pos = this->ui->seeker->sliderPosition();
     setMediaPosition(pos - 100);
+}
+
+// About dialog trigger
+void Phonograph::on_actionAbout_Phonograph_triggered() {
+    AboutDialog *about = new AboutDialog(this);
+    about->setFixedSize(778, 437);
+    about->show();
 }

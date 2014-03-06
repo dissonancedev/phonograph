@@ -1234,8 +1234,10 @@ background-color: rgba(255, 255, 255, 0);</string>
      <string>Help</string>
     </property>
     <addaction name="actionHelp"/>
+    <addaction name="separator"/>
     <addaction name="actionPhonograph_website"/>
     <addaction name="actionVisit_rebetiko_sealabs_net"/>
+    <addaction name="separator"/>
     <addaction name="actionAbout_Phonograph"/>
    </widget>
    <widget class="QMenu" name="menuSound">
