@@ -38,6 +38,9 @@ public:
     void loadPlaylist();
     void savePlaylist();
 
+    // Fetch wikipedia article
+    void fetchWikiArticle(QString composer);
+
 private slots:
 
     void setPlaybackTimer(qint64 position);

@@ -688,7 +688,7 @@ color: rgb(255, 255, 255);</string>
                     </item>
                     <item>
                      <property name="text">
-                      <string>gr</string>
+                      <string>el</string>
                      </property>
                      <property name="icon">
                       <iconset resource="icons.qrc">

@@ -174,26 +174,43 @@ void Phonograph::setMediaPosition(int position) {
 
 /* Slot that receives a signal when the media changes, so that several ui elements are updated */
 void Phonograph::setPlayingSongLabel(QMediaContent content) {
-    return;
-    if (content.isNull() == false){
-        QUrl url = content.canonicalUrl();
+
+    if (content.isNull() == false) {
+
+        /*QUrl url = content.canonicalUrl();
 
         int j;
         for (j = 0; j < this->playlist->mediaCount(); j++){
             if (url == this->playlist->media(j).canonicalUrl()){
                 break;
             }
-        }
+        }*/
 
-        QPlaylistItem *currItem = (QPlaylistItem*)this->ui->playlist->item(j);
+        QPlaylistItem *currItem = (QPlaylistItem*)this->ui->playlist->item( this->playlist->currentIndex() );
         this->ui->playingNowLabel->setText(currItem->song.composer + " - " + currItem->song.title);
         this->ui->playingNowLabel->setAlignment(Qt::AlignCenter);
         QFont font("MS Shell Dlg 2", 12, QFont::Bold);
         this->ui->playingNowLabel->setFont(font);
+
+        // Set current row in playlist
         this->ui->playlist->setCurrentRow(j);
-    }
-    else { //the playlist has finished
+
+        // Fetch wiki article on composer or performer if composer is unknown or empty or nothing if both are empty
+        if (currItem->song.composer.length() > 0 && currItem->song.composer.compare("Unknown") != 0) {
+
+            this->fetchWikiArticle( currItem->song.composer );
+
+        } else if (currItem->song.performer1.length() > 0) {
+
+            this->fetchWikiArticle( currItem->song.performer1 );
+
+        }
+
+
+    } else { //the playlist has finished
+
         this->ui->play->setChecked(false);
+
     }
 }
 
@@ -365,6 +382,13 @@ void Phonograph::savePlaylist() {
 
 }
 
+void Phonograph::fetchWikiArticle(QString composer) {
+    QString lang = this->ui->wikipedia_select_lang->currentText();
+    QString request_url = QString("http://") + lang + QString(".wikipedia.org/wiki/") + composer.replace( QString(" "), QString("_") );
+
+    this->ui->wiki_view->setUrl( request_url );
+}
+
 /**************/
 /*** Events ***/
 /**************/
@@ -529,4 +553,17 @@ void Phonograph::on_actionAbout_Phonograph_triggered() {
     AboutDialog *about = new AboutDialog(this);
     about->setFixedSize(778, 437);
     about->show();
+}
+
+void Phonograph::on_wikipedia_select_lang_currentTextChanged(const QString &arg1) {
+
+    // Make sure player is actually playing a song from the playlist
+    if (this->player->state() == QMediaPlayer::PlayingState) {
+        // Fetch item that is playing
+        QPlaylistItem *item = dynamic_cast<QPlaylistItem *>(this->ui->playlist->item( this->playlist->currentIndex() ));
+
+        // Fetch wiki article
+        this->fetchWikiArticle( item->song.composer );
+    }
+
 }
