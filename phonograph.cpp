@@ -85,7 +85,7 @@ Phonograph::Phonograph(QWidget *parent) :
     this->loadPlaylists();
 
     // Load application settings
-    this->loadSettings();    
+    this->loadSettings();
 }
 
 Phonograph::~Phonograph() {
@@ -238,6 +238,7 @@ bool Phonograph::updateLibrary() {
     // Try to update
     if (this->library->update()) {
         qDebug() << "Found " << this->library->songs.length() << " songs";
+
         // Add top level item
         QTreeWidgetItem *topLevel = new QTreeWidgetItem( this->ui->library );
         topLevel->setText(0, "Artists");
@@ -297,7 +298,7 @@ void Phonograph::addItemToLibrary(QTreeWidgetItem *topLevel, Song song) {
 
     } else {
 
-       newArtist = topLevel->child(j);
+        newArtist = topLevel->child(j);
 
     }
 
@@ -493,7 +494,7 @@ void Phonograph::on_playlist_itemDoubleClicked(QListWidgetItem *item) {
 
 void Phonograph::on_skip_backward_clicked() {
 
-    playlist->addMedia( QUrl("http://echidna-band.com/manifest/mp3/Manifests_Of_Human_Existence/08-Pendulum.mp3") );
+    //playlist->addMedia( QUrl("http://echidna-band.com/manifest/mp3/Manifests_Of_Human_Existence/08-Pendulum.mp3") );
     playlist->addMedia( QUrl::fromLocalFile("/home/verminoz/Music/giaf-giouf.mp3") );
     playlist->setCurrentIndex(0);
 

@@ -202,17 +202,22 @@ int MusicDatabase::getRecordCount() {
 QString MusicDatabase::getFilename(int id) {
 
     if (this->connect()) {
-        QString sqlQuery = QString("SELECT file_name FROM phpbb2.public.song WHERE rec_id = ") + QString(id);
+        QString sqlQuery = QString("SELECT file_name FROM phpbb2.public.song WHERE rec_id = :id");
 
         // Execute the query
-        QSqlQuery resultSet = this->database.exec(sqlQuery);
-
+        QSqlQuery resultSet;
+        resultSet.prepare( sqlQuery );
+        resultSet.bindValue(":id", id);
+        resultSet.exec();
 
         if (resultSet.size() > 0) {
-            resultSet.first();
-            QString value = resultSet.value(0).toString();
-            this->disconnect();
-            return Song::filename + normalizeUrl( value );
+
+            if (resultSet.next()) {
+                QString value = resultSet.value(0).toString();
+                this->disconnect();
+                return Song::filename + normalizeUrl( value );
+            }
+
         }
 
     }
