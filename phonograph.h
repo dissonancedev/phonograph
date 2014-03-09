@@ -100,6 +100,8 @@ private slots:
 
     void on_categorizeBySelect_currentIndexChanged(int index);
 
+    void on_savedPlaylists_itemClicked(QListWidgetItem *item);
+
 private:
     // UI variable
     Ui::Phonograph *ui;

@@ -697,3 +697,9 @@ void Phonograph::on_categorizeBySelect_currentIndexChanged(int index)
     categorizeBy = index;
     this->updateLibrary();
 }
+
+void Phonograph::on_savedPlaylists_itemClicked(QListWidgetItem *item)
+{
+    int dotInString = item->text().indexOf('.');
+    this->ui->playlistName->setText(item->text().left(dotInString));
+}
