@@ -78,11 +78,12 @@ Phonograph::Phonograph(QWidget *parent) :
     this->ui->library->setDragEnabled(true);
     this->ui->playlist->setDragDropMode(QAbstractItemView::DropOnly);
 
-    // Update library
-    this->updateLibrary();
-
     // Load the user's playlists
     this->loadPlaylists();
+
+    // Update library
+    categorizeBy = 0;
+    this->updateLibrary();
 
     // Load application settings
     this->loadSettings();
@@ -218,6 +219,7 @@ void Phonograph::setPlayingSongLabel(QMediaContent content) {
  * Update function
 */
 bool Phonograph::updateLibrary() {
+    this->ui->library->clear();
     QString host("46.4.73.116");
     int port = 55432;
     QString dbname("phpbb2");
@@ -241,7 +243,8 @@ bool Phonograph::updateLibrary() {
 
         // Add top level item
         QTreeWidgetItem *topLevel = new QTreeWidgetItem( this->ui->library );
-        topLevel->setText(0, "Artists");
+        if (categorizeBy == 0) topLevel->setText(0, "Composers");
+        else topLevel->setText(0, "Singers");
         topLevel->setIcon(0, QIcon(":/phonograph/general/icons/folder-sound.png"));
 
         int i;
@@ -275,8 +278,11 @@ void Phonograph::addItemToLibrary(QTreeWidgetItem *topLevel, Song song) {
 
     // Look if the same artist is there
     int found = -1;
+    QString categorizeByTerm;
+    if (categorizeBy == 0) categorizeByTerm = song.composer;
+    else categorizeByTerm = song.performer1;
     for (j = 0; j < topLevel->childCount(); j++) {
-        if ( topLevel->child(j)->text(0) == song.composer) {
+        if ( topLevel->child(j)->text(0) == categorizeByTerm) {
             found = j;
             break;
         }
@@ -285,9 +291,9 @@ void Phonograph::addItemToLibrary(QTreeWidgetItem *topLevel, Song song) {
     QTreeWidgetItem *newArtist;
     if (found == -1) {
 
-        // If artist not found there add it
+        // If artist not found there, add it
         newArtist = new QTreeWidgetItem();
-        newArtist->setText(0, song.composer);
+        newArtist->setText(0, categorizeByTerm);
         topLevel->addChild( newArtist );
 
         // Add icon to it
@@ -314,7 +320,6 @@ void Phonograph::addItemToPlaylist(Song song) {
     newItem->setIcon( QIcon(":/phonograph/general/icons/songbird.png") );
     newItem->song = song;
 
-    //If the song does not exists in the current playlist...
     bool exists = false;
     for (int i = 0; i < this->ui->playlist->count(); i++){
         QPlaylistItem *tmp = dynamic_cast<QPlaylistItem *>(this->ui->playlist->item(i));
@@ -324,8 +329,9 @@ void Phonograph::addItemToPlaylist(Song song) {
         }
     }
 
+    //If the song does not exist in the current playlist...
     if (!exists){
-        // ...put the item on the list and update media playlist...
+        // ...put the item on the GUI playlist...
         this->ui->playlist->addItem( newItem );
         // ...and to the media playlist
         QString url = this->library->getFilename( song.id );
@@ -355,21 +361,16 @@ void Phonograph::updatePlaylist() {
 
 void Phonograph::loadPlaylists() {
 
-#ifdef Q_OS_WIN32
-    QDir directory( QCoreApplication::applicationDirPath() + QString("\\playlists"));
-#endif
-#ifdef Q_OS_LINUX
     QDir directory( QCoreApplication::applicationDirPath() + QString("/playlists"));
-#endif
-
     QStringList files = directory.entryList( QStringList("*.spl") );
+    this->ui->savedPlaylists->clear();
 
     int i;
     for (i = 0; i < files.count(); i++) {
 
         QListWidgetItem *newItem = new QListWidgetItem();
         newItem->setText( files[i].replace( QString("*.spl"), QString("")) );
-        newItem->setIcon( QIcon(":/phonograph/general/icons/folder-multimedia.png") );
+        newItem->setIcon( QIcon(":/phonograph/general/icons/folder-multimedia.png") );        
         this->ui->savedPlaylists->addItem( newItem );
 
     }
@@ -408,11 +409,11 @@ void Phonograph::savePlaylist(QString name) {
         }
     }
 
-    // Set the nbame and contents to the playlist object and save
+    // Set the name and contents to the playlist object and save
     this->selectedPlaylist.setName( name );
     this->selectedPlaylist.setPlayist( contents );
     this->selectedPlaylist.save();
-
+    this->loadPlaylists();
 }
 
 void Phonograph::fetchWikiArticle(QString composer) {
@@ -466,7 +467,7 @@ void Phonograph::on_play_clicked(bool checked) {
         }  else if (!this->playlist->isEmpty()) {
             int current = this->ui->playlist->currentRow();
             this->playlist->setCurrentIndex( current );
-            this->player->play();            
+            this->player->play();
         }
 
     } else {
@@ -483,7 +484,7 @@ void Phonograph::on_playlist_itemDoubleClicked(QListWidgetItem *item) {
 
     if (!this->playlist->isEmpty()) {
 
-        int current = this->ui->playlist->count() - 1;
+        int current = this->ui->playlist->currentRow();
         this->playlist->setCurrentIndex( current );
         this->player->play();
         this->ui->play->setChecked(true);
@@ -684,4 +685,15 @@ void Phonograph::on_searchPlaylistClear_clicked() {
 
     this->ui->searchPlaylistText->clear();
 
+}
+
+void Phonograph::on_savedPlaylists_itemDoubleClicked(QListWidgetItem *item)
+{
+    this->loadPlaylist(item->text());
+}
+
+void Phonograph::on_categorizeBySelect_currentIndexChanged(int index)
+{
+    categorizeBy = index;
+    this->updateLibrary();
 }

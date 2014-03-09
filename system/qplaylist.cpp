@@ -1,4 +1,5 @@
 #include "qplaylist.h"
+#include <QDir>
 
 QPlaylist::QPlaylist() {
 
@@ -53,12 +54,7 @@ void QPlaylist::setPlayist(QList<Song> playlist) {
 // I/O
 void QPlaylist::load() {
 
-    #ifdef Q_OS_WIN32
-        QString filename = QCoreApplication::applicationDirPath() + QString("\playlists\\") + this->name + QString(".spl");
-    #endif
-    #ifdef Q_OS_LINUX
-        QString filename = QCoreApplication::applicationDirPath() + QString("/playlists/") + this->name + QString(".spl");
-    #endif
+    QString filename = QCoreApplication::applicationDirPath() + QString("/playlists/") + this->name;
 
     // Check if playlist exists or not
     QFile file( filename );
@@ -69,7 +65,7 @@ void QPlaylist::load() {
     // Open stream
     file.open(QIODevice::ReadOnly);
 
-    if (file.isOpen()) {
+    //if (file.isOpen()) {
         QDataStream stream( &file );
 
         // Read first the info
@@ -98,18 +94,17 @@ void QPlaylist::load() {
         }
 
         file.close();
-    }
+   // }
 
 }
 
 void QPlaylist::save() {
 
-    #ifdef Q_OS_WIN32
-        QString filename = QCoreApplication::applicationDirPath() + QString("\playlists\\") + this->name + QString(".spl");
-    #endif
-    #ifdef Q_OS_LINUX
-        QString filename = QCoreApplication::applicationDirPath() + QString("/playlists/") + this->name + QString(".spl");
-    #endif
+    QString filepath = QCoreApplication::applicationDirPath() + QString("/playlists/");
+
+    if (!QDir(filepath).exists()) QDir().mkdir(filepath);
+
+    QString filename = filepath + this->name + QString(".spl");
 
     QFile file( filename );
     this->modified = QDateTime::currentDateTime();

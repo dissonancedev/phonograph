@@ -96,6 +96,10 @@ private slots:
 
     void on_searchPlaylistClear_clicked();
 
+    void on_savedPlaylists_itemDoubleClicked(QListWidgetItem *item);
+
+    void on_categorizeBySelect_currentIndexChanged(int index);
+
 private:
     // UI variable
     Ui::Phonograph *ui;
@@ -113,6 +117,9 @@ private:
     // Settings implementation function
     void loadSettings();
     void saveSettings();
+
+    // Categorize by selector (0 -> composer, 1-> singer)
+    int categorizeBy;
 };
 
 #endif // PHONOGRAPH_H
