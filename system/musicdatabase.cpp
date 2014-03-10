@@ -220,17 +220,70 @@ QString MusicDatabase::getFilename(int id) {
 
         if (resultSet.size() > 0) {
 
+            QString value;
             if (resultSet.next()) {
-                QString value = resultSet.value(0).toString();
-                this->disconnect();
-                return Song::filename + normalizeUrl( value );
+                value = Song::filename + normalizeUrl( resultSet.value(0).toString() );
             }
+
+            // Disconnect from database
+            this->disconnect();
+
+            // Return value
+            return value;
 
         }
 
     }
 
     return QString("");
+}
+
+QStringList MusicDatabase::getFilename(QList<int> ids) {
+
+    if (this->connect()) {
+
+        // Build a string with all the parameters for binding
+        QStringList inValuesBindings;
+        for (int i = 0; i < ids.count(); i++) {
+
+            inValuesBindings.push_back( QString(":id") + QString(i) );
+
+        }
+
+        QString sqlQuery = QString("SELECT file_name FROM phpbb2.public.song WHERE rec_id IN (") + inValuesBindings.join(", ") + QString(")");
+
+        // Prepare the query
+        QSqlQuery resultSet;
+        resultSet.prepare( sqlQuery );
+
+        // Bind all values
+        for (int i = 0; ids.count(); i++) {
+            resultSet.bindValue(QString(":id") + QString(i), ids[i]);
+        }
+
+        // Execute the query
+        resultSet.exec();
+
+        if (resultSet.size() > 0) {
+
+            QStringList result;
+            while (resultSet.next()) {
+                QString value = resultSet.value(0).toString();
+                result.push_back( Song::filename + normalizeUrl( value ) );
+            }
+
+            // Disconnect from database
+            this->disconnect();
+
+            // Return the result
+            return result;
+
+        }
+
+    }
+
+    return QStringList("");
+
 }
 
 /* Function that encodes the greek filenames to the proper format */

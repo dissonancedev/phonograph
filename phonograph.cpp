@@ -77,7 +77,7 @@ Phonograph::Phonograph(QWidget *parent) :
     /** TO-DO: Difficulties in implementing the drag & drop functionality **/
     this->ui->library->setDragEnabled(true);
     this->ui->playlist->setDragDropMode(QAbstractItemView::DropOnly);
-
+/*
     // Load the user's playlists
     this->loadPlaylists();
 
@@ -86,6 +86,7 @@ Phonograph::Phonograph(QWidget *parent) :
 
     // Load application settings
     this->loadSettings();
+    */
 }
 
 void Phonograph::showEvent(QShowEvent *event) {
@@ -94,7 +95,14 @@ void Phonograph::showEvent(QShowEvent *event) {
 }
 
 void Phonograph::afterShowEvent() {
+    // Load application settings
+    this->loadSettings();
+
+    // Update library
     updateLibrary();
+
+    // Load the user's playlists
+    this->loadPlaylists();
 }
 
 Phonograph::~Phonograph() {
@@ -123,6 +131,7 @@ void Phonograph::loadSettings() {
     // Player settings
     this->ui->volume->setValue( settings.value( "player/volume" ).toInt() );
     this->ui->mute->setChecked( settings.value( "player/mute").toBool() );
+    //this->ui->categorizeBySelect->setCurrentIndex( settings.value( "library/categorizeby").toInt() );
 
 }
 
@@ -137,6 +146,7 @@ void Phonograph::saveSettings() {
     // Player settings
     settings.setValue( "player/volume" , this->ui->volume->value() );
     settings.setValue( "player/mute" , this->ui->mute->isChecked() );
+    settings.setValue( "library/categorizeby" , this->ui->categorizeBySelect->currentIndex() );
 
 }
 
@@ -155,6 +165,7 @@ void Phonograph::setPlaybackTimer(qint64 position) {
     if (!this->ui->seeker->isSliderDown()) {
         this->ui->seeker->setSliderPosition( round(position / 100) );
     }
+
 }
 
 /* Functions that sets the current playing media's total playback time */
@@ -340,8 +351,7 @@ void Phonograph::addItemToPlaylist(Song song) {
 void Phonograph::updatePlaylist() {
     this->playlist->clear();
 
-    int i;
-    for (i = 0; i < this->ui->playlist->count(); i++) {
+    for (int i = 0; i < this->ui->playlist->count(); i++) {
         QPlaylistItem *item = dynamic_cast<QPlaylistItem *>(this->ui->playlist->item(i));
         if (item) {
             QString url = this->library->getFilename( item->song.id );
@@ -358,11 +368,10 @@ void Phonograph::loadPlaylists() {
     QStringList files = directory.entryList( QStringList("*.spl") );
     this->ui->savedPlaylists->clear();
 
-    int i;
-    for (i = 0; i < files.count(); i++) {
+    for (int i = 0; i < files.count(); i++) {
 
         QListWidgetItem *newItem = new QListWidgetItem();
-        newItem->setText( files[i].replace( QString("*.spl"), QString("")) );
+        newItem->setText( files[i].left( files[i].indexOf(".") ) );
         newItem->setIcon( QIcon(":/phonograph/general/icons/folder-multimedia.png") );        
         this->ui->savedPlaylists->addItem( newItem );
 
@@ -394,8 +403,7 @@ void Phonograph::savePlaylist(QString name) {
     // Get song list from playlist items located on the list widget
     QList<Song> contents;
 
-    int i;
-    for (i = 0; i < this->ui->playlist->count(); i++) {
+    for (int i = 0; i < this->ui->playlist->count(); i++) {
         QPlaylistItem *item = dynamic_cast<QPlaylistItem *>(this->ui->playlist->item(i));
         if (item) {
             contents.push_back( item->song );
@@ -476,8 +484,10 @@ void Phonograph::on_library_itemDoubleClicked(QTreeWidgetItem *item, int column)
 void Phonograph::on_stop_clicked() {
 
     if ( this->player->state() == QMediaPlayer::PlayingState || this->player->state() == QMediaPlayer::PausedState) {
+
         this->player->stop();
         this->ui->play->setChecked( false );
+
     }
 
 }
@@ -537,27 +547,34 @@ void Phonograph::on_playlist_itemDoubleClicked(QListWidgetItem *item) {
 }
 
 void Phonograph::on_skip_backward_clicked() {
-
+/*
     this->playlist->addMedia( QUrl("http://echidna-band.com/manifest/mp3/Manifests_Of_Human_Existence/08-Pendulum.mp3") );
-    //this->playlist->addMedia( QUrl::fromLocalFile("/home/verminoz/Music/giaf-giouf.mp3") );
-qDebug() << "ma ti ston peooula";
-    //this->playlist->setCurrentIndex(0);
-qDebug() << "ma ti ston peo";
+    this->playlist->addMedia( QUrl::fromLocalFile("/home/verminoz/Music/giaf-giouf.mp3") );
+
+    this->playlist->setCurrentIndex(0);
+
     this->player->play();
     qDebug() << "State: " << player->state();
     qDebug() << "Media State: " << player->mediaStatus();
     qDebug() << "Error: " << player->error() << " " << player->errorString();
     qDebug() << "Error: " << playlist->error() << " " << playlist->errorString();
+*/
+   if(this->playlist->previousIndex() != -1) {
 
-//    if(this->playlist->previousIndex() != -1)
-//        this->playlist->previous();
+        this->playlist->previous();
+
+    }
 
 }
 
 void Phonograph::on_skip_forward_clicked() {
+
     if(this->playlist->nextIndex() != -1) {
+
         this->playlist->next();
+
     }
+
 }
 
 void Phonograph::on_clearPlaylist_clicked() {
@@ -595,56 +612,77 @@ void Phonograph::on_removePlaylistItem_clicked() {
     QList<QListWidgetItem *> selectedSongs = this->ui->playlist->selectedItems();
 
     if (!this->playlist->isEmpty()) {
-        int i;
-        for(i = 0; i < selectedSongs.count(); i++){
+
+        for(int i = 0; i < selectedSongs.count(); i++){
             QPlaylistItem *itemSelected = dynamic_cast<QPlaylistItem *>(selectedSongs[i]);
-            int j;
-            for(j = 0; j < this->ui->playlist->count(); j++){
+
+            for(int j = 0; j < this->ui->playlist->count(); j++) {
+
                 QPlaylistItem *playlistItem = dynamic_cast<QPlaylistItem *>(this->ui->playlist->item(j));
                 if (itemSelected->song.id == playlistItem->song.id) {
                     delete this->ui->playlist->item(j);
                     this->playlist->removeMedia(j);
                 }
             }
+
         }
+
     }
 
 }
 
 void Phonograph::on_shuffle_clicked(bool checked) {
+
     if (checked) {
+
         this->ui->toolButton->setChecked(false);
         this->playlist->shuffle();
+
     } else {
+
         this->playlist->setPlaybackMode(QMediaPlaylist::Sequential);
+
     }
+
 }
 
 void Phonograph::on_toolButton_clicked(bool checked) {
+
     if (checked) {
+
         this->ui->shuffle->setChecked(false);
         this->playlist->setPlaybackMode(QMediaPlaylist::Loop);
+
     }
     else {
+
         this->playlist->setPlaybackMode(QMediaPlaylist::Sequential);
+
     }
+
 }
 
 void Phonograph::on_seek_forward_clicked() {
+
     int pos = this->ui->seeker->sliderPosition();
     setMediaPosition(pos + 100);
+
 }
 
 void Phonograph::on_seek_backward_clicked() {
+
     int pos = this->ui->seeker->sliderPosition();
     setMediaPosition(pos - 100);
+
 }
 
 // About dialog trigger
 void Phonograph::on_actionAbout_Phonograph_triggered() {
+
     AboutDialog *about = new AboutDialog(this);
     about->setFixedSize(778, 437);
     about->show();
+
 }
 
 void Phonograph::on_wikipedia_select_lang_currentTextChanged(const QString &arg1) {
@@ -769,10 +807,8 @@ void Phonograph::on_categorizeBySelect_currentIndexChanged(int index) {
     }
     topLevel->setIcon(0, QIcon(":/phonograph/general/icons/folder-sound.png"));
 
-    int i;
-
     // Loop through the songs
-    for (i = 0; i < this->library->songs.length(); i++) {
+    for (int i = 0; i < this->library->songs.length(); i++) {
 
         this->addItemToLibrary( topLevel , this->library->songs[i] , index );
 
