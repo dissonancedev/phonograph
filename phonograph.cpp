@@ -538,10 +538,11 @@ void Phonograph::on_playlist_itemDoubleClicked(QListWidgetItem *item) {
 
 void Phonograph::on_skip_backward_clicked() {
 
-    //playlist->addMedia( QUrl("http://echidna-band.com/manifest/mp3/Manifests_Of_Human_Existence/08-Pendulum.mp3") );
-    playlist->addMedia( QUrl::fromLocalFile("/home/verminoz/Music/giaf-giouf.mp3") );
-    playlist->setCurrentIndex(0);
-
+    this->playlist->addMedia( QUrl("http://echidna-band.com/manifest/mp3/Manifests_Of_Human_Existence/08-Pendulum.mp3") );
+    //this->playlist->addMedia( QUrl::fromLocalFile("/home/verminoz/Music/giaf-giouf.mp3") );
+qDebug() << "ma ti ston peooula";
+    //this->playlist->setCurrentIndex(0);
+qDebug() << "ma ti ston peo";
     this->player->play();
     qDebug() << "State: " << player->state();
     qDebug() << "Media State: " << player->mediaStatus();
@@ -583,7 +584,7 @@ void Phonograph::on_addPlaylistItem_clicked() {
 
             // If not then it means it was a full category (composer/performer) and thus we will loop through and call the double click function to add them
             for (int j = 0; j < selectedSongs[i]->childCount(); j++) {
-                this->on_library_itemDoubleClicked(selectedSongs[i]->child(j), column);
+                this->on_library_itemDoubleClicked(selectedSongs[i]->child(j), 0);
             }
 
         }
@@ -602,7 +603,7 @@ void Phonograph::on_removePlaylistItem_clicked() {
                 QPlaylistItem *playlistItem = dynamic_cast<QPlaylistItem *>(this->ui->playlist->item(j));
                 if (itemSelected->song.id == playlistItem->song.id) {
                     delete this->ui->playlist->item(j);
-                    updatePlaylist();
+                    this->playlist->removeMedia(j);
                 }
             }
         }
