@@ -311,6 +311,9 @@ void Phonograph::addItemToPlaylist(Song song) {
     newItem->song = song;
 
     bool exists = false;
+    // Giati prepei na apagoreuetai na valeis 2 fores to idio tragoudi
+    // Thewritika prepei na einai efikto
+    /*
     for (int i = 0; i < this->ui->playlist->count(); i++){
         QPlaylistItem *tmp = dynamic_cast<QPlaylistItem *>(this->ui->playlist->item(i));
         if (newItem->song.id == tmp->song.id) {
@@ -318,7 +321,7 @@ void Phonograph::addItemToPlaylist(Song song) {
             break;
         }
     }
-
+*/
     //If the song does not exist in the current playlist...
     if (!exists){
         // ...put the item on the GUI playlist...
@@ -457,8 +460,17 @@ void Phonograph::on_library_itemDoubleClicked(QTreeWidgetItem *item, int column)
     QSongItem *itemClicked = dynamic_cast<QSongItem *>(item);
 
     if (itemClicked) {
+
         this->addItemToPlaylist( itemClicked->song );
+
+    } else {
+
+        for (int i = 0; i < item->childCount(); i++) {
+            this->on_library_itemDoubleClicked(item->child(i), column);
+        }
+
     }
+
 }
 
 void Phonograph::on_stop_clicked() {
@@ -553,13 +565,27 @@ void Phonograph::on_clearPlaylist_clicked() {
 }
 
 void Phonograph::on_addPlaylistItem_clicked() {
+    // Get the selected items
     QList<QTreeWidgetItem *> selectedSongs = this->ui->library->selectedItems();
 
-    int i;
-    for(i = 0; i < selectedSongs.count(); i++){
+    // Loop through selected items
+    for (int i = 0; i < selectedSongs.count(); i++){
+        // Attempt to cast to QSongItem
         QSongItem *itemSelected = dynamic_cast<QSongItem *>(selectedSongs[i]);
+
+
         if (itemSelected) {
+
+            // If casting succeeded, it means that it was actually a song
             this->addItemToPlaylist( itemSelected->song );
+
+        } else {
+
+            // If not then it means it was a full category (composer/performer) and thus we will loop through and call the double click function to add them
+            for (int j = 0; j < selectedSongs[i]->childCount(); j++) {
+                this->on_library_itemDoubleClicked(selectedSongs[i]->child(j), column);
+            }
+
         }
     }
 }
