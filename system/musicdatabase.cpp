@@ -140,12 +140,20 @@ bool MusicDatabase::update() {
                 // Set all the data on it
                 temp.id = resultSet.value(0).toInt();
                 temp.title = resultSet.value(1).toString();
+
+                // Fix it to have unknown in case it is an empty string
                 if (resultSet.value(2).toString().isEmpty()) {
                     temp.composer = "Unknown";
                 } else {
                     temp.composer = resultSet.value(2).toString();
                 }
-                temp.performer1 = resultSet.value(3).toString();
+
+                // Fix empty performer labels
+                if (resultSet.value(3).toString().isEmpty()) {
+                    temp.performer1 = "Unknown";
+                } else {
+                    temp.performer1 = resultSet.value(3).toString();
+                }
 
                 // Append it to the list
                 this->songs.push_back(temp);

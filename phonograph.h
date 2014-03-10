@@ -31,7 +31,7 @@ public:
 
     bool updateLibrary();
     void addItemToPlaylist(Song song);
-    void addItemToLibrary(QTreeWidgetItem *topLevel, Song song);
+    void addItemToLibrary(QTreeWidgetItem *topLevel, Song song, int categorizeBy);
     void updatePlaylist();
 
     // Playlist functiom
@@ -119,9 +119,6 @@ private:
     // Settings implementation function
     void loadSettings();
     void saveSettings();
-
-    // Categorize by selector (0 -> composer, 1-> singer)
-    int categorizeBy;
 };
 
 #endif // PHONOGRAPH_H

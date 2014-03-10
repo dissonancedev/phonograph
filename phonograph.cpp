@@ -82,7 +82,6 @@ Phonograph::Phonograph(QWidget *parent) :
     this->loadPlaylists();
 
     // Update library
-    categorizeBy = 0;
     this->updateLibrary();
 
     // Load application settings
@@ -178,15 +177,6 @@ void Phonograph::setPlayingSongLabel(QMediaContent content) {
 
     if (content.isNull() == false) {
 
-        /*QUrl url = content.canonicalUrl();
-
-        int j;
-        for (j = 0; j < this->playlist->mediaCount(); j++){
-            if (url == this->playlist->media(j).canonicalUrl()){
-                break;
-            }
-        }*/
-
         QPlaylistItem *currItem = (QPlaylistItem*)this->ui->playlist->item( this->playlist->currentIndex() );
         this->ui->playingNowLabel->setText(currItem->song.composer + " - " + currItem->song.title);
         this->ui->playingNowLabel->setAlignment(Qt::AlignCenter);
@@ -241,24 +231,8 @@ bool Phonograph::updateLibrary() {
     if (this->library->update()) {
         qDebug() << "Found " << this->library->songs.length() << " songs";
 
-        // Add top level item
-        QTreeWidgetItem *topLevel = new QTreeWidgetItem( this->ui->library );
-        if (categorizeBy == 0) topLevel->setText(0, "Composers");
-        else topLevel->setText(0, "Singers");
-        topLevel->setIcon(0, QIcon(":/phonograph/general/icons/folder-sound.png"));
+        this->on_categorizeBySelect_currentIndexChanged( this->ui->categorizeBySelect->currentIndex() );
 
-        int i;
-
-        // Loop through the songs
-        for (i = 0; i < this->library->songs.length(); i++) {
-
-            this->addItemToLibrary( topLevel , this->library->songs[i] );
-
-        }
-
-        // Sort and expand
-        this->ui->library->sortItems(0, Qt::AscendingOrder);
-        this->ui->library->expandItem( topLevel );
     } else {
         qDebug() << this->library->getLastError();
     }
@@ -266,7 +240,7 @@ bool Phonograph::updateLibrary() {
     return true;
 }
 
-void Phonograph::addItemToLibrary(QTreeWidgetItem *topLevel, Song song) {
+void Phonograph::addItemToLibrary(QTreeWidgetItem *topLevel, Song song, int categorizeBy) {
 
     // Create the new item
     QSongItem *newSong = new QSongItem();
@@ -274,13 +248,16 @@ void Phonograph::addItemToLibrary(QTreeWidgetItem *topLevel, Song song) {
     newSong->setIcon(0, QIcon(":/phonograph/general/icons/songbird.png"));
     newSong->song = song;
 
-    int j;
+
+    QString categorizeByTerm;
+    if (categorizeBy == 0) {
+        categorizeByTerm = song.composer;
+    } else {
+        categorizeByTerm = song.performer1;
+    }
 
     // Look if the same artist is there
-    int found = -1;
-    QString categorizeByTerm;
-    if (categorizeBy == 0) categorizeByTerm = song.composer;
-    else categorizeByTerm = song.performer1;
+    int j, found = -1;
     for (j = 0; j < topLevel->childCount(); j++) {
         if ( topLevel->child(j)->text(0) == categorizeByTerm) {
             found = j;
@@ -342,7 +319,7 @@ void Phonograph::addItemToPlaylist(Song song) {
 /**
  * @brief Phonograph::updatePlaylist
  * This function updates the QMediaPlaylist object with the list's contents
- * Shouldn't be called everytime the playlist has been changed but only when it is loaded from scratch? Maybe useless
+ * Shouldn't be called everytime the playlist has been changed but only when it is loaded from scratch
  */
 void Phonograph::updatePlaylist() {
     this->playlist->clear();
@@ -463,17 +440,23 @@ void Phonograph::on_play_clicked(bool checked) {
     if (checked) {
 
         if (this->player->state() == QMediaPlayer::PausedState) {
+
             this->player->play();
+
         }  else if (!this->playlist->isEmpty()) {
+
             int current = this->ui->playlist->currentRow();
             this->playlist->setCurrentIndex( current );
             this->player->play();
+
         }
 
     } else {
 
         if (this->player->state() == QMediaPlayer::PlayingState) {
+
             this->player->pause();
+
         }
 
     }
@@ -687,19 +670,47 @@ void Phonograph::on_searchPlaylistClear_clicked() {
 
 }
 
-void Phonograph::on_savedPlaylists_itemDoubleClicked(QListWidgetItem *item)
-{
+void Phonograph::on_savedPlaylists_itemDoubleClicked(QListWidgetItem *item) {
+
     this->loadPlaylist(item->text());
+
 }
 
-void Phonograph::on_categorizeBySelect_currentIndexChanged(int index)
-{
-    categorizeBy = index;
-    this->updateLibrary();
+void Phonograph::on_categorizeBySelect_currentIndexChanged(int index) {
+    // Disable left sidebar since it shouldn't be touchable while updating
+    // but also to give the user the knowledge that it is updating
+    this->ui->sidebarleft->setDisabled( true );
+
+    // Clear library first
+    this->ui->library->clear();
+
+    // Add top level item
+    QTreeWidgetItem *topLevel = new QTreeWidgetItem( this->ui->library );
+    if (index == 0) {
+        topLevel->setText(0, "Composers"); // 0 --> Categorize by composers
+    } else {
+        topLevel->setText(0, "Singers"); // 1 --> Categorize by singers
+    }
+    topLevel->setIcon(0, QIcon(":/phonograph/general/icons/folder-sound.png"));
+
+    int i;
+
+    // Loop through the songs
+    for (i = 0; i < this->library->songs.length(); i++) {
+
+        this->addItemToLibrary( topLevel , this->library->songs[i] , index );
+
+    }
+
+    // Sort and expand
+    this->ui->library->sortItems(0, Qt::AscendingOrder);
+    this->ui->library->expandItem( topLevel );
+
+    // Re-enable the left sidebar
+    this->ui->sidebarleft->setDisabled( false );
 }
 
-void Phonograph::on_savedPlaylists_itemClicked(QListWidgetItem *item)
-{
+void Phonograph::on_savedPlaylists_itemClicked(QListWidgetItem *item) {
     int dotInString = item->text().indexOf('.');
     this->ui->playlistName->setText(item->text().left(dotInString));
 }
