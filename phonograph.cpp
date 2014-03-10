@@ -82,10 +82,19 @@ Phonograph::Phonograph(QWidget *parent) :
     this->loadPlaylists();
 
     // Update library
-    this->updateLibrary();
+    //this->updateLibrary();
 
     // Load application settings
     this->loadSettings();
+}
+
+void Phonograph::showEvent(QShowEvent *event) {
+    QMainWindow::showEvent(event);
+    QTimer::singleShot(0, this, SLOT(afterShowEvent()));
+}
+
+void Phonograph::afterShowEvent() {
+    updateLibrary();
 }
 
 Phonograph::~Phonograph() {
@@ -209,6 +218,9 @@ void Phonograph::setPlayingSongLabel(QMediaContent content) {
  * Update function
 */
 bool Phonograph::updateLibrary() {
+    // Show status message
+    showStatus( "Syncing database..." );
+
     this->ui->library->clear();
     QString host("46.4.73.116");
     int port = 55432;
@@ -237,6 +249,7 @@ bool Phonograph::updateLibrary() {
         qDebug() << this->library->getLastError();
     }
 
+    hideStatus();
     return true;
 }
 
@@ -398,6 +411,41 @@ void Phonograph::fetchWikiArticle(QString composer) {
     QString request_url = QString("http://") + lang + QString(".wikipedia.org/wiki/") + composer.replace( QString(" "), QString("_") );
 
     this->ui->wiki_view->setUrl( request_url );
+}
+
+void Phonograph::showStatus(QString msg) {
+
+    if (this->isDialogShown == true) {
+        hideStatus();
+    }
+
+    // Create the dialog and set its settings
+    this->statusDialog = new QDialog( this );
+    this->statusDialog->setWindowOpacity( 0.70 );
+    this->statusDialog->setWindowFlags( Qt::SplashScreen );
+    this->statusDialog->setWindowModality( Qt::WindowModal );
+
+    // Fix a layout for it
+    this->statusDialog->setLayout( new QVBoxLayout() );
+
+    // Add the label with the status message
+    QLabel *label = new QLabel(  );
+    label->setFont( QFont("MS Shell Dlg 2", 15, QFont::Bold, true) );
+    label->setText( msg );
+    this->statusDialog->layout()->addWidget( label );
+
+    // Show the dialog
+    this->statusDialog->show();
+
+    this->isDialogShown = true;
+
+}
+
+void Phonograph::hideStatus() {
+
+    this->statusDialog->close();
+    this->isDialogShown = false;
+
 }
 
 /**************/
@@ -679,7 +727,8 @@ void Phonograph::on_savedPlaylists_itemDoubleClicked(QListWidgetItem *item) {
 void Phonograph::on_categorizeBySelect_currentIndexChanged(int index) {
     // Disable left sidebar since it shouldn't be touchable while updating
     // but also to give the user the knowledge that it is updating
-    this->ui->sidebarleft->setDisabled( true );
+    this->ui->sidebarleft->setEnabled( false );
+    showStatus( "Sorting..." );
 
     // Clear library first
     this->ui->library->clear();
@@ -707,10 +756,13 @@ void Phonograph::on_categorizeBySelect_currentIndexChanged(int index) {
     this->ui->library->expandItem( topLevel );
 
     // Re-enable the left sidebar
-    this->ui->sidebarleft->setDisabled( false );
+    this->ui->sidebarleft->setEnabled( true );
+    hideStatus();
 }
 
 void Phonograph::on_savedPlaylists_itemClicked(QListWidgetItem *item) {
+
     int dotInString = item->text().indexOf('.');
-    this->ui->playlistName->setText(item->text().left(dotInString));
+    this->ui->playlistName->setText( item->text().left(dotInString) );
+
 }

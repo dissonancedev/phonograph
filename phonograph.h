@@ -11,6 +11,7 @@
 #include <QCoreApplication>
 #include <QDir>
 #include <QMessageBox>
+#include <QTimer>
 #include "system/musicdatabase.h"
 #include "system/qsongitem.h"
 #include "system/qplaylistitem.h"
@@ -41,6 +42,10 @@ public:
 
     // Fetch wikipedia article
     void fetchWikiArticle(QString composer);
+
+    // Status dialog
+    void showStatus(QString msg);
+    void hideStatus();
 
 private slots:
 
@@ -102,6 +107,8 @@ private slots:
 
     void on_savedPlaylists_itemClicked(QListWidgetItem *item);
 
+    void afterShowEvent();
+
 private:
     // UI variable
     Ui::Phonograph *ui;
@@ -119,6 +126,13 @@ private:
     // Settings implementation function
     void loadSettings();
     void saveSettings();
+
+    // Message dialog
+    QDialog *statusDialog = NULL;
+    bool isDialogShown = false;
+
+protected:
+    void showEvent(QShowEvent *event);
 };
 
 #endif // PHONOGRAPH_H

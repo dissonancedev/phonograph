@@ -1197,7 +1197,7 @@ background-color: rgba(255, 255, 255, 0);</string>
      <x>0</x>
      <y>0</y>
      <width>1118</width>
-     <height>21</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuPhonograph">
