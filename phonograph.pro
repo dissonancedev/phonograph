@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     system/databasecache.cpp \
     system/qplaylist.cpp \
     aboutdialog.cpp \
-    login.cpp
+    login.cpp \
+    system/authentication.cpp
 
 HEADERS  += phonograph.h \
     system/musicdatabase.h \
@@ -31,7 +32,8 @@ HEADERS  += phonograph.h \
     system/databasecache.h \
     system/qplaylist.h \
     aboutdialog.h \
-    login.h
+    login.h \
+    system/authentication.h
 
 FORMS    += phonograph.ui \
     aboutdialog.ui \

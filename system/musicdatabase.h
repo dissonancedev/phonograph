@@ -7,7 +7,6 @@
 #include <QUrl>
 #include <QList>
 #include <QHash>
-#include <cmath>
 #include "song.h"
 #include <QtSql/QSqlError>
 #include <QtSql/QSqlDatabase>
