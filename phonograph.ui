@@ -550,7 +550,7 @@ color: rgb(255, 255, 255);</string>
                      <item row="0" column="4">
                       <widget class="QLineEdit" name="playlistName">
                        <property name="styleSheet">
-                        <string notr="true">background-color: rgb(226, 226, 226);</string>
+                        <string notr="true">/*background-color: rgb(226, 226, 226);*/</string>
                        </property>
                        <property name="placeholderText">
                         <string>Type the playlist's name</string>
