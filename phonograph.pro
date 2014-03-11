@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     system/qplaylistitem.cpp \
     system/databasecache.cpp \
     system/qplaylist.cpp \
-    aboutdialog.cpp
+    aboutdialog.cpp \
+    login.cpp
 
 HEADERS  += phonograph.h \
     system/musicdatabase.h \
@@ -29,10 +30,12 @@ HEADERS  += phonograph.h \
     system/qplaylistitem.h \
     system/databasecache.h \
     system/qplaylist.h \
-    aboutdialog.h
+    aboutdialog.h \
+    login.h
 
 FORMS    += phonograph.ui \
-    aboutdialog.ui
+    aboutdialog.ui \
+    login.ui
 
 RESOURCES += \
     icons.qrc \
