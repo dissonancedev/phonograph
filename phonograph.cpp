@@ -76,7 +76,7 @@ Phonograph::Phonograph(QWidget *parent) :
     // Enable drag and drop for QListWidget and QTreeWidget
     /** TO-DO: Difficulties in implementing the drag & drop functionality **/
     this->ui->library->setDragEnabled(true);
-    this->ui->playlist->setDragDropMode(QAbstractItemView::DropOnly);
+    this->ui->playlist->setDragDropMode(QAbstractItemView::DragDrop);
 /*
     // Load the user's playlists
     this->loadPlaylists();
