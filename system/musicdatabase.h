@@ -6,6 +6,8 @@
 #include <QVariant>
 #include <QUrl>
 #include <QList>
+#include <QHash>
+#include <cmath>
 #include "song.h"
 #include <QtSql/QSqlError>
 #include <QtSql/QSqlDatabase>
@@ -28,6 +30,7 @@ private:
     QList<QString> errors;
 
     QString normalizeUrl(QString url);
+
 
 public:
     /* Constructors & Destructors */
@@ -59,7 +62,7 @@ public:
     bool isConnected();
     int getRecordCount();
     QString getFilename(int id);
-    QStringList getFilename(QList<int> ids);
+    QHash<int, QString> getFilename(QList<int> ids);
 
     QList<Song> songs;
 };

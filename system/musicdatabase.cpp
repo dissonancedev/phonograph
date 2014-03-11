@@ -238,27 +238,31 @@ QString MusicDatabase::getFilename(int id) {
     return QString("");
 }
 
-QStringList MusicDatabase::getFilename(QList<int> ids) {
+QHash<int, QString> MusicDatabase::getFilename(QList<int> ids) {
 
+    QHash<int, QString> result;
+
+    // Try to connect to database
     if (this->connect()) {
 
         // Build a string with all the parameters for binding
         QStringList inValuesBindings;
         for (int i = 0; i < ids.count(); i++) {
 
-            inValuesBindings.push_back( QString(":id") + QString(i) );
+            inValuesBindings.push_back( QString(":id%1").arg(i) );
 
         }
 
-        QString sqlQuery = QString("SELECT file_name FROM phpbb2.public.song WHERE rec_id IN (") + inValuesBindings.join(", ") + QString(")");
+        // Make the query
+        QString sqlQuery = QString("SELECT file_name, rec_id FROM phpbb2.public.song WHERE rec_id IN (") + inValuesBindings.join(", ") + QString(")");
 
         // Prepare the query
         QSqlQuery resultSet;
         resultSet.prepare( sqlQuery );
 
         // Bind all values
-        for (int i = 0; ids.count(); i++) {
-            resultSet.bindValue(QString(":id") + QString(i), ids[i]);
+        for (int i = 0; i < ids.count(); i++) {
+            resultSet.bindValue(QString(":id%1").arg(i), ids[i]);
         }
 
         // Execute the query
@@ -266,23 +270,24 @@ QStringList MusicDatabase::getFilename(QList<int> ids) {
 
         if (resultSet.size() > 0) {
 
-            QStringList result;
+            // Loop through result set and populate hash table with result records
             while (resultSet.next()) {
                 QString value = resultSet.value(0).toString();
-                result.push_back( Song::filename + normalizeUrl( value ) );
+                int id = resultSet.value(1).toInt();
+                result[id] = Song::filename + normalizeUrl( value );
             }
-
-            // Disconnect from database
-            this->disconnect();
-
-            // Return the result
-            return result;
 
         }
 
+        // Free result?
+        resultSet.finish();
+
+        // Disconnect from database
+        this->disconnect();
+
     }
 
-    return QStringList("");
+    return result;
 
 }
 

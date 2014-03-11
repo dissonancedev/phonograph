@@ -314,6 +314,11 @@ void Phonograph::addItemToLibrary(QTreeWidgetItem *topLevel, Song song, int cate
 
 }
 
+/**
+ * @brief Phonograph::addItemToPlaylist
+ * @param song
+ * Adds a new song to the playlist
+ */
 void Phonograph::addItemToPlaylist(Song song) {
     // Create the item object
     QPlaylistItem *newItem = new QPlaylistItem();
@@ -340,6 +345,41 @@ void Phonograph::addItemToPlaylist(Song song) {
         // ...and to the media playlist
         QString url = this->library->getFilename( song.id );
         this->playlist->addMedia( QUrl(url) );
+    }
+}
+
+/**
+ * @brief Phonograph::addItemsToPlaylist
+ * @param songs
+ * Adds many songs to the playlist
+ */
+void Phonograph::addItemsToPlaylist(QList<Song> songs) {
+
+    // Get all the songs IDs
+    QList<int> ids;
+    for (int i = 0; i < songs.count(); i++) {
+        ids.push_back( songs[i].id );
+    }
+
+    QHash<int, QString> filenames = this->library->getFilename( ids );
+
+    if (filenames.size() == songs.size()) {
+
+        for (int i = 0; i < songs.size(); i++) {
+
+            // Create the item object
+            QPlaylistItem *newItem = new QPlaylistItem();
+            newItem->setText( songs[i].composer + QString(" - ") + songs[i].performer1 + QString(" - ") + songs[i].title );
+            newItem->setIcon( QIcon(":/phonograph/general/icons/songbird.png") );
+            newItem->song = songs[i];
+
+            // ...put the item on the GUI playlist...
+            this->ui->playlist->addItem( newItem );
+            // ...and to the media playlist
+            this->playlist->addMedia( QUrl( filenames.value( songs[i].id ) ) );
+
+        }
+
     }
 }
 
@@ -460,7 +500,7 @@ void Phonograph::hideStatus() {
 }
 
 /**************/
-/*** Events ***/
+/**** Events ****/
 /**************/
 
 void Phonograph::on_library_itemDoubleClicked(QTreeWidgetItem *item, int column) {
@@ -473,8 +513,18 @@ void Phonograph::on_library_itemDoubleClicked(QTreeWidgetItem *item, int column)
 
     } else {
 
+        QList< Song > allSongs;
         for (int i = 0; i < item->childCount(); i++) {
-            this->on_library_itemDoubleClicked(item->child(i), column);
+
+            itemClicked = dynamic_cast<QSongItem *>(item->child(i));
+            if (itemClicked) {
+                allSongs.push_back( itemClicked->song );
+            }
+
+        }
+
+        if (allSongs.size() > 0) {
+            this->addItemsToPlaylist( allSongs );
         }
 
     }

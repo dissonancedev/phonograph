@@ -32,6 +32,7 @@ public:
 
     bool updateLibrary();
     void addItemToPlaylist(Song song);
+    void addItemsToPlaylist(QList<Song> songs);
     void addItemToLibrary(QTreeWidgetItem *topLevel, Song song, int categorizeBy);
     void updatePlaylist();
 
