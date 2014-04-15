@@ -1,6 +1,8 @@
 #ifndef PHONOGRAPH_H
 #define PHONOGRAPH_H
 
+#include <QDebug>
+
 #include <cmath>
 #include <QMainWindow>
 #include <QTreeWidgetItem>
@@ -12,6 +14,11 @@
 #include <QDir>
 #include <QMessageBox>
 #include <QTimer>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QWebPage>
+#include <QWebFrame>
+#include <QWebElement>
 #include "system/musicdatabase.h"
 #include "system/qsongitem.h"
 #include "system/qplaylistitem.h"
@@ -44,11 +51,17 @@ public:
     // Fetch wikipedia article
     void fetchWikiArticle(QString composer);
 
+    // Fetch lyrics
+    void fetchLyrics(QString title);
+
     // Status dialog
     void showStatus(QString msg);
     void hideStatus();
 
 private slots:
+
+    // Parse lyrics
+    void parseLyrics(QNetworkReply* reply);
 
     void setPlaybackTimer(qint64 position);
 

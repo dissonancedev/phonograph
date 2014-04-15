@@ -87,6 +87,8 @@ Phonograph::Phonograph(QWidget *parent) :
     // Load application settings
     this->loadSettings();
     */
+
+    this->fetchLyrics(QString("Το σακκάκι"));
 }
 
 void Phonograph::showEvent(QShowEvent *event) {
@@ -463,10 +465,48 @@ void Phonograph::savePlaylist(QString name) {
 }
 
 void Phonograph::fetchWikiArticle(QString composer) {
-    QString lang = this->ui->wikipedia_select_lang->currentText();
-    QString request_url = QString("http://") + lang + QString(".wikipedia.org/wiki/") + composer.replace( QString(" "), QString("_") );
+    //QString lang = this->ui->wikipedia_select_lang->currentText();
+    //QString request_url = QString("http://") + lang + QString(".wikipedia.org/wiki/") + composer.replace( QString(" "), QString("_") );
+    QString request_url = QString("http://rebetiko.sealabs.net/wiki/mediawiki/index.php/") + composer.replace( QString(" "), QString("_") );
 
     this->ui->wiki_view->setUrl( request_url );
+}
+
+void Phonograph::fetchLyrics(QString title) {
+    // Set the URL
+    QString request_url = QString("http://rebetiko.sealabs.net/wiki/mediawiki/index.php/") + title.replace( QString(" "), QString("_") );
+
+    // Initialize a network manager and connect the signal
+    QNetworkAccessManager *manager = new QNetworkAccessManager(this);
+    connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(parseLyrics(QNetworkReply*)));
+
+    // Make GET request
+    manager->get( QNetworkRequest( QUrl(request_url) ) );
+}
+
+void Phonograph::parseLyrics(QNetworkReply* reply) {
+
+    // Get the contents
+    QString htmlContents( reply->readAll() );
+
+    // Parse to get the bodyContent element
+    QWebPage page;
+    page.mainFrame()->setHtml( htmlContents );
+    QWebElement parse = page.mainFrame()->documentElement();
+    QWebElement result = parse.findFirst("div[id=bodyContent]");
+
+    if (result.isNull()) {
+        return;
+    }
+
+    // Strip HTML
+    QString lyrics = result.toInnerXml();
+    qDebug() << lyrics.indexOf("<!-- Saved");
+    lyrics = lyrics.mid( lyrics.indexOf("</h2>") + 5 , lyrics.indexOf("<div") - lyrics.indexOf("</h2>") - 5 );
+    lyrics = lyrics.replace( QRegExp("<<?.>") , "" ).replace( QRegExp("</<?.>") , "" ).replace( QRegExp("<!--.*-->") , "" ).replace( QRegExp("<.*>") , "" );
+
+    // Print the lyrics
+    this->ui->lyrics_display->setText( lyrics );
 }
 
 void Phonograph::showStatus(QString msg) {
