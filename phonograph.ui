@@ -297,7 +297,7 @@ color: rgb(255, 255, 255);</string>
               <enum>QTabWidget::Rounded</enum>
              </property>
              <property name="currentIndex">
-              <number>1</number>
+              <number>2</number>
              </property>
              <property name="iconSize">
               <size>
@@ -662,9 +662,9 @@ color: rgb(255, 255, 255);</string>
               </attribute>
               <layout class="QVBoxLayout" name="verticalLayout_7">
                <item>
-                <widget class="QLabel" name="lyrics_source_label">
+                <widget class="QLabel" name="lyricsSourceLabel">
                  <property name="text">
-                  <string>Lyrics from www.stixoi.info</string>
+                  <string>Lyrics from rebetiko.sealabs.net</string>
                  </property>
                 </widget>
                </item>

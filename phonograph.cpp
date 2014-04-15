@@ -217,6 +217,11 @@ void Phonograph::setPlayingSongLabel(QMediaContent content) {
 
         }
 
+        // Set the Playing now tab stuffz
+        this->ui->nowTitle->setText( currItem->song.title );
+        this->ui->nowComposer->setText( currItem->song.composer );
+        this->ui->nowPerformer->setText( currItem->song.performer1 );
+
 
     } else { //the playlist has finished
 
