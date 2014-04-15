@@ -116,7 +116,7 @@
                  <string>...</string>
                 </property>
                 <property name="icon">
-                 <iconset resource="icons.qrc">
+                 <iconset>
                   <normaloff>:/multimedia/playlist/icons/playlist/edit-clear-locationbar-rtl.png</normaloff>:/multimedia/playlist/icons/playlist/edit-clear-locationbar-rtl.png</iconset>
                 </property>
                 <property name="autoRaise">
@@ -245,7 +245,7 @@ color: rgb(255, 255, 255);</string>
                <string>Composer</string>
               </property>
               <property name="icon">
-               <iconset resource="icons.qrc">
+               <iconset>
                 <normaloff>:/phonograph/general/icons/view-media-artist.png</normaloff>:/phonograph/general/icons/view-media-artist.png</iconset>
               </property>
              </item>
@@ -254,7 +254,7 @@ color: rgb(255, 255, 255);</string>
                <string>Main Singer</string>
               </property>
               <property name="icon">
-               <iconset resource="icons.qrc">
+               <iconset>
                 <normaloff>:/phonograph/general/icons/view-media-artist.png</normaloff>:/phonograph/general/icons/view-media-artist.png</iconset>
               </property>
              </item>
@@ -297,7 +297,7 @@ color: rgb(255, 255, 255);</string>
               <enum>QTabWidget::Rounded</enum>
              </property>
              <property name="currentIndex">
-              <number>0</number>
+              <number>1</number>
              </property>
              <property name="iconSize">
               <size>
@@ -313,7 +313,7 @@ color: rgb(255, 255, 255);</string>
                <string notr="true"/>
               </property>
               <attribute name="icon">
-               <iconset resource="icons.qrc">
+               <iconset>
                 <normaloff>:/phonograph/tabs/icons/tabs/view-media-playlist-3.png</normaloff>:/phonograph/tabs/icons/tabs/view-media-playlist-3.png</iconset>
               </attribute>
               <attribute name="title">
@@ -357,7 +357,7 @@ color: rgb(255, 255, 255);</string>
                      <string>...</string>
                     </property>
                     <property name="icon">
-                     <iconset resource="icons.qrc">
+                     <iconset>
                       <normaloff>:/multimedia/playlist/icons/playlist/edit-clear-locationbar-rtl.png</normaloff>:/multimedia/playlist/icons/playlist/edit-clear-locationbar-rtl.png</iconset>
                     </property>
                     <property name="autoRaise">
@@ -440,7 +440,7 @@ color: rgb(255, 255, 255);</string>
                         <string>...</string>
                        </property>
                        <property name="icon">
-                        <iconset resource="icons.qrc">
+                        <iconset>
                          <normaloff>:/multimedia/playlist/icons/playlist/edit-delete-5.png</normaloff>:/multimedia/playlist/icons/playlist/edit-delete-5.png</iconset>
                        </property>
                        <property name="iconSize">
@@ -460,7 +460,7 @@ color: rgb(255, 255, 255);</string>
                         <string>...</string>
                        </property>
                        <property name="icon">
-                        <iconset resource="icons.qrc">
+                        <iconset>
                          <normaloff>:/multimedia/playlist/icons/playlist/edit-add.png</normaloff>:/multimedia/playlist/icons/playlist/edit-add.png</iconset>
                        </property>
                        <property name="iconSize">
@@ -493,7 +493,7 @@ color: rgb(255, 255, 255);</string>
                         <string>...</string>
                        </property>
                        <property name="icon">
-                        <iconset resource="icons.qrc">
+                        <iconset>
                          <normaloff>:/multimedia/playlist/icons/playlist/document-save-5.png</normaloff>:/multimedia/playlist/icons/playlist/document-save-5.png</iconset>
                        </property>
                        <property name="iconSize">
@@ -513,7 +513,7 @@ color: rgb(255, 255, 255);</string>
                         <string>...</string>
                        </property>
                        <property name="icon">
-                        <iconset resource="icons.qrc">
+                        <iconset>
                          <normaloff>:/multimedia/playlist/icons/playlist/document-new-5.png</normaloff>:/multimedia/playlist/icons/playlist/document-new-5.png</iconset>
                        </property>
                        <property name="iconSize">
@@ -533,7 +533,7 @@ color: rgb(255, 255, 255);</string>
                         <string>...</string>
                        </property>
                        <property name="icon">
-                        <iconset resource="icons.qrc">
+                        <iconset>
                          <normaloff>:/multimedia/playlist/icons/playlist/edit-clear-list.png</normaloff>:/multimedia/playlist/icons/playlist/edit-clear-list.png</iconset>
                        </property>
                        <property name="iconSize">
@@ -567,16 +567,94 @@ color: rgb(255, 255, 255);</string>
              </widget>
              <widget class="QWidget" name="tabplayingnow">
               <attribute name="icon">
-               <iconset resource="icons.qrc">
+               <iconset>
                 <normaloff>:/phonograph/tabs/icons/tabs/dialog-information-2.png</normaloff>:/phonograph/tabs/icons/tabs/dialog-information-2.png</iconset>
               </attribute>
               <attribute name="title">
                <string>Playing now</string>
               </attribute>
+              <layout class="QVBoxLayout" name="verticalLayout_2">
+               <item>
+                <widget class="QFrame" name="spectrumFrame">
+                 <property name="frameShape">
+                  <enum>QFrame::StyledPanel</enum>
+                 </property>
+                 <property name="frameShadow">
+                  <enum>QFrame::Raised</enum>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QFrame" name="infoFrame">
+                 <property name="frameShape">
+                  <enum>QFrame::StyledPanel</enum>
+                 </property>
+                 <property name="frameShadow">
+                  <enum>QFrame::Raised</enum>
+                 </property>
+                 <layout class="QGridLayout" name="gridLayout_9">
+                  <property name="leftMargin">
+                   <number>6</number>
+                  </property>
+                  <property name="topMargin">
+                   <number>6</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>6</number>
+                  </property>
+                  <property name="bottomMargin">
+                   <number>6</number>
+                  </property>
+                  <item row="0" column="0">
+                   <widget class="QLabel" name="nowTitleLabel">
+                    <property name="text">
+                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Song title:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="1">
+                   <widget class="QLabel" name="nowTitle">
+                    <property name="text">
+                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt; font-style:italic;&quot;&gt;...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="0">
+                   <widget class="QLabel" name="nowComposerLabel">
+                    <property name="text">
+                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Composer:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="1">
+                   <widget class="QLabel" name="nowComposer">
+                    <property name="text">
+                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="2" column="0">
+                   <widget class="QLabel" name="nowPerformerLabel">
+                    <property name="text">
+                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Performer:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="2" column="1">
+                   <widget class="QLabel" name="nowPerformer">
+                    <property name="text">
+                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt; font-style:italic;&quot;&gt;...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+              </layout>
              </widget>
              <widget class="QWidget" name="tablyrics">
               <attribute name="icon">
-               <iconset resource="icons.qrc">
+               <iconset>
                 <normaloff>:/phonograph/tabs/icons/tabs/view-media-lyrics.png</normaloff>:/phonograph/tabs/icons/tabs/view-media-lyrics.png</iconset>
               </attribute>
               <attribute name="title">
@@ -597,7 +675,7 @@ color: rgb(255, 255, 255);</string>
              </widget>
              <widget class="QWidget" name="tabwikipedia">
               <attribute name="icon">
-               <iconset resource="icons.qrc">
+               <iconset>
                 <normaloff>:/phonograph/tabs/icons/tabs/emblem-web.png</normaloff>:/phonograph/tabs/icons/tabs/emblem-web.png</iconset>
               </attribute>
               <attribute name="title">
@@ -673,7 +751,7 @@ color: rgb(255, 255, 255);</string>
                       <string>en</string>
                      </property>
                      <property name="icon">
-                      <iconset resource="icons.qrc">
+                      <iconset>
                        <normaloff>:/language/flags/icons/lang/flag-gb.png</normaloff>:/language/flags/icons/lang/flag-gb.png</iconset>
                      </property>
                     </item>
@@ -682,7 +760,7 @@ color: rgb(255, 255, 255);</string>
                       <string>el</string>
                      </property>
                      <property name="icon">
-                      <iconset resource="icons.qrc">
+                      <iconset>
                        <normaloff>:/language/flags/icons/lang/flag-gr.png</normaloff>:/language/flags/icons/lang/flag-gr.png</iconset>
                      </property>
                     </item>
@@ -740,7 +818,7 @@ color: rgb(255, 255, 255);</string>
                     <string>...</string>
                    </property>
                    <property name="icon">
-                    <iconset resource="icons.qrc">
+                    <iconset>
                      <normaloff>:/multimedia/player/icons/media-playlist-shuffle-3.png</normaloff>:/multimedia/player/icons/media-playlist-shuffle-3.png</iconset>
                    </property>
                    <property name="iconSize">
@@ -769,7 +847,7 @@ color: rgb(255, 255, 255);</string>
                     <string>...</string>
                    </property>
                    <property name="icon">
-                    <iconset resource="icons.qrc">
+                    <iconset>
                      <normaloff>:/multimedia/player/icons/media-playlist-repeat-2.png</normaloff>:/multimedia/player/icons/media-playlist-repeat-2.png</iconset>
                    </property>
                    <property name="iconSize">
@@ -811,7 +889,7 @@ color: rgb(255, 255, 255);</string>
                  <string>...</string>
                 </property>
                 <property name="icon">
-                 <iconset resource="icons.qrc">
+                 <iconset>
                   <normaloff>:/multimedia/player/icons/media-skip-backward-8.png</normaloff>:/multimedia/player/icons/media-skip-backward-8.png</iconset>
                 </property>
                 <property name="iconSize">
@@ -834,7 +912,7 @@ color: rgb(255, 255, 255);</string>
                  <string>...</string>
                 </property>
                 <property name="icon">
-                 <iconset resource="icons.qrc">
+                 <iconset>
                   <normaloff>:/multimedia/player/icons/media-seek-backward-8.png</normaloff>:/multimedia/player/icons/media-seek-backward-8.png</iconset>
                 </property>
                 <property name="iconSize">
@@ -857,7 +935,7 @@ color: rgb(255, 255, 255);</string>
                  <string>...</string>
                 </property>
                 <property name="icon">
-                 <iconset resource="icons.qrc">
+                 <iconset>
                   <normaloff>:/multimedia/player/icons/media-playback-start-8.png</normaloff>
                   <activeon>:/multimedia/player/icons/media-playback-pause-8.png</activeon>:/multimedia/player/icons/media-playback-start-8.png</iconset>
                 </property>
@@ -887,7 +965,7 @@ color: rgb(255, 255, 255);</string>
                  <string>...</string>
                 </property>
                 <property name="icon">
-                 <iconset resource="icons.qrc">
+                 <iconset>
                   <normaloff>:/multimedia/player/icons/media-playback-stop-8.png</normaloff>:/multimedia/player/icons/media-playback-stop-8.png</iconset>
                 </property>
                 <property name="iconSize">
@@ -910,7 +988,7 @@ color: rgb(255, 255, 255);</string>
                  <string>...</string>
                 </property>
                 <property name="icon">
-                 <iconset resource="icons.qrc">
+                 <iconset>
                   <normaloff>:/multimedia/player/icons/media-seek-forward-8.png</normaloff>:/multimedia/player/icons/media-seek-forward-8.png</iconset>
                 </property>
                 <property name="iconSize">
@@ -933,7 +1011,7 @@ color: rgb(255, 255, 255);</string>
                  <string>...</string>
                 </property>
                 <property name="icon">
-                 <iconset resource="icons.qrc">
+                 <iconset>
                   <normaloff>:/multimedia/player/icons/media-skip-forward-8.png</normaloff>:/multimedia/player/icons/media-skip-forward-8.png</iconset>
                 </property>
                 <property name="iconSize">
@@ -1040,7 +1118,7 @@ color: rgb(255, 255, 255);</string>
                  <string>...</string>
                 </property>
                 <property name="icon">
-                 <iconset resource="icons.qrc">
+                 <iconset>
                   <normaloff>:/multimedia/player/icons/kmixdocked_mute-2.png</normaloff>
                   <activeon>:/multimedia/player/icons/kmixdocked_error-2.png</activeon>:/multimedia/player/icons/kmixdocked_mute-2.png</iconset>
                 </property>
@@ -1244,7 +1322,7 @@ background-color: rgba(255, 255, 255, 0);</string>
   </widget>
   <action name="actionHelp">
    <property name="icon">
-    <iconset resource="icons.qrc">
+    <iconset>
      <normaloff>:/phonograph/menu/icons/menu/help-2.png</normaloff>:/phonograph/menu/icons/menu/help-2.png</iconset>
    </property>
    <property name="text">
@@ -1253,7 +1331,7 @@ background-color: rgba(255, 255, 255, 0);</string>
   </action>
   <action name="actionPhonograph_website">
    <property name="icon">
-    <iconset resource="icons.qrc">
+    <iconset>
      <normaloff>:/phonograph/tabs/icons/tabs/emblem-web.png</normaloff>:/phonograph/tabs/icons/tabs/emblem-web.png</iconset>
    </property>
    <property name="text">
@@ -1262,7 +1340,7 @@ background-color: rgba(255, 255, 255, 0);</string>
   </action>
   <action name="actionAbout_Phonograph">
    <property name="icon">
-    <iconset resource="icons.qrc">
+    <iconset>
      <normaloff>:/phonograph/menu/icons/menu/help-about-3.png</normaloff>:/phonograph/menu/icons/menu/help-about-3.png</iconset>
    </property>
    <property name="text">
@@ -1271,7 +1349,7 @@ background-color: rgba(255, 255, 255, 0);</string>
   </action>
   <action name="actionPreferences">
    <property name="icon">
-    <iconset resource="icons.qrc">
+    <iconset>
      <normaloff>:/phonograph/menu/icons/menu/configure-2.png</normaloff>:/phonograph/menu/icons/menu/configure-2.png</iconset>
    </property>
    <property name="text">
@@ -1280,7 +1358,7 @@ background-color: rgba(255, 255, 255, 0);</string>
   </action>
   <action name="actionQuit">
    <property name="icon">
-    <iconset resource="icons.qrc">
+    <iconset>
      <normaloff>:/phonograph/menu/icons/menu/application-exit-2.png</normaloff>:/phonograph/menu/icons/menu/application-exit-2.png</iconset>
    </property>
    <property name="text">
@@ -1289,7 +1367,7 @@ background-color: rgba(255, 255, 255, 0);</string>
   </action>
   <action name="actionVisit_rebetiko_sealabs_net">
    <property name="icon">
-    <iconset resource="icons.qrc">
+    <iconset>
      <normaloff>:/phonograph/tabs/icons/tabs/emblem-web.png</normaloff>:/phonograph/tabs/icons/tabs/emblem-web.png</iconset>
    </property>
    <property name="text">
@@ -1298,7 +1376,7 @@ background-color: rgba(255, 255, 255, 0);</string>
   </action>
   <action name="actionAudio_settings">
    <property name="icon">
-    <iconset resource="icons.qrc">
+    <iconset>
      <normaloff>:/phonograph/menu/icons/menu/audio-card.png</normaloff>:/phonograph/menu/icons/menu/audio-card.png</iconset>
    </property>
    <property name="text">
@@ -1307,7 +1385,7 @@ background-color: rgba(255, 255, 255, 0);</string>
   </action>
   <action name="actionAdd_Item">
    <property name="icon">
-    <iconset resource="icons.qrc">
+    <iconset>
      <normaloff>:/multimedia/playlist/icons/playlist/edit-add.png</normaloff>:/multimedia/playlist/icons/playlist/edit-add.png</iconset>
    </property>
    <property name="text">
@@ -1316,7 +1394,7 @@ background-color: rgba(255, 255, 255, 0);</string>
   </action>
   <action name="actionRemove_Item">
    <property name="icon">
-    <iconset resource="icons.qrc">
+    <iconset>
      <normaloff>:/multimedia/playlist/icons/playlist/edit-delete-5.png</normaloff>:/multimedia/playlist/icons/playlist/edit-delete-5.png</iconset>
    </property>
    <property name="text">
@@ -1325,7 +1403,7 @@ background-color: rgba(255, 255, 255, 0);</string>
   </action>
   <action name="actionCreate_New_Playlist">
    <property name="icon">
-    <iconset resource="icons.qrc">
+    <iconset>
      <normaloff>:/multimedia/playlist/icons/playlist/document-new-5.png</normaloff>:/multimedia/playlist/icons/playlist/document-new-5.png</iconset>
    </property>
    <property name="text">
@@ -1334,7 +1412,7 @@ background-color: rgba(255, 255, 255, 0);</string>
   </action>
   <action name="actionSave_Playlist">
    <property name="icon">
-    <iconset resource="icons.qrc">
+    <iconset>
      <normaloff>:/multimedia/playlist/icons/playlist/document-save-5.png</normaloff>:/multimedia/playlist/icons/playlist/document-save-5.png</iconset>
    </property>
    <property name="text">
@@ -1343,7 +1421,7 @@ background-color: rgba(255, 255, 255, 0);</string>
   </action>
   <action name="actionClear_playlist">
    <property name="icon">
-    <iconset resource="icons.qrc">
+    <iconset>
      <normaloff>:/multimedia/playlist/icons/playlist/edit-clear-list.png</normaloff>:/multimedia/playlist/icons/playlist/edit-clear-list.png</iconset>
    </property>
    <property name="text">
@@ -1359,8 +1437,6 @@ background-color: rgba(255, 255, 255, 0);</string>
    <header>QtWebKitWidgets/QWebView</header>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="icons.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
