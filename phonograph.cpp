@@ -87,8 +87,6 @@ Phonograph::Phonograph(QWidget *parent) :
     // Load application settings
     this->loadSettings();
     */
-
-    this->fetchLyrics(QString("Το σακκάκι"));
 }
 
 void Phonograph::showEvent(QShowEvent *event) {
