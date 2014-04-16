@@ -163,3 +163,21 @@ QString QPlaylist::getOriginalPlaylistName() {
 
     return attempt + QDateTime::currentDateTime().toString();
 }
+
+void QPlaylist::deletePlaylist(QString name) {
+
+#ifdef Q_OS_WIN32
+    QString path = QCoreApplication::applicationDirPath() + QString("\playlists\\");
+#endif
+#ifdef Q_OS_LINUX
+    QString path = QCoreApplication::applicationDirPath() + QString("/playlists/");
+#endif
+
+    QFile file( path + name + QString(".spl") );
+
+    // Check if playlist exists or not
+    if (file.exists()) {
+        file.remove();
+    }
+
+}

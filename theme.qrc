@@ -6,5 +6,6 @@
         <file>theme/diskos-25-leivadia.jpg</file>
         <file>theme/diskos-25-inverted.jpg</file>
         <file>theme/bouzouki.ico</file>
+        <file>theme/oud01.ico</file>
     </qresource>
 </RCC>

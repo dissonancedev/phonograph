@@ -19,6 +19,8 @@
 #include <QWebPage>
 #include <QWebFrame>
 #include <QWebElement>
+#include <QSystemTrayIcon>
+#include <QCloseEvent>
 #include "system/musicdatabase.h"
 #include "system/qsongitem.h"
 #include "system/qplaylistitem.h"
@@ -58,10 +60,25 @@ public:
     void showStatus(QString msg);
     void hideStatus();
 
+    // Fix popup menu for library list
+    void createLibraryPopup();
+
+    // System tray icon
+    void createTrayIcon();
+    void spawnTrayMenu();
+
 private slots:
+
+    // System tray
+    void iconActivated(QSystemTrayIcon::ActivationReason reason);
+    void showMessage();
+    void restoreWindow();
 
     // Parse lyrics
     void parseLyrics(QNetworkReply* reply);
+
+    // Delete playlist
+    void deletePlaylist();
 
     void setPlaybackTimer(qint64 position);
 
@@ -123,6 +140,8 @@ private slots:
 
     void afterShowEvent();
 
+    void on_actionQuit_triggered();
+
 private:
     // UI variable
     Ui::Phonograph *ui;
@@ -144,6 +163,10 @@ private:
     // Message dialog
     QDialog *statusDialog = NULL;
     bool isDialogShown = false;
+
+    // System tray icon
+    QSystemTrayIcon *trayIcon;
+    void closeEvent (QCloseEvent *event);
 
 protected:
     void showEvent(QShowEvent *event);

@@ -60,6 +60,9 @@ Phonograph::Phonograph(QWidget *parent) :
 
     /** --------------------- **/
 
+    // Setup system tray
+    this->createTrayIcon();
+    this->spawnTrayMenu();
 
     // Setup player and playlist
     this->playlist = new QMediaPlaylist;
@@ -77,16 +80,7 @@ Phonograph::Phonograph(QWidget *parent) :
     /** TO-DO: Difficulties in implementing the drag & drop functionality **/
     this->ui->library->setDragEnabled(true);
     this->ui->playlist->setDragDropMode(QAbstractItemView::DragDrop);
-/*
-    // Load the user's playlists
-    this->loadPlaylists();
 
-    // Update library
-    //this->updateLibrary();
-
-    // Load application settings
-    this->loadSettings();
-    */
 }
 
 void Phonograph::showEvent(QShowEvent *event) {
@@ -147,6 +141,146 @@ void Phonograph::saveSettings() {
     settings.setValue( "player/volume" , this->ui->volume->value() );
     settings.setValue( "player/mute" , this->ui->mute->isChecked() );
     settings.setValue( "library/categorizeby" , this->ui->categorizeBySelect->currentIndex() );
+
+}
+
+void Phonograph::createLibraryPopup() {
+
+    QAction* libraryAction1 = new QAction("Delete playlist", ui->savedPlaylists);
+    ui->savedPlaylists->addAction(libraryAction1);
+    connect(libraryAction1, SIGNAL(triggered()), this, SLOT(deletePlaylist()));
+
+}
+
+/*** System tray stuffz **/
+
+/**
+ * @brief Phonograph::createTrayIcon
+ * Initialize tray icon in window constructor
+ */
+void Phonograph::createTrayIcon() {
+
+    // Initiliaze and set icon
+    this->trayIcon = new QSystemTrayIcon();
+    this->trayIcon->setIcon( QIcon(":/images/background/theme/oud01.ico") );
+    this->trayIcon->setToolTip( "Phonograph" );
+
+    connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
+
+}
+
+/**
+ * @brief Phonograph::iconActivated
+ * @param reason
+ * When the tray icon is clicked
+ */
+void Phonograph::iconActivated(QSystemTrayIcon::ActivationReason reason) {
+
+    // Get action list
+    QList< QAction * > actions = this->trayIcon->contextMenu()->actions();
+
+    switch (reason) {
+        case QSystemTrayIcon::Trigger:
+        case QSystemTrayIcon::DoubleClick:
+            this->restoreWindow();
+            break;
+        case QSystemTrayIcon::MiddleClick:
+             //this->showMessage();
+            break;
+
+        case QSystemTrayIcon::Context:
+
+            if (actions.count() > 0) {
+                // Modify the play/pause action
+                actions[1]->setText( (this->player->state() == QMediaPlayer::PlayingState) ? "Pause" : "Play" );
+                actions[1]->setIcon( (this->player->state() == QMediaPlayer::PlayingState) ? QIcon(":/multimedia/player/icons/media-playback-pause-8.png") : QIcon(":/multimedia/player/icons/media-playback-start-8.png") );
+
+                // Modify the stop
+                actions[2]->setDisabled( !(this->player->state() == QMediaPlayer::PlayingState) );
+            }
+            break;
+       default:
+            break;
+    }
+
+}
+
+/**
+ * @brief restoreWindow
+ * Restores the window when it's minimized to tray
+ */
+void Phonograph::restoreWindow() {
+
+    // Show window / hide tray icon
+    this->hide();
+    this->trayIcon->hide();
+
+}
+
+void Phonograph::showMessage() {
+
+    //QSystemTrayIcon::MessageIcon icon = QSystemTrayIcon::MessageIcon( this->windowIcon() );
+    trayIcon->showMessage("Phonograph", "Rebetiko", QSystemTrayIcon::Information, 3000);
+
+}
+
+// Build menu for tray
+void Phonograph::spawnTrayMenu() {
+
+    // Create actions
+    QAction *previous = new QAction("Previous", this->trayIcon);
+    previous->setIcon( QIcon(":/multimedia/player/icons/media-skip-backward-8.png") );
+
+    QAction *play_pause = new QAction( "Play" , this->trayIcon);
+    play_pause->setIcon( QIcon(":/multimedia/player/icons/media-playback-start-8.png") );
+
+    QAction *stop = new QAction("Stop", this->trayIcon);
+    stop->setIcon( QIcon(":/multimedia/player/icons/media-playback-stop-8.png") );
+
+    QAction *next = new QAction("Next", this->trayIcon);
+    next->setIcon( QIcon(":/multimedia/player/icons/media-skip-backward-8.png") );
+
+    QAction *restore = new QAction("Restore", trayIcon);
+
+    QAction *quit = new QAction("Quit", this->trayIcon);
+    quit->setIcon( QIcon(":/phonograph/menu/icons/menu/application-exit-2.png") );
+
+    // Connect the signals
+    connect(previous, SIGNAL(triggered()), this, SLOT(on_skip_backward_clicked()));
+    connect(play_pause, SIGNAL(triggered(bool)), this, SLOT(on_play_clicked(bool)));
+    connect(stop, SIGNAL(triggered()), this, SLOT(on_stop_clicked()));
+    connect(next, SIGNAL(triggered()), this, SLOT(on_skip_forward_clicked()));
+    connect(restore, SIGNAL(triggered()), this, SLOT(restoreWindow()));
+    connect(quit, SIGNAL(triggered()), this, SLOT(on_actionQuit_triggered()));
+
+    QMenu *trayMenu = new QMenu();
+    trayMenu->addAction( previous );
+    trayMenu->addAction( play_pause );
+    trayMenu->addAction( stop );
+    trayMenu->addAction( next );
+    trayMenu->addSeparator();
+    trayMenu->addAction( restore );
+    trayMenu->addAction( quit );
+
+    this->trayIcon->setContextMenu( trayMenu );
+
+}
+
+/**
+ * @brief Phonograph::closeEvent
+ * @param event
+ * Override close event (user presses X on top right)
+ */
+void Phonograph::closeEvent (QCloseEvent *event) {
+
+    // Ignore the default action
+    event->ignore();
+
+    // Show system tray icon
+    this->trayIcon->show();
+
+    // Hide window
+    this->setVisible(false);
 
 }
 
@@ -546,6 +680,19 @@ void Phonograph::hideStatus() {
 /**** Events ****/
 /**************/
 
+void Phonograph::deletePlaylist() {
+
+    // Get the selected playlist
+    QString playlist = this->ui->savedPlaylists->currentItem()->text();
+
+    // Delete it
+    QPlaylist::deletePlaylist( playlist );
+
+    // Delete the item from the list
+    this->ui->savedPlaylists->item( this->ui->savedPlaylists->currentRow() );
+
+}
+
 void Phonograph::on_library_itemDoubleClicked(QTreeWidgetItem *item, int column) {
 
     QSongItem *itemClicked = dynamic_cast<QSongItem *>(item);
@@ -920,5 +1067,12 @@ void Phonograph::on_savedPlaylists_itemClicked(QListWidgetItem *item) {
 
     int dotInString = item->text().indexOf('.');
     this->ui->playlistName->setText( item->text().left(dotInString) );
+
+}
+
+void Phonograph::on_actionQuit_triggered() {
+
+    // Quit the application
+    QApplication::quit();
 
 }

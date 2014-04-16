@@ -14,8 +14,8 @@
    <string>Phonograph</string>
   </property>
   <property name="windowIcon">
-   <iconset theme="main">
-    <normaloff>theme/bouzouki.ico</normaloff>theme/bouzouki.ico</iconset>
+   <iconset>
+    <normaloff>theme/oud01.ico</normaloff>theme/oud01.ico</iconset>
   </property>
   <property name="iconSize">
    <size>
