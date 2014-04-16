@@ -84,19 +84,27 @@ Phonograph::Phonograph(QWidget *parent) :
 }
 
 void Phonograph::showEvent(QShowEvent *event) {
-    QMainWindow::showEvent(event);
-    QTimer::singleShot(0, this, SLOT(afterShowEvent()));
+
+    if (!this->wasMinimized) {
+
+        QMainWindow::showEvent(event);
+        QTimer::singleShot(0, this, SLOT(afterShowEvent()));
+
+    }
+
 }
 
 void Phonograph::afterShowEvent() {
-    // Load application settings
-    this->loadSettings();
 
-    // Update library
-    updateLibrary();
+        // Load application settings
+        this->loadSettings();
 
-    // Load the user's playlists
-    this->loadPlaylists();
+        // Update library
+        updateLibrary();
+
+        // Load the user's playlists
+        this->loadPlaylists();
+
 }
 
 Phonograph::~Phonograph() {
@@ -212,8 +220,9 @@ void Phonograph::iconActivated(QSystemTrayIcon::ActivationReason reason) {
 void Phonograph::restoreWindow() {
 
     // Show window / hide tray icon
-    this->hide();
+    this->show();
     this->trayIcon->hide();
+    this->wasMinimized = false;
 
 }
 
@@ -224,7 +233,10 @@ void Phonograph::showMessage() {
 
 }
 
-// Build menu for tray
+/**
+ * @brief Phonograph::spawnTrayMenu
+ * Build menu for tray icon
+ */
 void Phonograph::spawnTrayMenu() {
 
     // Create actions
@@ -253,6 +265,7 @@ void Phonograph::spawnTrayMenu() {
     connect(restore, SIGNAL(triggered()), this, SLOT(restoreWindow()));
     connect(quit, SIGNAL(triggered()), this, SLOT(on_actionQuit_triggered()));
 
+    // Create the menu
     QMenu *trayMenu = new QMenu();
     trayMenu->addAction( previous );
     trayMenu->addAction( play_pause );
@@ -262,6 +275,7 @@ void Phonograph::spawnTrayMenu() {
     trayMenu->addAction( restore );
     trayMenu->addAction( quit );
 
+    // Set the menu
     this->trayIcon->setContextMenu( trayMenu );
 
 }
@@ -280,7 +294,10 @@ void Phonograph::closeEvent (QCloseEvent *event) {
     this->trayIcon->show();
 
     // Hide window
-    this->setVisible(false);
+    this->hide();
+    //this->setWindowState( Qt::WindowMinimized );
+
+    this->wasMinimized = true;
 
 }
 

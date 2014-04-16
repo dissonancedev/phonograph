@@ -163,6 +163,7 @@ private:
     // Message dialog
     QDialog *statusDialog = NULL;
     bool isDialogShown = false;
+    bool wasMinimized = false;
 
     // System tray icon
     QSystemTrayIcon *trayIcon;
