@@ -60,8 +60,8 @@ public:
     void showStatus(QString msg);
     void hideStatus();
 
-    // Fix popup menu for library list
-    void createLibraryPopup();
+    // Fix popup menu for playlist list
+    void createPlaylistPopup();
 
     // System tray icon
     void createTrayIcon();

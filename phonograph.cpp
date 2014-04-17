@@ -76,6 +76,9 @@ Phonograph::Phonograph(QWidget *parent) :
     connect(this->ui->seeker, SIGNAL(sliderMoved(int)), this, SLOT(setMediaPosition(int)));
     connect(this->player, SIGNAL(durationChanged(qint64)), this, SLOT(setMediaTime(qint64)));
 
+    // Playlist popup
+    this->createPlaylistPopup();
+
     // Enable drag and drop for QListWidget and QTreeWidget
     /** TO-DO: Difficulties in implementing the drag & drop functionality **/
     this->ui->library->setDragEnabled(true);
@@ -85,6 +88,7 @@ Phonograph::Phonograph(QWidget *parent) :
 
 void Phonograph::showEvent(QShowEvent *event) {
 
+    // Check flag to avoid execution during restoring from system tray
     if (!this->wasMinimized) {
 
         QMainWindow::showEvent(event);
@@ -152,11 +156,19 @@ void Phonograph::saveSettings() {
 
 }
 
-void Phonograph::createLibraryPopup() {
+void Phonograph::createPlaylistPopup() {
 
+    // Create actions
     QAction* libraryAction1 = new QAction("Delete playlist", ui->savedPlaylists);
-    ui->savedPlaylists->addAction(libraryAction1);
+
+    // Connect the signals
     connect(libraryAction1, SIGNAL(triggered()), this, SLOT(deletePlaylist()));
+
+    // Add the action
+    this->ui->savedPlaylists->addAction(libraryAction1);
+
+    // Configure the list widget to display actions as popup menu
+    this->ui->savedPlaylists->setContextMenuPolicy(Qt::ActionsContextMenu);
 
 }
 
@@ -295,8 +307,8 @@ void Phonograph::closeEvent (QCloseEvent *event) {
 
     // Hide window
     this->hide();
-    //this->setWindowState( Qt::WindowMinimized );
 
+    // Set flag
     this->wasMinimized = true;
 
 }
@@ -580,15 +592,14 @@ void Phonograph::loadPlaylist(QString name) {
         this->selectedPlaylist.setName( name );
 
         // Load the playlist
-        selectedPlaylist.load();
+        this->selectedPlaylist.load();
         QList<Song> contents = this->selectedPlaylist.getPlaylist();
 
         // Loop through and add them to the list after clearing it and stopping it in case it's playing the current playlist
         this->on_stop_clicked();
         this->ui->playlist->clear();
 
-        int i;
-        for (i = 0; i < contents.count(); i++) {
+        for (int i = 0; i < contents.count(); i++) {
             this->addItemToPlaylist( contents[i] );
         }
 
@@ -706,7 +717,7 @@ void Phonograph::deletePlaylist() {
     QPlaylist::deletePlaylist( playlist );
 
     // Delete the item from the list
-    this->ui->savedPlaylists->item( this->ui->savedPlaylists->currentRow() );
+    delete this->ui->savedPlaylists->item( this->ui->savedPlaylists->currentRow() );
 
 }
 
@@ -1042,7 +1053,7 @@ void Phonograph::on_searchPlaylistClear_clicked() {
 
 void Phonograph::on_savedPlaylists_itemDoubleClicked(QListWidgetItem *item) {
 
-    this->loadPlaylist(item->text());
+    this->loadPlaylist( item->text() );
 
 }
 
