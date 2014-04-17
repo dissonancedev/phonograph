@@ -599,9 +599,9 @@ void Phonograph::loadPlaylist(QString name) {
         this->on_stop_clicked();
         this->ui->playlist->clear();
 
-        for (int i = 0; i < contents.count(); i++) {
-            this->addItemToPlaylist( contents[i] );
-        }
+        //for (int i = 0; i < contents.count(); i++) {
+        this->addItemsToPlaylist( contents );
+        //}
 
 }
 
@@ -1053,6 +1053,7 @@ void Phonograph::on_searchPlaylistClear_clicked() {
 
 void Phonograph::on_savedPlaylists_itemDoubleClicked(QListWidgetItem *item) {
 
+    this->ui->playlistName->setText( item->text() );
     this->loadPlaylist( item->text() );
 
 }
@@ -1089,13 +1090,6 @@ void Phonograph::on_categorizeBySelect_currentIndexChanged(int index) {
     // Re-enable the left sidebar
     this->ui->sidebarleft->setEnabled( true );
     hideStatus();
-}
-
-void Phonograph::on_savedPlaylists_itemClicked(QListWidgetItem *item) {
-
-    int dotInString = item->text().indexOf('.');
-    this->ui->playlistName->setText( item->text().left(dotInString) );
-
 }
 
 void Phonograph::on_actionQuit_triggered() {
