@@ -1,6 +1,8 @@
 #ifndef QPLAYLIST_H
 #define QPLAYLIST_H
 
+#include <QDebug>
+
 #include <QCoreApplication>
 #include <QDateTime>
 #include <QFile>

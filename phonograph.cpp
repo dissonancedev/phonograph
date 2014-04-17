@@ -589,13 +589,12 @@ void Phonograph::loadPlaylist(QString name) {
         this->selectedPlaylist.load();
         QList<Song> contents = this->selectedPlaylist.getPlaylist();
 
-        // Loop through and add them to the list after clearing it and stopping it in case it's playing the current playlist
+        // Stop player in case it's playing the current playlist and clear the latter
         this->on_stop_clicked();
         this->ui->playlist->clear();
 
-        //for (int i = 0; i < contents.count(); i++) {
+        // Add the songs
         this->addItemsToPlaylist( contents );
-        //}
 
 }
 

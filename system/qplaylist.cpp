@@ -54,7 +54,7 @@ void QPlaylist::setPlayist(QList<Song> playlist) {
 // I/O
 void QPlaylist::load() {
 
-    QString filename = QCoreApplication::applicationDirPath() + QString("/playlists/") + this->name;
+    QString filename = QCoreApplication::applicationDirPath() + QString("/playlists/") + this->name + QString(".spl");
 
     // Check if playlist exists or not
     QFile file( filename );
@@ -80,10 +80,9 @@ void QPlaylist::load() {
         int count;
         stream >> count;
 
-        int i;
         Song tmp;
         this->playlist.clear();
-        for (i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++) {
 
             stream >> tmp.id;
             stream >> tmp.title;
