@@ -88,6 +88,8 @@ Phonograph::Phonograph(QWidget *parent) :
     this->ui->library->setDragEnabled(true);
     this->ui->playlist->setDragDropMode(QAbstractItemView::DragDrop);
 
+    // Translations
+    this->ui->retranslateUi(this);
 }
 
 void Phonograph::showEvent(QShowEvent *event) {

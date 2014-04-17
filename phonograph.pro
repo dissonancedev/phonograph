@@ -43,4 +43,8 @@ RESOURCES += \
     icons.qrc \
     theme.qrc
 
+TRANSLATIONS = phonograph_en.ts \
+                   phonograph_gr.ts \
+                   phonograph_dk.ts
+
 OTHER_FILES +=

@@ -307,7 +307,7 @@ color: rgb(255, 255, 255);</string>
               <enum>QTabWidget::Rounded</enum>
              </property>
              <property name="currentIndex">
-              <number>3</number>
+              <number>0</number>
              </property>
              <property name="iconSize">
               <size>
@@ -697,7 +697,7 @@ p, li { white-space: pre-wrap; }
                 <normaloff>:/phonograph/tabs/icons/tabs/emblem-web.png</normaloff>:/phonograph/tabs/icons/tabs/emblem-web.png</iconset>
               </attribute>
               <attribute name="title">
-               <string>Wikipedia</string>
+               <string>Wiki</string>
               </attribute>
               <layout class="QVBoxLayout" name="verticalLayout_6">
                <item>
