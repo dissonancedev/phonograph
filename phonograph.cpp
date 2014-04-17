@@ -559,6 +559,10 @@ void Phonograph::updatePlaylist() {
     this->player->setPlaylist(this->playlist);
 }
 
+/**
+ * @brief Phonograph::loadPlaylists
+ * List all of the users playlists on disk
+ */
 void Phonograph::loadPlaylists() {
 
     QDir directory( QCoreApplication::applicationDirPath() + QString("/playlists"));
