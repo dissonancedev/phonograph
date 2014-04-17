@@ -17,6 +17,10 @@ Phonograph::Phonograph(QWidget *parent) :
     // Setup the UI
     ui->setupUi(this);
 
+    // Setup the flags
+    this->isDialogShown = false;
+    this->wasMinimized = false;
+
     /** Setup some CSS **/
     ui->mainframe->setStyleSheet( "QFrame#mainframe { border-image: url(:/images/background/theme/diskos-25-leivadia.jpg); }" );
     ui->playerFrame->setStyleSheet("QFrame#playerFrame { background-color: qconicalgradient(cx:1, cy:1, angle:286.6, stop:0.170455 rgba(0, 0, 0, 185),"
@@ -240,7 +244,6 @@ void Phonograph::restoreWindow() {
 
 void Phonograph::showMessage() {
 
-    //QSystemTrayIcon::MessageIcon icon = QSystemTrayIcon::MessageIcon( this->windowIcon() );
     trayIcon->showMessage("Phonograph", "Rebetiko", QSystemTrayIcon::Information, 3000);
 
 }
@@ -494,26 +497,12 @@ void Phonograph::addItemToPlaylist(Song song) {
     newItem->setIcon( QIcon(":/phonograph/general/icons/songbird.png") );
     newItem->song = song;
 
-    bool exists = false;
-    // Giati prepei na apagoreuetai na valeis 2 fores to idio tragoudi
-    // Thewritika prepei na einai efikto
-    /*
-    for (int i = 0; i < this->ui->playlist->count(); i++){
-        QPlaylistItem *tmp = dynamic_cast<QPlaylistItem *>(this->ui->playlist->item(i));
-        if (newItem->song.id == tmp->song.id) {
-            exists = true;
-            break;
-        }
-    }
-*/
-    //If the song does not exist in the current playlist...
-    if (!exists){
-        // ...put the item on the GUI playlist...
-        this->ui->playlist->addItem( newItem );
-        // ...and to the media playlist
-        QString url = this->library->getFilename( song.id );
-        this->playlist->addMedia( QUrl(url) );
-    }
+
+    // ...put the item on the GUI playlist...
+    this->ui->playlist->addItem( newItem );
+    // ...and to the media playlist
+    QString url = this->library->getFilename( song.id );
+    this->playlist->addMedia( QUrl(url) );
 }
 
 /**
@@ -586,6 +575,11 @@ void Phonograph::loadPlaylists() {
     }
 }
 
+/**
+ * @brief Phonograph::loadPlaylist
+ * @param name
+ * Load the user playlist named "name" from disk
+ */
 void Phonograph::loadPlaylist(QString name) {
 
         // Create a playlist object
@@ -605,6 +599,11 @@ void Phonograph::loadPlaylist(QString name) {
 
 }
 
+/**
+ * @brief Phonograph::savePlaylist
+ * @param name
+ * Save playlist to disk
+ */
 void Phonograph::savePlaylist(QString name) {
 
     // Get song list from playlist items located on the list widget
@@ -624,6 +623,11 @@ void Phonograph::savePlaylist(QString name) {
     this->loadPlaylists();
 }
 
+/**
+ * @brief Phonograph::fetchWikiArticle
+ * @param composer
+ * Fetch wiki article for composer from rebetiko sealabs
+ */
 void Phonograph::fetchWikiArticle(QString composer) {
     //QString lang = this->ui->wikipedia_select_lang->currentText();
     //QString request_url = QString("http://") + lang + QString(".wikipedia.org/wiki/") + composer.replace( QString(" "), QString("_") );
@@ -632,6 +636,11 @@ void Phonograph::fetchWikiArticle(QString composer) {
     this->ui->wiki_view->setUrl( request_url );
 }
 
+/**
+ * @brief Phonograph::fetchLyrics
+ * @param title
+ * Send a request to rebetiko sealabs to fetch the lyrics for the song if they are uploaded
+ */
 void Phonograph::fetchLyrics(QString title) {
     // Set the URL
     QString request_url = QString("http://rebetiko.sealabs.net/wiki/mediawiki/index.php/") + title.replace( QString(" "), QString("_") );
@@ -644,6 +653,11 @@ void Phonograph::fetchLyrics(QString title) {
     manager->get( QNetworkRequest( QUrl(request_url) ) );
 }
 
+/**
+ * @brief Phonograph::parseLyrics
+ * @param reply
+ * Parse the reply to the lyrics request
+ */
 void Phonograph::parseLyrics(QNetworkReply* reply) {
 
     // Get the contents

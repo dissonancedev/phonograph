@@ -28,7 +28,7 @@
 #include "aboutdialog.h"
 
 namespace Ui {
-class Phonograph;
+    class Phonograph;
 }
 
 class Phonograph : public QMainWindow
@@ -160,8 +160,8 @@ private:
 
     // Message dialog
     QDialog *statusDialog = NULL;
-    bool isDialogShown = false;
-    bool wasMinimized = false;
+    bool isDialogShown;
+    bool wasMinimized;
 
     // System tray icon
     QSystemTrayIcon *trayIcon;
