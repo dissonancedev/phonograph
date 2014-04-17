@@ -120,8 +120,6 @@ private slots:
 
     void on_actionAbout_Phonograph_triggered();
 
-    void on_wikipedia_select_lang_currentTextChanged(const QString &arg1);
-
     void on_savePlaylist_clicked();
 
     void on_searchLibraryText_textChanged(const QString &arg1);

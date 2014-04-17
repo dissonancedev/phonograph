@@ -970,19 +970,6 @@ void Phonograph::on_actionAbout_Phonograph_triggered() {
 
 }
 
-void Phonograph::on_wikipedia_select_lang_currentTextChanged(const QString &arg1) {
-
-    // Make sure player is actually playing a song from the playlist
-    if (this->player->state() == QMediaPlayer::PlayingState) {
-        // Fetch item that is playing
-        QPlaylistItem *item = dynamic_cast<QPlaylistItem *>(this->ui->playlist->item( this->playlist->currentIndex() ));
-
-        // Fetch wiki article
-        this->fetchWikiArticle( item->song.composer );
-    }
-
-}
-
 void Phonograph::on_savePlaylist_clicked() {
 
     QString name = this->ui->playlistName->text();
