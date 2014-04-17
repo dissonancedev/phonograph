@@ -131,7 +131,8 @@ Phonograph::~Phonograph() {
 /*****************/
 
 /**
- * @brief loadSettings loads all settings saved with QSettings
+ * @brief loadSettings
+ * Loads all settings saved with QSettings
  */
 void Phonograph::loadSettings() {
 
@@ -146,7 +147,8 @@ void Phonograph::loadSettings() {
 }
 
 /**
- * @brief saveSettings saves all the application's settings using QSettings
+ * @brief saveSettings
+ * Saves all the application's settings using QSettings
  */
 void Phonograph::saveSettings() {
 
