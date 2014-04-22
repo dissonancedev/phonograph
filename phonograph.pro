@@ -39,11 +39,10 @@ FORMS    += phonograph.ui \
     aboutdialog.ui \
     login.ui
 
-RESOURCES += \
-    icons.qrc \
+RESOURCES += icons.qrc \
     theme.qrc
 
-TRANSLATIONS = phonograph_en.ts \
+TRANSLATIONS += phonograph_en.ts \
                    phonograph_gr.ts \
                    phonograph_dk.ts
 

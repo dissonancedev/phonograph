@@ -87,9 +87,6 @@ Phonograph::Phonograph(QWidget *parent) :
     /** TO-DO: Difficulties in implementing the drag & drop functionality **/
     this->ui->library->setDragEnabled(true);
     this->ui->playlist->setDragDropMode(QAbstractItemView::DragDrop);
-
-    // Translations
-    this->ui->retranslateUi(this);
 }
 
 void Phonograph::showEvent(QShowEvent *event) {
@@ -143,8 +140,28 @@ void Phonograph::loadSettings() {
 
     // Player settings
     this->ui->volume->setValue( settings.value( "player/volume" ).toInt() );
-    this->ui->mute->setChecked( settings.value( "player/mute").toBool() );
-    //this->ui->categorizeBySelect->setCurrentIndex( settings.value( "library/categorizeby").toInt() );
+    this->ui->mute->setChecked( settings.value( "player/mute" ).toBool() );
+    this->ui->categorizeBySelect->setCurrentIndex( settings.value( "library/categorizeby" , 0).toInt());
+
+    // Set language
+    this->currentLanguage = settings.value( "general/language" , "en" ).toString();
+
+    if (this->currentLanguage == "en") {
+
+        this->ui->actionEnglish->setChecked( true );
+        on_actionEnglish_triggered( true );
+
+    } else if (this->currentLanguage == "gr") {
+
+        this->ui->actionGreek->setChecked( true );
+        on_actionGreek_triggered( true );
+
+    } else if (this->currentLanguage == "dk") {
+
+        this->ui->actionDansk->setChecked( true );
+        on_actionDansk_triggered( true );
+
+    }
 
 }
 
@@ -157,10 +174,40 @@ void Phonograph::saveSettings() {
     // Initialize a QSettings object
     QSettings settings("RebetikoSealabs", "Phonograph");
 
+    // General settings
+    settings.beginGroup("general");
+    settings.setValue( "language" , this->currentLanguage );
+    settings.endGroup();
+
+    // Library settings
+    settings.beginGroup("library");
+    settings.setValue( "categorizeby" , this->ui->categorizeBySelect->currentIndex() );
+    settings.endGroup();
+
     // Player settings
-    settings.setValue( "player/volume" , this->ui->volume->value() );
-    settings.setValue( "player/mute" , this->ui->mute->isChecked() );
-    settings.setValue( "library/categorizeby" , this->ui->categorizeBySelect->currentIndex() );
+    settings.beginGroup("player");
+    settings.setValue( "volume" , this->ui->volume->value() );
+    settings.setValue( "mute" , this->ui->mute->isChecked() );
+    settings.endGroup();
+
+}
+
+/**
+ * @brief Phonograph::switchLanguage
+ * @param lang
+ * Switches language on the entire application
+ */
+void Phonograph::switchLanguage() {
+
+    // Get the app directory
+    QString appDir = QApplication::applicationDirPath();
+
+    // Setup translator
+    QTranslator phonographTranslator;
+    if (phonographTranslator.load(appDir + QString("/languages/phonograph_%1.qm").arg(this->currentLanguage))) {
+        qApp->installTranslator(&phonographTranslator);
+         this->ui->retranslateUi(this);
+    }
 
 }
 
@@ -1104,5 +1151,44 @@ void Phonograph::on_actionQuit_triggered() {
 
     // Quit the application
     QApplication::quit();
+
+}
+
+void Phonograph::on_actionEnglish_triggered(bool checked) {
+
+    if (checked) {
+
+        this->ui->actionGreek->setChecked( false );
+        this->ui->actionDansk->setChecked( false );
+        this->currentLanguage = "en";
+        this->switchLanguage();
+
+    }
+
+}
+
+void Phonograph::on_actionGreek_triggered(bool checked) {
+
+    if (checked) {
+
+        this->ui->actionEnglish->setChecked( false );
+        this->ui->actionDansk->setChecked( false );
+        this->currentLanguage = "gr";
+        this->switchLanguage();
+
+    }
+
+}
+
+void Phonograph::on_actionDansk_triggered(bool checked) {
+
+    if (checked) {
+
+        this->ui->actionGreek->setChecked( false );
+        this->ui->actionEnglish->setChecked( false );
+        this->currentLanguage = "dk";
+        this->switchLanguage();
+
+    }
 
 }

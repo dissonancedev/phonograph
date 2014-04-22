@@ -77,7 +77,7 @@ p, li { white-space: pre-wrap; }
         <location filename="phonograph.ui" line="14"/>
         <location filename="phonograph.ui" line="1232"/>
         <source>Phonograph</source>
-        <translation></translation>
+        <translation>Phonograph</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="119"/>
@@ -103,7 +103,7 @@ p, li { white-space: pre-wrap; }
         <location filename="phonograph.ui" line="960"/>
         <location filename="phonograph.ui" line="1067"/>
         <source>...</source>
-        <translation></translation>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="153"/>

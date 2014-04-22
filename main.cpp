@@ -7,11 +7,6 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    // Setup translators
-    QTranslator phonographTranslator;
-    phonographTranslator.load("phonograph_gr.qm");
-    a.installTranslator(&phonographTranslator);
-
     // Set application icon
     a.setWindowIcon( QIcon(":/images/background/theme/oud01.ico") );
 

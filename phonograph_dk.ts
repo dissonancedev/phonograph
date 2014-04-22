@@ -6,7 +6,7 @@
     <message>
         <location filename="aboutdialog.ui" line="23"/>
         <source>About Phonograph</source>
-        <translation type="unfinished"></translation>
+        <translation>Om Phonograph</translation>
     </message>
     <message>
         <location filename="aboutdialog.ui" line="81"/>
@@ -23,7 +23,19 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Powered by the &lt;/span&gt;&lt;a href=&quot;http://rebetiko.sealabs.net&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#508ed8;&quot;&gt;Sealabs rebetiko community&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;2014 | Licenced under GPL v2&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;Phonograph v0.1&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; font-style:italic;&quot;&gt;En musikafspiller til Windows/Linux dedikeret til Rebetiko musik. Denne app har til formål at støtte påskønnelse af Rebetiko musik. Derfor giver den giver adgang til masser af sang optaget i hele det 20. århundrede.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Udviklet af George Chatzigeorgakidis, Nikos Parastatidis&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Baseret på &lt;/span&gt;&lt;a href=&quot;http://rebetiko.sealabs.net&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#508ed8;&quot;&gt;Sealabs rebetiko community&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;2014 | Licenced under GPL v2&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -65,13 +77,13 @@ p, li { white-space: pre-wrap; }
         <location filename="phonograph.ui" line="14"/>
         <location filename="phonograph.ui" line="1232"/>
         <source>Phonograph</source>
-        <translation type="unfinished"></translation>
+        <translation>Phonograph</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="119"/>
         <location filename="phonograph.ui" line="360"/>
         <source>Search...</source>
-        <translation type="unfinished"></translation>
+        <translation>Søg...</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="126"/>
@@ -91,89 +103,89 @@ p, li { white-space: pre-wrap; }
         <location filename="phonograph.ui" line="960"/>
         <location filename="phonograph.ui" line="1067"/>
         <source>...</source>
-        <translation type="unfinished"></translation>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="153"/>
         <source>Library</source>
-        <translation type="unfinished"></translation>
+        <translation>Sangliste</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="189"/>
         <source>Songs</source>
-        <translation type="unfinished"></translation>
+        <translation>Sang</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="198"/>
         <source>Playlists</source>
-        <translation type="unfinished"></translation>
+        <translation>Spillelister</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="241"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Categorize by:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Kategorisering:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="255"/>
         <source>Composer</source>
-        <translation type="unfinished"></translation>
+        <translation>Komponist</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="264"/>
         <source>Main Singer</source>
-        <translation type="unfinished"></translation>
+        <translation>Hovedsanger</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="330"/>
         <location filename="phonograph.ui" line="1240"/>
         <source>Playlist</source>
-        <translation type="unfinished"></translation>
+        <translation>Spilleliste</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="566"/>
         <source>Type the playlist&apos;s name</source>
-        <translation type="unfinished"></translation>
+        <translation>Indtast spillelistens navn</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="584"/>
         <source>Playing now</source>
-        <translation type="unfinished"></translation>
+        <translation>Spiller nu</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="621"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Song title:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Sangtitel:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="628"/>
         <location filename="phonograph.ui" line="656"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt; font-style:italic;&quot;&gt;...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt; font-style:italic;&quot;&gt;...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="635"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Composer:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Komponist:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="642"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="649"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Performer:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Hovedsanger:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="671"/>
         <source>Lyrics</source>
-        <translation type="unfinished"></translation>
+        <translation>Sangtekst</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="677"/>
         <source>Lyrics from rebetiko.sealabs.net</source>
-        <translation type="unfinished"></translation>
+        <translation>Sangtekst fra rebetiko.sealabs.net</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="684"/>
@@ -182,101 +194,106 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="700"/>
         <source>Wiki</source>
         <oldsource>Wikipedia</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>Wiki</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="713"/>
         <source>http://rebetiko.sealabs.net/wiki/mediawiki/index.php/Αρχική_σελίδα</source>
-        <translation type="unfinished"></translation>
+        <translation>http://rebetiko.sealabs.net/wiki/mediawiki/index.php/Αρχική_σελίδα</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="1045"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Volume&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Lydstyrke&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="1118"/>
         <location filename="phonograph.ui" line="1152"/>
         <source>00:00</source>
-        <translation type="unfinished"></translation>
+        <translation>00:00</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="1125"/>
         <source>color: rgb(255, 255, 255);
 background-color: rgba(255, 255, 255, 0);</source>
-        <translation type="unfinished"></translation>
+        <translation>color: rgb(255, 255, 255);
+background-color: rgba(255, 255, 255, 0);</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="1183"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;Artist - Title&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;Kunstner - Titel&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="1252"/>
         <location filename="phonograph.ui" line="1271"/>
         <source>Help</source>
-        <translation type="unfinished"></translation>
+        <translation>Hjælp</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="1280"/>
         <source>Visit Phonograph website</source>
-        <translation type="unfinished"></translation>
+        <translation>Besøg Phonograph webside</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="1289"/>
         <source>About Phonograph...</source>
-        <translation type="unfinished"></translation>
+        <translation>Om Phonograph...</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="1298"/>
         <source>Preferences</source>
-        <translation type="unfinished"></translation>
+        <translation>Indstillinger</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="1307"/>
         <source>Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>Afslut</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="1316"/>
         <source>Visit rebetiko.sealabs.net</source>
-        <translation type="unfinished"></translation>
+        <translation>Besøg rebetiko.sealabs.net</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="1325"/>
         <source>Audio Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Lydindstillinger</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="1334"/>
         <source>Add Item</source>
-        <translation type="unfinished"></translation>
+        <translation>Tilføj sang</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="1343"/>
         <source>Remove Item</source>
-        <translation type="unfinished"></translation>
+        <translation>Slet sang</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="1352"/>
         <source>Create New Playlist</source>
-        <translation type="unfinished"></translation>
+        <translation>Opret ny spilleliste</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="1361"/>
         <source>Save Playlist</source>
-        <translation type="unfinished"></translation>
+        <translation>Gem spilleliste</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="1370"/>
         <source>Clear playlist</source>
-        <translation type="unfinished"></translation>
+        <translation>Ryd spilleliste</translation>
     </message>
 </context>
 </TS>

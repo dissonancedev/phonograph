@@ -21,6 +21,7 @@
 #include <QWebElement>
 #include <QSystemTrayIcon>
 #include <QCloseEvent>
+#include <QTranslator>
 #include "system/musicdatabase.h"
 #include "system/qsongitem.h"
 #include "system/qplaylistitem.h"
@@ -66,6 +67,9 @@ public:
     // System tray icon
     void createTrayIcon();
     void spawnTrayMenu();
+
+    // Language
+    void switchLanguage();
 
 private slots:
 
@@ -138,6 +142,12 @@ private slots:
 
     void on_actionQuit_triggered();
 
+    void on_actionEnglish_triggered(bool checked);
+
+    void on_actionGreek_triggered(bool checked);
+
+    void on_actionDansk_triggered(bool checked);
+
 private:
     // UI variable
     Ui::Phonograph *ui;
@@ -160,6 +170,9 @@ private:
     QDialog *statusDialog = NULL;
     bool isDialogShown;
     bool wasMinimized;
+
+    // Language setting
+    QString currentLanguage;
 
     // System tray icon
     QSystemTrayIcon *trayIcon;
