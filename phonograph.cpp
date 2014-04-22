@@ -452,7 +452,7 @@ void Phonograph::setPlayingSongLabel(QMediaContent content) {
 */
 bool Phonograph::updateLibrary() {
     // Show status message
-    showStatus( "Syncing database..." );
+    showStatus( tr("Syncing database...") );
 
     this->ui->library->clear();
     QString host("46.4.73.116");
@@ -542,6 +542,9 @@ void Phonograph::addItemToLibrary(QTreeWidgetItem *topLevel, Song song, int cate
  * Adds a new song to the playlist
  */
 void Phonograph::addItemToPlaylist(Song song) {
+
+    this->showStatus( tr("Adding...") );
+
     // Create the item object
     QPlaylistItem *newItem = new QPlaylistItem();
     newItem->setText( song.composer + QString(" - ") + song.performer1 + QString(" - ") + song.title );
@@ -554,14 +557,19 @@ void Phonograph::addItemToPlaylist(Song song) {
     // ...and to the media playlist
     QString url = this->library->getFilename( song.id );
     this->playlist->addMedia( QUrl(url) );
+
+    this->hideStatus();
+
 }
 
 /**
  * @brief Phonograph::addItemsToPlaylist
  * @param songs
- * Adds many songs to the playlist
+ * Adds many songs at onceto the playlist
  */
 void Phonograph::addItemsToPlaylist(QList<Song> songs) {
+
+    this->showStatus( tr("Adding...") );
 
     // Get all the songs IDs
     QList<int> ids;
@@ -589,6 +597,9 @@ void Phonograph::addItemsToPlaylist(QList<Song> songs) {
         }
 
     }
+
+    this->hideStatus();
+
 }
 
 /**
@@ -637,6 +648,8 @@ void Phonograph::loadPlaylists() {
  */
 void Phonograph::loadPlaylist(QString name) {
 
+        showStatus( tr("Loading playlist...") );
+
         // Create a playlist object
         this->selectedPlaylist.setName( name );
 
@@ -650,6 +663,8 @@ void Phonograph::loadPlaylist(QString name) {
 
         // Add the songs
         this->addItemsToPlaylist( contents );
+
+        hideStatus();
 
 }
 
@@ -1016,6 +1031,10 @@ void Phonograph::on_seek_backward_clicked() {
 void Phonograph::on_actionAbout_Phonograph_triggered() {
 
     AboutDialog *about = new AboutDialog(this);
+
+    // Set language, size and then show it
+    about->currentLanguage = this->currentLanguage;
+    about->switchLanguage();
     about->setFixedSize(778, 437);
     about->show();
 
@@ -1117,7 +1136,7 @@ void Phonograph::on_categorizeBySelect_currentIndexChanged(int index) {
     // Disable left sidebar since it shouldn't be touchable while updating
     // but also to give the user the knowledge that it is updating
     this->ui->sidebarleft->setEnabled( false );
-    showStatus( "Sorting..." );
+    showStatus( tr("Sorting...") );
 
     // Clear library first
     this->ui->library->clear();
