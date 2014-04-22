@@ -137,7 +137,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="phonograph.ui" line="330"/>
-        <location filename="phonograph.ui" line="1240"/>
+        <location filename="phonograph.ui" line="1253"/>
         <source>Playlist</source>
         <translation>Λίστα αναπαραγωγής</translation>
     </message>
@@ -202,8 +202,9 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="phonograph.ui" line="700"/>
-        <source>Wikipedia</source>
-        <translation>Wiki</translation>
+        <source>Wiki</source>
+        <oldsource>Wikipedia</oldsource>
+        <translation type="unfinished">Wiki</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="713"/>
@@ -234,65 +235,106 @@ background-color: rgba(255, 255, 255, 0);</translation>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;Καλλιτέχνης - Τίτλος&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="phonograph.ui" line="1252"/>
-        <location filename="phonograph.ui" line="1271"/>
+        <location filename="phonograph.ui" line="1236"/>
+        <source>Language</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="phonograph.ui" line="1265"/>
+        <location filename="phonograph.ui" line="1284"/>
         <source>Help</source>
         <translation>Βοήθεια</translation>
     </message>
     <message>
-        <location filename="phonograph.ui" line="1280"/>
+        <location filename="phonograph.ui" line="1293"/>
         <source>Visit Phonograph website</source>
         <translation>Επισκεφθείτε τη σελίδα του Phonograph</translation>
     </message>
     <message>
-        <location filename="phonograph.ui" line="1289"/>
+        <location filename="phonograph.ui" line="1302"/>
         <source>About Phonograph...</source>
         <translation>Για το Phonograph...</translation>
     </message>
     <message>
-        <location filename="phonograph.ui" line="1298"/>
+        <location filename="phonograph.ui" line="1311"/>
         <source>Preferences</source>
         <translation>Επιλογές</translation>
     </message>
     <message>
-        <location filename="phonograph.ui" line="1307"/>
+        <location filename="phonograph.ui" line="1320"/>
         <source>Quit</source>
         <translation>Έξοδος</translation>
     </message>
     <message>
-        <location filename="phonograph.ui" line="1316"/>
+        <location filename="phonograph.ui" line="1329"/>
         <source>Visit rebetiko.sealabs.net</source>
         <translation>Επισκεφθείτε το rebetiko.sealabs.net</translation>
     </message>
     <message>
-        <location filename="phonograph.ui" line="1325"/>
+        <location filename="phonograph.ui" line="1338"/>
         <source>Audio Settings</source>
         <translation>Επιλογές ήχου</translation>
     </message>
     <message>
-        <location filename="phonograph.ui" line="1334"/>
+        <location filename="phonograph.ui" line="1347"/>
         <source>Add Item</source>
         <translation>Προσθήκη τραγουδιού</translation>
     </message>
     <message>
-        <location filename="phonograph.ui" line="1343"/>
+        <location filename="phonograph.ui" line="1356"/>
         <source>Remove Item</source>
         <translation>Διαγραφή τραγουδιού</translation>
     </message>
     <message>
-        <location filename="phonograph.ui" line="1352"/>
+        <location filename="phonograph.ui" line="1365"/>
         <source>Create New Playlist</source>
         <translation>Δημιουργία νέας λίστας</translation>
     </message>
     <message>
-        <location filename="phonograph.ui" line="1361"/>
+        <location filename="phonograph.ui" line="1374"/>
         <source>Save Playlist</source>
         <translation>Αποθήκευση νέας λίστας</translation>
     </message>
     <message>
-        <location filename="phonograph.ui" line="1370"/>
+        <location filename="phonograph.ui" line="1383"/>
         <source>Clear playlist</source>
         <translation>Καθαρισμός λίστας</translation>
+    </message>
+    <message>
+        <location filename="phonograph.ui" line="1395"/>
+        <source>English</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="phonograph.ui" line="1407"/>
+        <source>Ελληνικα</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="phonograph.ui" line="1419"/>
+        <source>Dansk</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="phonograph.cpp" line="455"/>
+        <source>Syncing database...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="phonograph.cpp" line="546"/>
+        <location filename="phonograph.cpp" line="572"/>
+        <source>Adding...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="phonograph.cpp" line="651"/>
+        <source>Loading playlist...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="phonograph.cpp" line="1139"/>
+        <source>Sorting...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
