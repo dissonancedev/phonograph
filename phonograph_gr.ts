@@ -204,7 +204,7 @@ p, li { white-space: pre-wrap; }
         <location filename="phonograph.ui" line="700"/>
         <source>Wiki</source>
         <oldsource>Wikipedia</oldsource>
-        <translation type="unfinished">Wiki</translation>
+        <translation>Wiki</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="713"/>
@@ -237,7 +237,7 @@ background-color: rgba(255, 255, 255, 0);</translation>
     <message>
         <location filename="phonograph.ui" line="1236"/>
         <source>Language</source>
-        <translation type="unfinished"></translation>
+        <translation>Γλώσσα</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="1265"/>
@@ -303,38 +303,37 @@ background-color: rgba(255, 255, 255, 0);</translation>
     <message>
         <location filename="phonograph.ui" line="1395"/>
         <source>English</source>
-        <translation type="unfinished"></translation>
+        <translation>English</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="1407"/>
         <source>Ελληνικα</source>
-        <translation type="unfinished"></translation>
+        <translation>Ελληνικά</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="1419"/>
         <source>Dansk</source>
-        <translation type="unfinished"></translation>
+        <translation>Dansk</translation>
     </message>
     <message>
         <location filename="phonograph.cpp" line="455"/>
         <source>Syncing database...</source>
-        <translation type="unfinished"></translation>
+        <translation>Συγχρονισμός...</translation>
     </message>
     <message>
-        <location filename="phonograph.cpp" line="546"/>
-        <location filename="phonograph.cpp" line="572"/>
+        <location filename="phonograph.cpp" line="903"/>
         <source>Adding...</source>
-        <translation type="unfinished"></translation>
+        <translation>Προσθήκη...</translation>
     </message>
     <message>
-        <location filename="phonograph.cpp" line="651"/>
+        <location filename="phonograph.cpp" line="1152"/>
         <source>Loading playlist...</source>
-        <translation type="unfinished"></translation>
+        <translation>Φορτώση λίστας...</translation>
     </message>
     <message>
-        <location filename="phonograph.cpp" line="1139"/>
+        <location filename="phonograph.cpp" line="1166"/>
         <source>Sorting...</source>
-        <translation type="unfinished"></translation>
+        <translation>Ταξινόμηση...</translation>
     </message>
 </context>
 </TS>

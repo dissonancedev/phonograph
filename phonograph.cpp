@@ -734,7 +734,7 @@ void Phonograph::parseLyrics(QNetworkReply* reply) {
 
     // Strip HTML
     QString lyrics = result.toInnerXml();
-    qDebug() << lyrics.indexOf("<!-- Saved");
+
     lyrics = lyrics.mid( lyrics.indexOf("</h2>") + 5 , lyrics.indexOf("<div") - lyrics.indexOf("</h2>") - 5 );
     lyrics = lyrics.replace( QRegExp("<<?.>") , "" ).replace( QRegExp("</<?.>") , "" ).replace( QRegExp("<!--.*-->") , "" ).replace( QRegExp("<.*>") , "" );
 
@@ -765,6 +765,7 @@ void Phonograph::showStatus(QString msg) {
     this->statusDialog->setWindowFlags( Qt::SplashScreen );
     this->statusDialog->setWindowModality( Qt::WindowModal );
     this->statusDialog->setFixedSize(220, 80);
+    this->statusDialog->setEnabled( false );
 
     // Fix a layout for it
     this->statusDialog->setLayout( new QVBoxLayout() );
@@ -778,7 +779,6 @@ void Phonograph::showStatus(QString msg) {
 
     // Show the dialog
     this->statusDialog->show();
-    //this->statusDialog->update();
 
     // Set flag
     this->isDialogShown = true;
@@ -792,7 +792,7 @@ void Phonograph::showStatus(QString msg) {
 void Phonograph::hideStatus() {
 
     // Close window and unset flag
-    this->statusDialog->close();
+    this->statusDialog->hide();
     this->isDialogShown = false;
 
 }
