@@ -220,7 +220,7 @@ p, li { white-space: pre-wrap; }
         <location filename="phonograph.ui" line="1118"/>
         <location filename="phonograph.ui" line="1152"/>
         <source>00:00</source>
-        <translation>00&gt;00</translation>
+        <translation>00:00</translation>
     </message>
     <message>
         <location filename="phonograph.ui" line="1125"/>
