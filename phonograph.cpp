@@ -103,14 +103,14 @@ void Phonograph::showEvent(QShowEvent *event) {
 
 void Phonograph::afterShowEvent() {
 
-        // Load application settings
-        this->loadSettings();
+    // Update library
+    this->updateLibrary();
 
-        // Update library
-        updateLibrary();
+    // Load application settings
+    this->loadSettings();
 
-        // Load the user's playlists
-        this->loadPlaylists();
+    // Load the user's playlists
+    this->loadPlaylists();
 
 }
 
@@ -139,12 +139,14 @@ void Phonograph::loadSettings() {
     QSettings settings("RebetikoSealabs", "Phonograph");
 
     // Player settings
-    this->ui->volume->setValue( settings.value( "player/volume" ).toInt() );
-    this->ui->mute->setChecked( settings.value( "player/mute" ).toBool() );
-    this->ui->categorizeBySelect->setCurrentIndex( settings.value( "library/categorizeby" , 0).toInt());
+    this->ui->volume->setValue( settings.value( "player/volume" , 50 ).toInt() );
+    this->ui->mute->setChecked( settings.value( "player/mute" , false ).toBool() );
+
+    // Application settings
+    this->ui->categorizeBySelect->setCurrentIndex( settings.value( "appl/categorizeby" , 0).toInt() );
 
     // Set language
-    this->currentLanguage = settings.value( "general/language" , "en" ).toString();
+    this->currentLanguage = settings.value( "appl/language" , "en" ).toString();
 
     if (this->currentLanguage == "en") {
 
@@ -174,21 +176,19 @@ void Phonograph::saveSettings() {
     // Initialize a QSettings object
     QSettings settings("RebetikoSealabs", "Phonograph");
 
-    // General settings
-    settings.beginGroup("general");
-    settings.setValue( "language" , this->currentLanguage );
-    settings.endGroup();
+    // Clear settings first
+    settings.clear();
 
-    // Library settings
-    settings.beginGroup("library");
-    settings.setValue( "categorizeby" , this->ui->categorizeBySelect->currentIndex() );
-    settings.endGroup();
+    // General settings
+    settings.setValue( "appl/language" , this->currentLanguage );
+    settings.setValue( "appl/categorizeby" , this->ui->categorizeBySelect->currentIndex() );
 
     // Player settings
-    settings.beginGroup("player");
-    settings.setValue( "volume" , this->ui->volume->value() );
-    settings.setValue( "mute" , this->ui->mute->isChecked() );
-    settings.endGroup();
+    settings.setValue( "player/volume" , this->ui->volume->value() );
+    settings.setValue( "player/mute" , this->ui->mute->isChecked() );
+
+    // Explicitly sync
+    settings.sync();
 
 }
 
@@ -543,8 +543,6 @@ void Phonograph::addItemToLibrary(QTreeWidgetItem *topLevel, Song song, int cate
  */
 void Phonograph::addItemToPlaylist(Song song) {
 
-    this->showStatus( tr("Adding...") );
-
     // Create the item object
     QPlaylistItem *newItem = new QPlaylistItem();
     newItem->setText( song.composer + QString(" - ") + song.performer1 + QString(" - ") + song.title );
@@ -558,8 +556,6 @@ void Phonograph::addItemToPlaylist(Song song) {
     QString url = this->library->getFilename( song.id );
     this->playlist->addMedia( QUrl(url) );
 
-    this->hideStatus();
-
 }
 
 /**
@@ -568,8 +564,6 @@ void Phonograph::addItemToPlaylist(Song song) {
  * Adds many songs at onceto the playlist
  */
 void Phonograph::addItemsToPlaylist(QList<Song> songs) {
-
-    this->showStatus( tr("Adding...") );
 
     // Get all the songs IDs
     QList<int> ids;
@@ -597,8 +591,6 @@ void Phonograph::addItemsToPlaylist(QList<Song> songs) {
         }
 
     }
-
-    this->hideStatus();
 
 }
 
@@ -648,8 +640,7 @@ void Phonograph::loadPlaylists() {
  */
 void Phonograph::loadPlaylist(QString name) {
 
-        showStatus( tr("Loading playlist...") );
-
+QThread::sleep(3);
         // Create a playlist object
         this->selectedPlaylist.setName( name );
 
@@ -663,8 +654,6 @@ void Phonograph::loadPlaylist(QString name) {
 
         // Add the songs
         this->addItemsToPlaylist( contents );
-
-        hideStatus();
 
 }
 
@@ -690,6 +679,7 @@ void Phonograph::savePlaylist(QString name) {
     this->selectedPlaylist.setPlayist( contents );
     this->selectedPlaylist.save();
     this->loadPlaylists();
+
 }
 
 /**
@@ -752,6 +742,17 @@ void Phonograph::parseLyrics(QNetworkReply* reply) {
     this->ui->lyrics_display->setText( lyrics );
 }
 
+void Phonograph::executeStatus() {
+
+
+
+}
+
+/**
+ * @brief Phonograph::showStatus
+ * @param msg
+ * Shows a splash-like dialog with a status message (msg) blocking the application
+ */
 void Phonograph::showStatus(QString msg) {
 
     if (this->isDialogShown == true) {
@@ -760,28 +761,37 @@ void Phonograph::showStatus(QString msg) {
 
     // Create the dialog and set its settings
     this->statusDialog = new QDialog( this );
-    this->statusDialog->setWindowOpacity( 0.70 );
+    this->statusDialog->setWindowOpacity( 0.72 );
     this->statusDialog->setWindowFlags( Qt::SplashScreen );
     this->statusDialog->setWindowModality( Qt::WindowModal );
+    this->statusDialog->setFixedSize(220, 80);
 
     // Fix a layout for it
     this->statusDialog->setLayout( new QVBoxLayout() );
 
     // Add the label with the status message
-    QLabel *label = new QLabel(  );
+    QLabel *label = new QLabel( this->statusDialog );
+    label->setAlignment( Qt::AlignCenter );
     label->setFont( QFont("MS Shell Dlg 2", 15, QFont::Bold, true) );
     label->setText( msg );
     this->statusDialog->layout()->addWidget( label );
 
     // Show the dialog
     this->statusDialog->show();
+    //this->statusDialog->update();
 
+    // Set flag
     this->isDialogShown = true;
 
 }
 
+/**
+ * @brief Phonograph::hideStatus
+ * Hides the status message if it is shown
+ */
 void Phonograph::hideStatus() {
 
+    // Close window and unset flag
     this->statusDialog->close();
     this->isDialogShown = false;
 
@@ -791,6 +801,10 @@ void Phonograph::hideStatus() {
 /**** Events ****/
 /**************/
 
+/**
+ * @brief Phonograph::deletePlaylist
+ * Slot function for deleting a playlist
+ */
 void Phonograph::deletePlaylist() {
 
     // Get the selected playlist
@@ -886,6 +900,8 @@ void Phonograph::on_play_clicked(bool checked) {
 
 void Phonograph::on_playlist_itemDoubleClicked(QListWidgetItem *item) {
 
+    this->showStatus( tr("Adding...") );
+
     if (!this->playlist->isEmpty()) {
 
         int current = this->ui->playlist->currentRow();
@@ -894,6 +910,8 @@ void Phonograph::on_playlist_itemDoubleClicked(QListWidgetItem *item) {
         this->ui->play->setChecked(true);
 
     }
+
+    this->hideStatus();
 
 }
 
@@ -929,11 +947,14 @@ void Phonograph::on_skip_forward_clicked() {
 }
 
 void Phonograph::on_clearPlaylist_clicked() {
+
     this->ui->playlist->clear();
     updatePlaylist();
+
 }
 
 void Phonograph::on_addPlaylistItem_clicked() {
+
     // Get the selected items
     QList<QTreeWidgetItem *> selectedSongs = this->ui->library->selectedItems();
 
@@ -957,6 +978,7 @@ void Phonograph::on_addPlaylistItem_clicked() {
 
         }
     }
+
 }
 
 void Phonograph::on_removePlaylistItem_clicked() {
@@ -1127,12 +1149,17 @@ void Phonograph::on_searchPlaylistClear_clicked() {
 
 void Phonograph::on_savedPlaylists_itemDoubleClicked(QListWidgetItem *item) {
 
+    showStatus( tr("Loading playlist...") );
+
     this->ui->playlistName->setText( item->text() );
     this->loadPlaylist( item->text() );
+
+    hideStatus();
 
 }
 
 void Phonograph::on_categorizeBySelect_currentIndexChanged(int index) {
+
     // Disable left sidebar since it shouldn't be touchable while updating
     // but also to give the user the knowledge that it is updating
     this->ui->sidebarleft->setEnabled( false );
@@ -1164,6 +1191,7 @@ void Phonograph::on_categorizeBySelect_currentIndexChanged(int index) {
     // Re-enable the left sidebar
     this->ui->sidebarleft->setEnabled( true );
     hideStatus();
+
 }
 
 void Phonograph::on_actionQuit_triggered() {

@@ -1,8 +1,11 @@
 #ifndef PHONOGRAPH_H
 #define PHONOGRAPH_H
 
+// Debug stuff
 #include <QDebug>
+#include <QThread>
 
+// Build stuff
 #include <cmath>
 #include <QMainWindow>
 #include <QTreeWidgetItem>
@@ -77,6 +80,9 @@ private slots:
     void iconActivated(QSystemTrayIcon::ActivationReason reason);
     void showMessage();
     void restoreWindow();
+
+    // Status dialog
+    void executeStatus();
 
     // Parse lyrics
     void parseLyrics(QNetworkReply* reply);
