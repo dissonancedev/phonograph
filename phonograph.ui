@@ -154,7 +154,7 @@
               </attribute>
               <layout class="QGridLayout" name="gridLayout_4">
                <item row="0" column="0">
-                <widget class="QTreeWidget" name="library">
+                <widget class="QLibraryWidget" name="library">
                  <property name="minimumSize">
                   <size>
                    <width>275</width>
@@ -172,8 +172,17 @@
 background-color: qconicalgradient(cx:1, cy:1, angle:286.6, stop:0.170455 rgba(0, 0, 0, 171), stop:0.806818 rgba(236, 236, 236, 160));
 color: rgb(255, 255, 255);</string>
                  </property>
+                 <property name="dragEnabled">
+                  <bool>true</bool>
+                 </property>
+                 <property name="dragDropMode">
+                  <enum>QAbstractItemView::DragOnly</enum>
+                 </property>
                  <property name="selectionMode">
                   <enum>QAbstractItemView::ExtendedSelection</enum>
+                 </property>
+                 <property name="selectionBehavior">
+                  <enum>QAbstractItemView::SelectItems</enum>
                  </property>
                  <property name="iconSize">
                   <size>
@@ -390,6 +399,12 @@ color: rgb(255, 255, 255);</string>
                   <string notr="true">selection-background-color: rgb(42, 162, 198);
 background-color: qconicalgradient(cx:1, cy:1, angle:294.3, stop:0.170455 rgba(0, 0, 0, 212), stop:0.806818 rgba(236, 236, 236, 191));
 color: rgb(255, 255, 255);</string>
+                 </property>
+                 <property name="dragDropMode">
+                  <enum>QAbstractItemView::DragDrop</enum>
+                 </property>
+                 <property name="defaultDropAction">
+                  <enum>Qt::CopyAction</enum>
                  </property>
                  <property name="selectionMode">
                   <enum>QAbstractItemView::ExtendedSelection</enum>
@@ -1430,7 +1445,12 @@ background-color: rgba(255, 255, 255, 0);</string>
   <customwidget>
    <class>QPlaylistWidget</class>
    <extends>QListWidget</extends>
-   <header>qplaylistwidget.h</header>
+   <header>system/qplaylistwidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QLibraryWidget</class>
+   <extends>QTreeWidget</extends>
+   <header>system/qlibrarywidget.h</header>
   </customwidget>
  </customwidgets>
  <resources>

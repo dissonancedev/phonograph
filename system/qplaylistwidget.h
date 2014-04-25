@@ -10,10 +10,16 @@
 class QPlaylistWidget: public QListWidget
 {
 public:
-    QPlaylistWidget();
-    QPlaylistWidget(QWidget *parent);
+    QPlaylistWidget(): QListWidget() {
+
+        this->setAcceptDrops( true );
+        this->setDragDropMode( QAbstractItemView::DragDrop );
+
+    }
+    QPlaylistWidget(QWidget *parent = 0): QListWidget(parent) {}
 protected:
-    void dropEvent ( QDropEvent * event );
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dropEvent(QDropEvent * event);
 };
 
 #endif // QPLAYLISTWIDGET_H

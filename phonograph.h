@@ -25,6 +25,7 @@
 #include <QSystemTrayIcon>
 #include <QCloseEvent>
 #include <QTranslator>
+#include <QProgressDialog>
 #include "system/musicdatabase.h"
 #include "system/qsongitem.h"
 #include "system/qplaylistitem.h"
@@ -173,6 +174,7 @@ private:
     void saveSettings();
 
     // Message dialog
+    QProgressDialog *progress;
     QDialog *statusDialog = NULL;
     bool isDialogShown;
     bool wasMinimized;

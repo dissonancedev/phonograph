@@ -1,22 +1,17 @@
 #include "qplaylistwidget.h"
 
-QPlaylistWidget::QPlaylistWidget(): QListWidget() {
+void QPlaylistWidget::dragEnterEvent(QDragEnterEvent *event) {
 
-}
-
-QPlaylistWidget::QPlaylistWidget(QWidget *parent): QListWidget(parent) {
-
-
-}
-
-void QPlaylistWidget::dropEvent ( QDropEvent * event ) {
-
-
-    qDebug() << "skata";
-    if (event->mimeData()->hasText()) {
-
-        qDebug() << event->mimeData()->text();
-
+    if (event->mimeData()->hasFormat("application/json")) {
+        event->acceptProposedAction();
     }
+
+}
+
+void QPlaylistWidget::dropEvent(QDropEvent * event) {
+
+    qDebug() << event->mimeData()->data("application/json");
+
+    //event->acceptProposedAction();
 
 }

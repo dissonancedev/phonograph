@@ -12,7 +12,7 @@ Phonograph::Phonograph(QWidget *parent) :
     ui(new Ui::Phonograph)
 {
     QStyleFactory styleFactory;
-    this->setStyle(styleFactory.create("plastiq ue"));
+    this->setStyle(styleFactory.create("plastique"));
 
     // Setup the UI
     ui->setupUi(this);
@@ -86,7 +86,10 @@ Phonograph::Phonograph(QWidget *parent) :
     // Enable drag and drop for QListWidget and QTreeWidget
     /** TO-DO: Difficulties in implementing the drag & drop functionality **/
     this->ui->library->setDragEnabled(true);
+    this->ui->library->setDragDropMode(QAbstractItemView::DragOnly);
     this->ui->playlist->setDragDropMode(QAbstractItemView::DragDrop);
+    this->ui->playlist->setAcceptDrops( true );
+    this->ui->playlist->setDefaultDropAction(Qt::CopyAction);
 }
 
 void Phonograph::showEvent(QShowEvent *event) {
@@ -754,9 +757,20 @@ void Phonograph::executeStatus() {
  * Shows a splash-like dialog with a status message (msg) blocking the application
  */
 void Phonograph::showStatus(QString msg) {
+/*
+    progress = new QProgressDialog(msg, "", 0, 2, this);
+    progress->setMinimum( 0 );
+
+    progress->setAutoClose( true );
+    progress->setWindowModality(Qt::WindowModal);
+    progress->setValue( 1 );
+    */
+
+
 
     if (this->isDialogShown == true) {
         hideStatus();
+        delete this->statusDialog;
     }
 
     // Create the dialog and set its settings
@@ -779,6 +793,7 @@ void Phonograph::showStatus(QString msg) {
 
     // Show the dialog
     this->statusDialog->show();
+    QCoreApplication::processEvents();
 
     // Set flag
     this->isDialogShown = true;
@@ -790,6 +805,10 @@ void Phonograph::showStatus(QString msg) {
  * Hides the status message if it is shown
  */
 void Phonograph::hideStatus() {
+    /*
+    progress->setValue( 2 );
+    progress->close();
+    */
 
     // Close window and unset flag
     this->statusDialog->hide();
