@@ -6,6 +6,7 @@ void QPlaylistWidget::dragEnterEvent(QDragEnterEvent *event) {
         event->acceptProposedAction();
    // }
 
+
 }
 
 void QPlaylistWidget::dropEvent(QDropEvent * event) {

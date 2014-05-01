@@ -14,6 +14,8 @@ public:
 
         this->setAcceptDrops( true );
         this->setDragDropMode( QAbstractItemView::DragDrop );
+        this->viewport()->setAcceptDrops( true );
+        this->setDropIndicatorShown( true );
 
     }
     QPlaylistWidget(QWidget *parent = 0): QListWidget(parent) {}

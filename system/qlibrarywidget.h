@@ -14,7 +14,9 @@
 class QLibraryWidget: public QTreeWidget
 {
 public:
-    QLibraryWidget(): QTreeWidget() {}
+    QLibraryWidget(): QTreeWidget() {
+        this->setDragEnabled( true );
+    }
     QLibraryWidget(QWidget *parent = 0): QTreeWidget(parent) {}
 
 protected:

@@ -2,12 +2,13 @@
 
 void QLibraryWidget::mouseMoveEvent(QMouseEvent * event) {
 
-    if (!(event->buttons() & Qt::LeftButton))
+    if ( !(event->buttons() & Qt::LeftButton) ) {
         return;
+    }
 
     // Create drag and mime data objects
-    QDrag *drag = new QDrag(this);
-    QMimeData *mimeData = new QMimeData;
+    QDrag *drag = new QDrag( this );
+    QMimeData *mimeData = new QMimeData();
 
     // Collect data
     QJsonObject obj;
@@ -57,9 +58,15 @@ void QLibraryWidget::mouseMoveEvent(QMouseEvent * event) {
     // Set the data
     mimeData->setData("application/json", data);
     drag->setMimeData(mimeData);
+    drag->setPixmap( QPixmap(":/phonograph/general/icons/songbird.png") );
+
 qDebug() << drag->supportedActions().testFlag( Qt::CopyAction );
 qDebug() << drag->supportedActions().testFlag( Qt::MoveAction );
+qDebug() << drag->supportedActions().testFlag( Qt::LinkAction );
 qDebug() << drag->supportedActions().testFlag( Qt::ActionMask );
+qDebug() << drag->supportedActions().testFlag( Qt::IgnoreAction );
+qDebug() << drag->supportedActions().testFlag( Qt::TargetMoveAction );
+
     Qt::DropAction dropAction = drag->exec( Qt::CopyAction );
 
 }
