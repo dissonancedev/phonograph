@@ -59,14 +59,14 @@ void QLibraryWidget::mouseMoveEvent(QMouseEvent * event) {
     mimeData->setData("application/json", data);
     drag->setMimeData(mimeData);
     drag->setPixmap( QPixmap(":/phonograph/general/icons/songbird.png") );
-
+/*
 qDebug() << drag->supportedActions().testFlag( Qt::CopyAction );
 qDebug() << drag->supportedActions().testFlag( Qt::MoveAction );
 qDebug() << drag->supportedActions().testFlag( Qt::LinkAction );
 qDebug() << drag->supportedActions().testFlag( Qt::ActionMask );
 qDebug() << drag->supportedActions().testFlag( Qt::IgnoreAction );
 qDebug() << drag->supportedActions().testFlag( Qt::TargetMoveAction );
-
+*/
     Qt::DropAction dropAction = drag->exec( Qt::CopyAction );
 
 }
