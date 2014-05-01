@@ -44,7 +44,7 @@ void QLibraryWidget::mouseMoveEvent(QMouseEvent * event) {
                 obj["performer1"] = songItem->song.performer1;
                 obj["title"] = songItem->song.title;
 
-                // Conver to JSON string
+                // Convert to JSON string
                 doc.setObject(obj);
                 data += doc.toJson();
 
@@ -57,9 +57,9 @@ void QLibraryWidget::mouseMoveEvent(QMouseEvent * event) {
     // Set the data
     mimeData->setData("application/json", data);
     drag->setMimeData(mimeData);
-
+qDebug() << drag->supportedActions().testFlag( Qt::CopyAction );
+qDebug() << drag->supportedActions().testFlag( Qt::MoveAction );
+qDebug() << drag->supportedActions().testFlag( Qt::ActionMask );
     Qt::DropAction dropAction = drag->exec( Qt::CopyAction );
-
-    qDebug() << "Dragger: " << dropAction;
 
 }

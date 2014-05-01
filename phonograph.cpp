@@ -243,6 +243,9 @@ void Phonograph::createTrayIcon() {
     this->trayIcon->setIcon( QIcon(":/images/background/theme/oud01.ico") );
     this->trayIcon->setToolTip( "Phonograph" );
 
+    // Show tray icon always
+    this->trayIcon->show();
+
     connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
 
 }
@@ -275,6 +278,9 @@ void Phonograph::iconActivated(QSystemTrayIcon::ActivationReason reason) {
 
                 // Modify the stop
                 actions[2]->setDisabled( !(this->player->state() == QMediaPlayer::PlayingState) );
+
+                // Modify restore
+                actions[4]->setDisabled( !this->wasMinimized );
             }
             break;
        default:
@@ -291,7 +297,7 @@ void Phonograph::restoreWindow() {
 
     // Show window / hide tray icon
     this->show();
-    this->trayIcon->hide();
+    //this->trayIcon->hide();
     this->wasMinimized = false;
 
 }
@@ -360,7 +366,7 @@ void Phonograph::closeEvent (QCloseEvent *event) {
     event->ignore();
 
     // Show system tray icon
-    this->trayIcon->show();
+    //this->trayIcon->show();
 
     // Hide window
     this->hide();
