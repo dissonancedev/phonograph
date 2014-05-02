@@ -45,8 +45,8 @@ public:
     ~Phonograph();
 
     bool updateLibrary();
-    void addItemToPlaylist(Song song);
-    void addItemsToPlaylist(QList<Song> songs);
+    void addItemToPlaylist(Song song, int pos = -1);
+    void addItemsToPlaylist(QList<Song> songs, int pos = -1);
     void addItemToLibrary(QTreeWidgetItem *topLevel, Song song, int categorizeBy);
     void updatePlaylist();
 

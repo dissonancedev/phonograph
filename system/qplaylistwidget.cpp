@@ -7,6 +7,10 @@ void QPlaylistWidget::dragEnterEvent(QDragEnterEvent *event) {
 
       event->acceptProposedAction();
 
+  } else if (event->mimeData()->hasFormat("application/x-qabstractitemmodeldatalist")) {
+
+       event->acceptProposedAction();
+
   } else {
 
       event->ignore();
@@ -22,7 +26,12 @@ void QPlaylistWidget::dragMoveEvent(QDragMoveEvent *event) {
 
         event->acceptProposedAction();
 
-    } else {
+    } else if (event->mimeData()->hasFormat("application/x-qabstractitemmodeldatalist")) {
+
+        event->acceptProposedAction();
+        QListWidget::dragMoveEvent( event );
+
+   } else {
 
         event->ignore();
 
@@ -34,6 +43,20 @@ void QPlaylistWidget::dropEvent(QDropEvent * event) {
 
     // Get pointer to main window in order to call functions from that class
     Phonograph *mainWindow = (Phonograph *)this->getParentWindow();
+
+    // First check if it is an internal move
+    if (event->mimeData()->hasFormat("application/x-qabstractitemmodeldatalist")) {
+
+        // Set to move action and call parent class default action which will result to internal move according to settings
+        event->setDropAction( Qt::MoveAction );
+        QListWidget::dropEvent( event );
+
+        // Call function to rearrange media playlist
+        mainWindow->updatePlaylist();
+
+        return;
+
+    }
 
     // Get data
     QByteArray data = event->mimeData()->data("application/json");

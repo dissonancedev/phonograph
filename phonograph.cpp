@@ -550,7 +550,7 @@ void Phonograph::addItemToLibrary(QTreeWidgetItem *topLevel, Song song, int cate
  * @param song
  * Adds a new song to the playlist
  */
-void Phonograph::addItemToPlaylist(Song song) {
+void Phonograph::addItemToPlaylist(Song song, int pos) {
 
     // Create the item object
     QPlaylistItem *newItem = new QPlaylistItem();
@@ -558,12 +558,22 @@ void Phonograph::addItemToPlaylist(Song song) {
     newItem->setIcon( QIcon(":/phonograph/general/icons/songbird.png") );
     newItem->song = song;
 
-
     // ...put the item on the GUI playlist...
     this->ui->playlist->addItem( newItem );
     // ...and to the media playlist
     QString url = this->library->getFilename( song.id );
-    this->playlist->addMedia( QUrl(url) );
+
+    // Update song with filename
+    newItem->song.filename = url;
+    if (pos > 0) {
+
+        this->playlist->insertMedia( pos, QUrl(url));
+
+    } else {
+
+        this->playlist->addMedia( QUrl(url) );
+
+    }
 
 }
 
@@ -572,7 +582,7 @@ void Phonograph::addItemToPlaylist(Song song) {
  * @param songs
  * Adds many songs at onceto the playlist
  */
-void Phonograph::addItemsToPlaylist(QList<Song> songs) {
+void Phonograph::addItemsToPlaylist(QList<Song> songs, int pos) {
 
     // Get all the songs IDs
     QList<int> ids;
@@ -580,11 +590,16 @@ void Phonograph::addItemsToPlaylist(QList<Song> songs) {
         ids.push_back( songs[i].id );
     }
 
+    // Fetch the filenames into a lookup table
     QHash<int, QString> filenames = this->library->getFilename( ids );
 
     if (filenames.size() == songs.size()) {
 
+        QList< QMediaContent > itemList;
         for (int i = 0; i < songs.size(); i++) {
+
+            // Set the real filename
+            songs[i].filename = filenames.value( songs[i].id );
 
             // Create the item object
             QPlaylistItem *newItem = new QPlaylistItem();
@@ -595,7 +610,21 @@ void Phonograph::addItemsToPlaylist(QList<Song> songs) {
             // ...put the item on the GUI playlist...
             this->ui->playlist->addItem( newItem );
             // ...and to the media playlist
-            this->playlist->addMedia( QUrl( filenames.value( songs[i].id ) ) );
+            if (pos > 0) {
+
+                itemList.push_back( QUrl( filenames.value( songs[i].id ) ) );
+
+            } else {
+
+                this->playlist->addMedia( QUrl( filenames.value( songs[i].id ) ) );
+
+            }
+
+        }
+
+        if (pos > 0) {
+
+            this->playlist->insertMedia( pos, itemList );
 
         }
 
@@ -606,20 +635,52 @@ void Phonograph::addItemsToPlaylist(QList<Song> songs) {
 /**
  * @brief Phonograph::updatePlaylist
  * This function updates the QMediaPlaylist object with the list's contents
- * Shouldn't be called everytime the playlist has been changed but only when it is loaded from scratch
+ * Syncronize media playlist to UI playlist
  */
 void Phonograph::updatePlaylist() {
-    this->playlist->clear();
 
+    // Loop through UI playlist
     for (int i = 0; i < this->ui->playlist->count(); i++) {
+
+        // Get the item by dynamic casting
         QPlaylistItem *item = dynamic_cast<QPlaylistItem *>(this->ui->playlist->item(i));
         if (item) {
-            QString url = this->library->getFilename( item->song.id );
-            this->playlist->addMedia( QUrl(url) );
+
+            // Check the current item on the UI playlist against the media playlist
+            if ( item->song.filename == this->playlist->media(i).canonicalUrl().toString() ) {
+
+                // If it is the same then skip
+                continue;
+
+            } else {
+
+                // If it is not the same then look if it exists somewhere else on the playlist
+                int exists = -1;
+                for (int j = 0; j < this->playlist->mediaCount(); j++) {
+
+                    if (this->playlist->media(j).canonicalUrl() == QUrl(item->song.filename)) {
+                        exists = j;
+                        break;
+                    }
+
+                }
+
+                // If it was found remove
+                if (exists > 0) {
+
+                    this->playlist->removeMedia(exists);
+
+                }
+
+                // And insert in the right place
+                this->playlist->insertMedia( i, QUrl(item->song.filename) );
+
+            }
+
         }
+
     }
 
-    this->player->setPlaylist(this->playlist);
 }
 
 /**

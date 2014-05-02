@@ -9,7 +9,7 @@ class QPlaylistItem: public QListWidgetItem
 public:
     Song song;
 
-    QPlaylistItem();
+    QPlaylistItem(): QListWidgetItem() {}
 };
 
 #endif // QPLAYLISTITEM_H

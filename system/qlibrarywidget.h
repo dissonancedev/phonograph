@@ -11,6 +11,7 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 #include "qsongitem.h"
+#include "song.h"
 
 class QLibraryWidget: public QTreeWidget
 {

@@ -9,7 +9,7 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QJsonArray>
-#include "qsongitem.h"
+#include "song.h"
 #include "../phonograph.h"
 
 class QPlaylistWidget: public QListWidget
@@ -18,9 +18,10 @@ public:
     QPlaylistWidget(): QListWidget() {
 
         this->setAcceptDrops( true );
-        this->setDragDropMode( QAbstractItemView::DragDrop );
+        this->setDragDropMode( QAbstractItemView::InternalMove );
         this->viewport()->setAcceptDrops( true );
         this->setDropIndicatorShown( true );
+        this->setDragEnabled( true );
 
     }
     QPlaylistWidget(QWidget *parent = 0): QListWidget(parent) {}

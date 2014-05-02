@@ -9,7 +9,8 @@ public:
     QString title;
     QString composer;
     QString performer1;
-    static QString filename;
+    QString filename;
+    static QString base_filename;
 };
 
 #endif // SONG_H

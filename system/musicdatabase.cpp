@@ -222,7 +222,7 @@ QString MusicDatabase::getFilename(int id) {
 
             QString value;
             if (resultSet.next()) {
-                value = Song::filename + normalizeUrl( resultSet.value(0).toString() );
+                value = Song::base_filename + normalizeUrl( resultSet.value(0).toString() );
             }
 
             // Disconnect from database
@@ -274,7 +274,7 @@ QHash<int, QString> MusicDatabase::getFilename(QList<int> ids) {
             while (resultSet.next()) {
                 QString value = resultSet.value(0).toString();
                 int id = resultSet.value(1).toInt();
-                result[id] = Song::filename + normalizeUrl( value );
+                result[id] = Song::base_filename + normalizeUrl( value );
             }
 
         }
