@@ -2,9 +2,14 @@
 
 void QPlaylistWidget::dragEnterEvent(QDragEnterEvent *event) {
 
+  // Accept if there's Json
   if (event->mimeData()->hasFormat("application/json")) {
 
-        event->acceptProposedAction();
+      event->acceptProposedAction();
+
+  } else {
+
+      event->ignore();
 
   }
 
@@ -12,17 +17,72 @@ void QPlaylistWidget::dragEnterEvent(QDragEnterEvent *event) {
 
 void QPlaylistWidget::dragMoveEvent(QDragMoveEvent *event) {
 
-  if (event->mimeData()->hasFormat("application/json")) {
+    // Accept if there's Json
+    if (event->mimeData()->hasFormat("application/json")) {
 
         event->acceptProposedAction();
 
-  }
+    } else {
+
+        event->ignore();
+
+    }
 
 }
 
 void QPlaylistWidget::dropEvent(QDropEvent * event) {
 
+    // Get pointer to main window in order to call functions from that class
+    Phonograph *mainWindow = (Phonograph *)this->getParentWindow();
 
-    QString data = event->mimeData()->data("application/json");
+    // Get data
+    QByteArray data = event->mimeData()->data("application/json");
+
+    // Parse JSON
+    QJsonDocument doc = QJsonDocument::fromJson( data );
+
+    // Get the array of songs
+    QJsonArray songs = doc.array();
+
+    if (songs.count() > 0) {
+
+        QList< Song > listOfSongs;
+        Song tmp;
+        for (int i = 0; i < songs.count(); i++) {
+
+            // Convert Json object to Song object
+            tmp.composer = songs[i].toObject().value( "composer" ).toString();
+            tmp.filename = songs[i].toObject().value( "filename" ).toString();
+            tmp.id = songs[i].toObject().value( "id" ).toInt();
+            tmp.performer1 = songs[i].toObject().value( "performer1" ).toString();
+            tmp.title = songs[i].toObject().value( "title" ).toString();
+
+            // Push in song list
+            listOfSongs.push_back( tmp );
+
+        }
+
+        // Add songs to playlist
+        mainWindow->addItemsToPlaylist( listOfSongs );
+
+    }
+
+}
+
+/**
+ * @brief QPlaylistWidget::getParentWindow
+ * @return The widget's parent window
+ */
+QWidget* QPlaylistWidget::getParentWindow() {
+
+    // Loop until we reach the top level wiget
+    QWidget *widget = this;
+    while (widget->parentWidget()) {
+
+        widget = widget->parentWidget();
+
+    }
+
+    return widget;
 
 }

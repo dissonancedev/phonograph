@@ -9,6 +9,7 @@
 #include <QMimeData>
 #include <QJsonObject>
 #include <QJsonDocument>
+#include <QJsonArray>
 #include "qsongitem.h"
 
 class QLibraryWidget: public QTreeWidget

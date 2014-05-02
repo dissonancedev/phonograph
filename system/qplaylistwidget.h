@@ -6,6 +6,11 @@
 #include <QListWidget>
 #include <QDropEvent>
 #include <QMimeData>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QJsonArray>
+#include "qsongitem.h"
+#include "../phonograph.h"
 
 class QPlaylistWidget: public QListWidget
 {
@@ -23,6 +28,9 @@ protected:
     void dragEnterEvent(QDragEnterEvent *event);
     void dropEvent(QDropEvent * event);
     void dragMoveEvent(QDragMoveEvent *event);
+
+private:
+    QWidget* getParentWindow();
 };
 
 #endif // QPLAYLISTWIDGET_H

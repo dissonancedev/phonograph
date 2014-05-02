@@ -11,9 +11,10 @@ void QLibraryWidget::mouseMoveEvent(QMouseEvent * event) {
     QMimeData *mimeData = new QMimeData();
 
     // Collect data
-    QJsonObject obj;
     QByteArray data;
     QJsonDocument doc;
+    QJsonObject obj;
+    QJsonArray array;
     for (int i = 0; i < this->selectedItems().count(); i++) {
 
         // See if item can be cast to QSongItem
@@ -28,9 +29,8 @@ void QLibraryWidget::mouseMoveEvent(QMouseEvent * event) {
             obj["performer1"] = songItem->song.performer1;
             obj["title"] = songItem->song.title;
 
-            // Convert to JSON string
-            doc.setObject(obj);
-            data += doc.toJson();
+            // Push in the array
+            array.push_back( obj );
 
         } else {
 
@@ -45,9 +45,8 @@ void QLibraryWidget::mouseMoveEvent(QMouseEvent * event) {
                 obj["performer1"] = songItem->song.performer1;
                 obj["title"] = songItem->song.title;
 
-                // Convert to JSON string
-                doc.setObject(obj);
-                data += doc.toJson();
+                // Push in the array
+                array.push_back( obj );
 
             }
 
@@ -55,18 +54,18 @@ void QLibraryWidget::mouseMoveEvent(QMouseEvent * event) {
 
     }
 
+    // Put array in document
+    doc.setArray( array );
+
+    // Convert to JSON string
+    data = doc.toJson();
+
     // Set the data
     mimeData->setData("application/json", data);
     drag->setMimeData(mimeData);
     drag->setPixmap( QPixmap(":/phonograph/general/icons/songbird.png") );
-/*
-qDebug() << drag->supportedActions().testFlag( Qt::CopyAction );
-qDebug() << drag->supportedActions().testFlag( Qt::MoveAction );
-qDebug() << drag->supportedActions().testFlag( Qt::LinkAction );
-qDebug() << drag->supportedActions().testFlag( Qt::ActionMask );
-qDebug() << drag->supportedActions().testFlag( Qt::IgnoreAction );
-qDebug() << drag->supportedActions().testFlag( Qt::TargetMoveAction );
-*/
-    Qt::DropAction dropAction = drag->exec( Qt::CopyAction );
+
+    // Start drag
+    drag->exec( Qt::CopyAction );
 
 }
