@@ -1044,35 +1044,50 @@ void Phonograph::on_addPlaylistItem_clicked() {
     // Get the selected items
     QList<QTreeWidgetItem *> selectedSongs = this->ui->library->selectedItems();
 
-    // Loop through selected items
-    for (int i = 0; i < selectedSongs.count(); i++){
-        // Attempt to cast to QSongItem
-        QSongItem *itemSelected = dynamic_cast<QSongItem *>(selectedSongs[i]);
+    // Loop through them and extract Song objects
+    QList< Song > allSongs;
+    for (int i = 0; i < selectedSongs.count(); i++) {
 
+        // Cast to QSongItem to get Song object
+        QSongItem *item = dynamic_cast<QSongItem *>(selectedSongs[i]);
+        if (item) {
 
-        if (itemSelected) {
-
-            // If casting succeeded, it means that it was actually a song
-            this->addItemToPlaylist( itemSelected->song );
+            // Put it in list
+            allSongs.push_back( item->song );
 
         } else {
 
-            // If not then it means it was a full category (composer/performer) and thus we will loop through and call the double click function to add them
             for (int j = 0; j < selectedSongs[i]->childCount(); j++) {
-                this->on_library_itemDoubleClicked(selectedSongs[i]->child(j), 0);
+
+                QSongItem *childItem = dynamic_cast<QSongItem *>(selectedSongs[i]->child(j));
+                if (childItem) {
+
+                    // Put it in list
+                    allSongs.push_back( childItem->song );
+
+                }
+
             }
 
         }
+
+    }
+
+    // If there where songs then call addItemsToPlaylist to add them
+    if (allSongs.size() > 0) {
+        this->addItemsToPlaylist( allSongs );
     }
 
 }
 
 void Phonograph::on_removePlaylistItem_clicked() {
+
+    // Get selected items
     QList<QListWidgetItem *> selectedSongs = this->ui->playlist->selectedItems();
 
     if (!this->playlist->isEmpty()) {
 
-        for(int i = 0; i < selectedSongs.count(); i++){
+        for (int i = 0; i < selectedSongs.count(); i++){
             QPlaylistItem *itemSelected = dynamic_cast<QPlaylistItem *>(selectedSongs[i]);
 
             for(int j = 0; j < this->ui->playlist->count(); j++) {

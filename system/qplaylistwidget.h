@@ -29,6 +29,7 @@ protected:
     void dragEnterEvent(QDragEnterEvent *event);
     void dropEvent(QDropEvent * event);
     void dragMoveEvent(QDragMoveEvent *event);
+    bool dropMimeData ( int index, const QMimeData * data, Qt::DropAction action );
 
 private:
     QWidget* getParentWindow();

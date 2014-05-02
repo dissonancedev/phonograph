@@ -6,6 +6,7 @@ void QPlaylistWidget::dragEnterEvent(QDragEnterEvent *event) {
   if (event->mimeData()->hasFormat("application/json")) {
 
       event->acceptProposedAction();
+      //QListWidget::dragEnterEvent( event );
 
   } else if (event->mimeData()->hasFormat("application/x-qabstractitemmodeldatalist")) {
 
@@ -24,7 +25,9 @@ void QPlaylistWidget::dragMoveEvent(QDragMoveEvent *event) {
     // Accept if there's Json
     if (event->mimeData()->hasFormat("application/json")) {
 
-        event->acceptProposedAction();
+        //event->acceptProposedAction();
+        event->accept();
+        //QListWidget::dragMoveEvent( event );
 
     } else if (event->mimeData()->hasFormat("application/x-qabstractitemmodeldatalist")) {
 
@@ -47,6 +50,9 @@ void QPlaylistWidget::dropEvent(QDropEvent * event) {
     // First check if it is an internal move
     if (event->mimeData()->hasFormat("application/x-qabstractitemmodeldatalist")) {
 
+        // Show message
+        mainWindow->showStatus( tr("Rearranging...") );
+
         // Set to move action and call parent class default action which will result to internal move according to settings
         event->setDropAction( Qt::MoveAction );
         QListWidget::dropEvent( event );
@@ -54,9 +60,15 @@ void QPlaylistWidget::dropEvent(QDropEvent * event) {
         // Call function to rearrange media playlist
         mainWindow->updatePlaylist();
 
+        // Hide status
+        mainWindow->hideStatus();
+
         return;
 
     }
+
+    // Show message
+    mainWindow->showStatus( tr("Adding...") );
 
     // Get data
     QByteArray data = event->mimeData()->data("application/json");
@@ -90,6 +102,16 @@ void QPlaylistWidget::dropEvent(QDropEvent * event) {
 
     }
 
+    // Hide status
+    mainWindow->hideStatus();
+
+}
+
+bool QPlaylistWidget::dropMimeData ( int index, const QMimeData * data, Qt::DropAction action ) {
+    qDebug() << "keftedakia: " << data->data("application/json");
+    qDebug() << "index: " << index;
+
+    return QListWidget::dropMimeData(index, data, action);
 }
 
 /**
