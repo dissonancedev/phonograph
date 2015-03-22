@@ -23,7 +23,8 @@ Phonograph::Phonograph(QWidget *parent) :
 
     /** Setup some CSS **/
     ui->mainframe->setStyleSheet( "QFrame#mainframe { border-image: url(:/images/background/theme/diskos-25-leivadia.jpg); }" );
-    ui->playerFrame->setStyleSheet("QFrame#playerFrame { background-color: rgba(102, 102, 102, 200); }");
+    ui->playerFrame->setStyleSheet("QFrame#playerFrame { background-color: qconicalgradient(cx:1, cy:1, angle:286.6, stop:0.170455 rgba(0, 0, 0, 185),"
+                                   "stop:0.806818 rgba(236, 236, 236, 191)); }");
 
     // Add shadow effects to several GUI elements for better visualization
     QGraphicsDropShadowEffect *nowPLayingEffect = new QGraphicsDropShadowEffect(this);
@@ -31,16 +32,6 @@ Phonograph::Phonograph(QWidget *parent) :
     QGraphicsDropShadowEffect *volumeLabelEffect = new QGraphicsDropShadowEffect(this);
     QGraphicsDropShadowEffect *startTimeLabelEffect = new QGraphicsDropShadowEffect(this);
     QGraphicsDropShadowEffect *endTimeLabelEffect = new QGraphicsDropShadowEffect(this);
-    QGraphicsDropShadowEffect *nowComposerLabelEffect = new QGraphicsDropShadowEffect(this);
-    QGraphicsDropShadowEffect *nowPerformerLabelEffect = new QGraphicsDropShadowEffect(this);
-    QGraphicsDropShadowEffect *nowTitleLabelEffect = new QGraphicsDropShadowEffect(this);
-    QGraphicsDropShadowEffect *lyricsSourceLabelEffect = new QGraphicsDropShadowEffect(this);
-    QGraphicsDropShadowEffect *nowPerformerEffect = new QGraphicsDropShadowEffect(this);
-    QGraphicsDropShadowEffect *nowTitleEffect = new QGraphicsDropShadowEffect(this);
-    QGraphicsDropShadowEffect *nowComposerEffect = new QGraphicsDropShadowEffect(this);
-    QGraphicsDropShadowEffect *libraryEffect = new QGraphicsDropShadowEffect(this);
-    QGraphicsDropShadowEffect *savedPlaylistEffect = new QGraphicsDropShadowEffect(this);
-    QGraphicsDropShadowEffect *playlistEffect = new QGraphicsDropShadowEffect(this);
 
     nowPLayingEffect->setBlurRadius(1);
     nowPLayingEffect->setColor(QColor("#000000"));
@@ -62,61 +53,11 @@ Phonograph::Phonograph(QWidget *parent) :
     endTimeLabelEffect->setColor(QColor("#000000"));
     endTimeLabelEffect->setOffset(1,1);
 
-    nowComposerLabelEffect->setBlurRadius(1);
-    nowComposerLabelEffect->setColor(QColor("#000000"));
-    nowComposerLabelEffect->setOffset(1,1);
-
-    nowPerformerLabelEffect->setBlurRadius(1);
-    nowPerformerLabelEffect->setColor(QColor("#000000"));
-    nowPerformerLabelEffect->setOffset(1,1);
-
-    nowTitleLabelEffect->setBlurRadius(1);
-    nowTitleLabelEffect->setColor(QColor("#000000"));
-    nowTitleLabelEffect->setOffset(1,1);
-
-    lyricsSourceLabelEffect->setBlurRadius(1);
-    lyricsSourceLabelEffect->setColor(QColor("#000000"));
-    lyricsSourceLabelEffect->setOffset(1,1);
-
-    nowPerformerEffect->setBlurRadius(1);
-    nowPerformerEffect->setColor(QColor("#000000"));
-    nowPerformerEffect->setOffset(1,1);
-
-    nowTitleEffect->setBlurRadius(1);
-    nowTitleEffect->setColor(QColor("#000000"));
-    nowTitleEffect->setOffset(1,1);
-
-    nowComposerEffect->setBlurRadius(1);
-    nowComposerEffect->setColor(QColor("#000000"));
-    nowComposerEffect->setOffset(1,1);
-
-    libraryEffect->setBlurRadius(1);
-    libraryEffect->setColor(QColor("#000000"));
-    libraryEffect->setOffset(1,1);
-
-    savedPlaylistEffect->setBlurRadius(1);
-    savedPlaylistEffect->setColor(QColor("#000000"));
-    savedPlaylistEffect->setOffset(1,1);
-
-    playlistEffect->setBlurRadius(1);
-    playlistEffect->setColor(QColor("#000000"));
-    playlistEffect->setOffset(1,1);
-
     this->ui->playingNowLabel->setGraphicsEffect(nowPLayingEffect);
     this->ui->categorizeByLabel->setGraphicsEffect(categorizeByLabelEffect);
     this->ui->volume_label->setGraphicsEffect(volumeLabelEffect);
     this->ui->startTimeLabel->setGraphicsEffect(startTimeLabelEffect);
     this->ui->endTimeLabel->setGraphicsEffect(endTimeLabelEffect);
-    this->ui->nowComposerLabel->setGraphicsEffect(nowComposerLabelEffect);
-    this->ui->nowTitleLabel->setGraphicsEffect(nowTitleLabelEffect);
-    this->ui->nowPerformerLabel->setGraphicsEffect(nowPerformerLabelEffect);
-    this->ui->lyricsSourceLabel->setGraphicsEffect(lyricsSourceLabelEffect);
-    this->ui->nowTitle->setGraphicsEffect(nowTitleEffect);
-    this->ui->nowPerformer->setGraphicsEffect(nowPerformerEffect);
-    this->ui->nowComposer->setGraphicsEffect(nowComposerEffect);
-    this->ui->library->setGraphicsEffect(libraryEffect);
-    this->ui->savePlaylist->setGraphicsEffect(savedPlaylistEffect);
-    this->ui->playlist->setGraphicsEffect(playlistEffect);
 
     this->ui->libraryTabWidget->setStyleSheet("QTabWidget,QTabWidget::pane,QTabBar { background-color: rgb(117, 117, 117, 200); border: 0px; }");
     this->ui->tabWidget->setStyleSheet("QTabWidget,QTabWidget::pane,QTabBar { background-color: rgb(117, 117, 117, 200); border: 0px; }");
@@ -523,9 +464,9 @@ bool Phonograph::updateLibrary() {
     showStatus( tr("Syncing database...") );
 
     this->ui->library->clear();
-    QString host("rebetiko.sealabs.net");
-    int port = 33306;
-    QString dbname("rebetikosongs");
+    QString host("46.4.73.116");
+    int port = 55432;
+    QString dbname("phpbb2");
 
     // Get username and password from file
     QFile credentialsFile("credentials.txt");

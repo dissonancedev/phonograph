@@ -3,7 +3,7 @@
 static bool login(QString username, QString password) {
 
     // Create database connection object
-    QSqlDatabase database = QSqlDatabase::addDatabase("QMYSQL");
+    QSqlDatabase database = QSqlDatabase::addDatabase("QPSQL");
 
     /*database.setHostName (  );
     database.setPort (  );
@@ -53,7 +53,7 @@ static bool login(QString username, QString password) {
     }
 
     database.close();
-    QSqlDatabase::removeDatabase("QMYSQL");
+    QSqlDatabase::removeDatabase("QPSQL");
 
     qDebug() << "Disconnected from database";
 

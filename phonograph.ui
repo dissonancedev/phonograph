@@ -167,12 +167,9 @@
                    <bold>true</bold>
                   </font>
                  </property>
-                 <property name="autoFillBackground">
-                  <bool>false</bool>
-                 </property>
                  <property name="styleSheet">
-                  <string notr="true">selection-background-color: rgb(42, 162, 198);
-background-color: rgba(102, 102, 102, 0);
+                  <string notr="true">color: rgb(238, 238, 238);
+background-color: qconicalgradient(cx:1, cy:1, angle:286.6, stop:0.170455 rgba(0, 0, 0, 171), stop:0.806818 rgba(236, 236, 236, 160));
 color: rgb(255, 255, 255);</string>
                  </property>
                  <property name="dragEnabled">
@@ -219,8 +216,8 @@ color: rgb(255, 255, 255);</string>
                   </font>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">selection-background-color: rgb(42, 162, 198);
-background-color: rgba(102, 102, 102, 0);
+                  <string notr="true">color: rgb(238, 238, 238);
+background-color: qconicalgradient(cx:1, cy:1, angle:286.6, stop:0.170455 rgba(0, 0, 0, 171), stop:0.806818 rgba(236, 236, 236, 160));
 color: rgb(255, 255, 255);</string>
                  </property>
                  <property name="iconSize">
@@ -400,7 +397,7 @@ color: rgb(255, 255, 255);</string>
                  </property>
                  <property name="styleSheet">
                   <string notr="true">selection-background-color: rgb(42, 162, 198);
-background-color: rgba(102, 102, 102, 0);
+background-color: qconicalgradient(cx:1, cy:1, angle:294.3, stop:0.170455 rgba(0, 0, 0, 212), stop:0.806818 rgba(236, 236, 236, 191));
 color: rgb(255, 255, 255);</string>
                  </property>
                  <property name="dragDropMode">
@@ -635,9 +632,6 @@ color: rgb(255, 255, 255);</string>
                   </property>
                   <item row="0" column="0">
                    <widget class="QLabel" name="nowTitleLabel">
-                    <property name="styleSheet">
-                     <string notr="true">color: rgb(255, 255, 255)</string>
-                    </property>
                     <property name="text">
                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Song title:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                     </property>
@@ -645,9 +639,6 @@ color: rgb(255, 255, 255);</string>
                   </item>
                   <item row="0" column="1">
                    <widget class="QLabel" name="nowTitle">
-                    <property name="styleSheet">
-                     <string notr="true">color: rgb(255, 255, 255)</string>
-                    </property>
                     <property name="text">
                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt; font-style:italic;&quot;&gt;...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                     </property>
@@ -655,9 +646,6 @@ color: rgb(255, 255, 255);</string>
                   </item>
                   <item row="1" column="0">
                    <widget class="QLabel" name="nowComposerLabel">
-                    <property name="styleSheet">
-                     <string notr="true">color: rgb(255, 255, 255)</string>
-                    </property>
                     <property name="text">
                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Composer:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                     </property>
@@ -665,9 +653,6 @@ color: rgb(255, 255, 255);</string>
                   </item>
                   <item row="1" column="1">
                    <widget class="QLabel" name="nowComposer">
-                    <property name="styleSheet">
-                     <string notr="true">color: rgb(255, 255, 255)</string>
-                    </property>
                     <property name="text">
                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                     </property>
@@ -675,9 +660,6 @@ color: rgb(255, 255, 255);</string>
                   </item>
                   <item row="2" column="0">
                    <widget class="QLabel" name="nowPerformerLabel">
-                    <property name="styleSheet">
-                     <string notr="true">color: rgb(255, 255, 255)</string>
-                    </property>
                     <property name="text">
                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Performer:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                     </property>
@@ -685,9 +667,6 @@ color: rgb(255, 255, 255);</string>
                   </item>
                   <item row="2" column="1">
                    <widget class="QLabel" name="nowPerformer">
-                    <property name="styleSheet">
-                     <string notr="true">color: rgb(255, 255, 255)</string>
-                    </property>
                     <property name="text">
                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt; font-style:italic;&quot;&gt;...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                     </property>
@@ -709,9 +688,6 @@ color: rgb(255, 255, 255);</string>
               <layout class="QVBoxLayout" name="verticalLayout_7">
                <item>
                 <widget class="QLabel" name="lyricsSourceLabel">
-                 <property name="styleSheet">
-                  <string notr="true">color: rgb(255, 255, 255);</string>
-                 </property>
                  <property name="text">
                   <string>Lyrics from rebetiko.sealabs.net</string>
                  </property>
@@ -723,8 +699,8 @@ color: rgb(255, 255, 255);</string>
                   <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Sans Serif'; font-size:14pt;&quot;&gt;...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                 </widget>
                </item>
@@ -1263,7 +1239,7 @@ background-color: rgba(255, 255, 255, 0);</string>
      <x>0</x>
      <y>0</y>
      <width>1118</width>
-     <height>21</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuPhonograph">
