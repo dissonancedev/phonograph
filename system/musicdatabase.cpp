@@ -15,9 +15,8 @@ MusicDatabase::MusicDatabase(QString url, int port, QString username, QString pa
     this->setDBName(dbname);
 
     // Create database connection object
-    this->database = QSqlDatabase::addDatabase("QPSQL");
+    this->database = QSqlDatabase::addDatabase("QMYSQL");
 }
-
 
 MusicDatabase::~MusicDatabase() {
     if (this->isConnected()) {
@@ -121,7 +120,7 @@ bool MusicDatabase::update() {
     if (this->connect()) {
 
         // Query to fetch all songs
-        QString sqlQuery = "SELECT rec_id, name, composer, singer1 FROM phpbb2.public.song";
+        QString sqlQuery = "SELECT rec_id, name, composer, singer1 FROM rebetikosongs.song";
 
         // Execute the query
         QSqlQuery resultSet = this->database.exec(sqlQuery);
@@ -190,7 +189,7 @@ bool MusicDatabase::isConnected() {
 int MusicDatabase::getRecordCount() {
     // Try to connect
     if (this->connect()) {
-        QString sqlQuery = "SELECT count(*) FROM phpbb2.public.song";
+        QString sqlQuery = "SELECT count(*) FROM rebetikosongs.song";
 
         // Execute the query
         QSqlQuery resultSet = this->database.exec(sqlQuery);
@@ -210,7 +209,7 @@ int MusicDatabase::getRecordCount() {
 QString MusicDatabase::getFilename(int id) {
 
     if (this->connect()) {
-        QString sqlQuery = QString("SELECT file_name FROM phpbb2.public.song WHERE rec_id = :id");
+        QString sqlQuery = QString("SELECT file_name FROM rebetikosongs.song WHERE rec_id = :id");
 
         // Execute the query
         QSqlQuery resultSet;
@@ -254,7 +253,7 @@ QHash<int, QString> MusicDatabase::getFilename(QList<int> ids) {
         }
 
         // Make the query
-        QString sqlQuery = QString("SELECT file_name, rec_id FROM phpbb2.public.song WHERE rec_id IN (") + inValuesBindings.join(", ") + QString(")");
+        QString sqlQuery = QString("SELECT file_name, rec_id FROM rebetikosongs.song WHERE rec_id IN (") + inValuesBindings.join(", ") + QString(")");
 
         // Prepare the query
         QSqlQuery resultSet;
