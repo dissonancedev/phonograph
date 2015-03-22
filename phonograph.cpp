@@ -19,7 +19,6 @@ Phonograph::Phonograph(QWidget *parent) :
 
     // Setup the flags
     this->isDialogShown = false;
-    this->wasMinimized = false;
 
     /** Setup some CSS **/
     ui->mainframe->setStyleSheet( "QFrame#mainframe { border-image: url(:/images/background/theme/diskos-25-leivadia.jpg); }" );
@@ -153,14 +152,14 @@ Phonograph::Phonograph(QWidget *parent) :
 
 void Phonograph::showEvent(QShowEvent *event) {
 
-    // Check flag to avoid execution during restoring from system tray
+    // Check flag to avoid execution during restoring from system tray or from minimized
     if (!this->wasMinimized) {
 
         QMainWindow::showEvent(event);
         QTimer::singleShot(0, this, SLOT(afterShowEvent()));
+        this->wasMinimized = true;
 
     }
-
 }
 
 void Phonograph::afterShowEvent() {
@@ -357,7 +356,7 @@ void Phonograph::restoreWindow() {
     // Show window / hide tray icon
     this->show();
     //this->trayIcon->hide();
-    this->wasMinimized = false;
+    //this->wasMinimized = false;
 
 }
 
@@ -384,7 +383,7 @@ void Phonograph::spawnTrayMenu() {
     stop->setIcon( QIcon(":/multimedia/player/icons/media-playback-stop-8.png") );
 
     QAction *next = new QAction("Next", this->trayIcon);
-    next->setIcon( QIcon(":/multimedia/player/icons/media-skip-backward-8.png") );
+    next->setIcon( QIcon(":/multimedia/player/icons/media-skip-forward-8.png") );
 
     QAction *restore = new QAction("Restore", trayIcon);
 
@@ -431,7 +430,7 @@ void Phonograph::closeEvent (QCloseEvent *event) {
     this->hide();
 
     // Set flag
-    this->wasMinimized = true;
+    //this->wasMinimized = true;
 
 }
 
