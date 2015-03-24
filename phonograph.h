@@ -97,7 +97,7 @@ private slots:
 
     void setMediaPosition(int position);
 
-    void on_library_itemDoubleClicked(QTreeWidgetItem *item, int column);
+    void on_library_itemDoubleClicked(QTreeWidgetItem *item);
 
     void on_stop_clicked();
 
@@ -107,7 +107,7 @@ private slots:
 
     void on_play_clicked(bool checked);
 
-    void on_playlist_itemDoubleClicked(QListWidgetItem *item);
+    void on_playlist_itemDoubleClicked();
 
     void on_skip_backward_clicked();
 

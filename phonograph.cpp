@@ -962,7 +962,7 @@ void Phonograph::deletePlaylist() {
 
 }
 
-void Phonograph::on_library_itemDoubleClicked(QTreeWidgetItem *item, int column) {
+void Phonograph::on_library_itemDoubleClicked(QTreeWidgetItem *item) {
 
     QSongItem *itemClicked = dynamic_cast<QSongItem *>(item);
 
@@ -1042,9 +1042,9 @@ void Phonograph::on_play_clicked(bool checked) {
 
 }
 
-void Phonograph::on_playlist_itemDoubleClicked(QListWidgetItem *item) {
+void Phonograph::on_playlist_itemDoubleClicked() {
 
-    this->showStatus( tr("Adding...") );
+    this->showStatus( tr("Loading...") );
 
     if (!this->playlist->isEmpty()) {
 
@@ -1093,7 +1093,7 @@ void Phonograph::on_skip_forward_clicked() {
 void Phonograph::on_clearPlaylist_clicked() {
 
     this->ui->playlist->clear();
-    updatePlaylist();
+    this->playlist->clear();
 
 }
 
@@ -1124,11 +1124,8 @@ void Phonograph::on_addPlaylistItem_clicked() {
                     allSongs.push_back( childItem->song );
 
                 }
-
             }
-
         }
-
     }
 
     // If there where songs then call addItemsToPlaylist to add them
@@ -1154,13 +1151,11 @@ void Phonograph::on_removePlaylistItem_clicked() {
                 if (itemSelected->song.id == playlistItem->song.id) {
                     delete this->ui->playlist->item(j);
                     this->playlist->removeMedia(j);
+                    updatePlaylist();
                 }
             }
-
         }
-
     }
-
 }
 
 void Phonograph::on_shuffle_clicked(bool checked) {
@@ -1175,7 +1170,6 @@ void Phonograph::on_shuffle_clicked(bool checked) {
         this->playlist->setPlaybackMode(QMediaPlaylist::Sequential);
 
     }
-
 }
 
 void Phonograph::on_toolButton_clicked(bool checked) {
@@ -1191,7 +1185,6 @@ void Phonograph::on_toolButton_clicked(bool checked) {
         this->playlist->setPlaybackMode(QMediaPlaylist::Sequential);
 
     }
-
 }
 
 void Phonograph::on_seek_forward_clicked() {
@@ -1249,7 +1242,7 @@ void Phonograph::on_searchLibraryText_textChanged(const QString &arg1) {
         for (int i = 0; i < topLevel->childCount(); i++) {
 
             // If we matched the composer then show the composer and all of the songs and continue to next composer
-            if ( topLevel->child(i)->text(0).contains(arg1) ) {
+            if ( topLevel->child(i)->text(0).toLower().contains(arg1.toLower())) {
                 topLevel->child(i)->setHidden( false );
                 for (int j = 0; j < topLevel->child(i)->childCount(); j++) {
                     topLevel->child(i)->child(j)->setHidden( false );
@@ -1261,8 +1254,8 @@ void Phonograph::on_searchLibraryText_textChanged(const QString &arg1) {
             bool isThereMatch = false;
             for (int j = 0; j < topLevel->child(i)->childCount(); j++) {
 
-                 topLevel->child(i)->child(j)->setHidden( ! topLevel->child(i)->child(j)->text(0).contains( arg1 ) );
-                 isThereMatch |= topLevel->child(i)->child(j)->text(0).contains( arg1 );
+                 topLevel->child(i)->child(j)->setHidden( ! topLevel->child(i)->child(j)->text(0).toLower().contains(arg1.toLower()));
+                 isThereMatch |= topLevel->child(i)->child(j)->text(0).toLower().contains(arg1.toLower());
 
             }
 
@@ -1275,7 +1268,7 @@ void Phonograph::on_searchLibraryText_textChanged(const QString &arg1) {
         for (int i = 0; i < this->ui->savedPlaylists->count(); i++) {
 
             QListWidgetItem *item = this->ui->savedPlaylists->item(i);
-            item->setHidden( !item->text().contains( arg1 ) );
+            item->setHidden( !item->text().toLower().contains(arg1.toLower()));
 
         }
 
@@ -1288,7 +1281,7 @@ void Phonograph::on_searchPlaylistText_textChanged(const QString &arg1) {
     for (int i = 0; i < this->ui->playlist->count(); i++) {
 
         QListWidgetItem *item = this->ui->playlist->item(i);
-        item->setHidden( !item->text().contains( arg1 ) );
+        item->setHidden( !item->text().toLower().contains(arg1.toLower()));
 
     }
 

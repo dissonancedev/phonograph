@@ -221,7 +221,8 @@ QString MusicDatabase::getFilename(int id) {
 
             QString value;
             if (resultSet.next()) {
-                value = Song::base_filename + normalizeUrl( resultSet.value(0).toString() );
+                QString normalized = normalizeUrl(resultSet.value(0).toString());
+                value = Song::base_filename + normalized;
             }
 
             // Disconnect from database
@@ -363,7 +364,7 @@ QString MusicDatabase::normalizeUrl(QString url) {
     url.replace("Ύ",  "%BE");
     url.replace("Ώ",  "%BF");
 
-    url.replace("'", "%5C%27");
+    url.replace("'", "%27");
     url.replace("΄", "%B4");
 
     return url;
