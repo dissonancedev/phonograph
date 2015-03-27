@@ -26,11 +26,13 @@
 #include <QCloseEvent>
 #include <QTranslator>
 #include <QProgressDialog>
+#include <QSignalMapper>
 #include "system/musicdatabase.h"
 #include "system/qsongitem.h"
 #include "system/qplaylistitem.h"
 #include "system/qplaylist.h"
 #include "aboutdialog.h"
+#include "playlistsdialog.h"
 
 namespace Ui {
     class Phonograph;
@@ -66,7 +68,7 @@ public:
     void hideStatus();
 
     // Fix popup menu for playlist list
-    void createPlaylistPopup();
+    void createContextMenus();
 
     // System tray icon
     void createTrayIcon();
@@ -90,6 +92,14 @@ private slots:
 
     // Delete playlist
     void deletePlaylist();
+
+    // Add to stored playlist
+    void addToExistingPlaylist(QString isFromLibrary);
+
+    // Add to current playing list
+    void addToCurrPlaylist();
+
+    void addSelectedItemsToCurrPlaylist();
 
     void setPlaybackTimer(qint64 position);
 

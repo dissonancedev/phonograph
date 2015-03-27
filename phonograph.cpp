@@ -9,8 +9,8 @@
 
 Phonograph::Phonograph(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::Phonograph)
-{
+    ui(new Ui::Phonograph) {
+
     QStyleFactory styleFactory;
     this->setStyle(styleFactory.create("plastique"));
 
@@ -138,8 +138,8 @@ Phonograph::Phonograph(QWidget *parent) :
     connect(this->ui->seeker, SIGNAL(sliderMoved(int)), this, SLOT(setMediaPosition(int)));
     connect(this->player, SIGNAL(durationChanged(qint64)), this, SLOT(setMediaTime(qint64)));
 
-    // Playlist popup
-    this->createPlaylistPopup();
+    // Create context menus
+    this->createContextMenus();
 
     // Enable drag and drop for QListWidget and QTreeWidget
     /** TO-DO: Difficulties in implementing the drag & drop functionality **/
@@ -148,6 +148,7 @@ Phonograph::Phonograph(QWidget *parent) :
     this->ui->playlist->setDragDropMode(QAbstractItemView::DragDrop);
     this->ui->playlist->setAcceptDrops( true );
     this->ui->playlist->setDefaultDropAction(Qt::CopyAction);
+
 }
 
 void Phonograph::showEvent(QShowEvent *event) {
@@ -272,19 +273,37 @@ void Phonograph::switchLanguage() {
 
 }
 
-void Phonograph::createPlaylistPopup() {
+void Phonograph::createContextMenus() {
 
     // Create actions
     QAction* libraryAction1 = new QAction("Delete playlist", ui->savedPlaylists);
+    QAction* libraryAction2 = new QAction(tr("Add to playlist..."), this->ui->library);
+    QAction* libraryAction3 = new QAction(tr("Add to current playlist"), this->ui->library);
+    QAction* libraryAction4 = new QAction(tr("Remove from playlist"), this->ui->library);
+    QAction* libraryAction5 = new QAction(tr("Add to playlist..."), this->ui->playlist);
 
-    // Connect the signals
+     // Connect the signals
+    QSignalMapper* mapper = new QSignalMapper(this);
+    connect(libraryAction2, SIGNAL(triggered()), mapper, SLOT(map()));
+    connect(libraryAction5, SIGNAL(triggered()), mapper, SLOT(map()));
+    mapper->setMapping(libraryAction2, "true");
+    mapper->setMapping(libraryAction5, "false");
+    connect(mapper, SIGNAL(mapped(QString)), this, SLOT(addToExistingPlaylist(const QString&)));
     connect(libraryAction1, SIGNAL(triggered()), this, SLOT(deletePlaylist()));
+    connect(libraryAction3, SIGNAL(triggered()), this, SLOT(addToCurrPlaylist()));
+    connect(libraryAction4, SIGNAL(triggered()), this, SLOT(on_removePlaylistItem_clicked()));
 
-    // Add the action
+    // Add the actions
     this->ui->savedPlaylists->addAction(libraryAction1);
+    this->ui->library->addAction(libraryAction2);
+    this->ui->library->addAction(libraryAction3);
+    this->ui->playlist->addAction(libraryAction4);
+    this->ui->playlist->addAction(libraryAction5);
 
-    // Configure the list widget to display actions as popup menu
+    // Configure the list widget to display actions as popup menus
     this->ui->savedPlaylists->setContextMenuPolicy(Qt::ActionsContextMenu);
+    this->ui->library->setContextMenuPolicy(Qt::ActionsContextMenu);
+    this->ui->playlist->setContextMenuPolicy(Qt::ActionsContextMenu);
 
 }
 
@@ -344,7 +363,6 @@ void Phonograph::iconActivated(QSystemTrayIcon::ActivationReason reason) {
        default:
             break;
     }
-
 }
 
 /**
@@ -632,7 +650,6 @@ void Phonograph::addItemToPlaylist(Song song, int pos) {
         this->playlist->addMedia( QUrl(url) );
 
     }
-
 }
 
 /**
@@ -651,7 +668,7 @@ void Phonograph::addItemsToPlaylist(QList<Song> songs, int pos) {
     // Fetch the filenames into a lookup table
     QHash<int, QString> filenames = this->library->getFilename( ids );
 
-    if (filenames.size() == songs.size()) {
+    //if (filenames.size() == songs.size()) {
 
         QList< QMediaContent > itemList;
         for (int i = 0; i < songs.size(); i++) {
@@ -677,7 +694,6 @@ void Phonograph::addItemsToPlaylist(QList<Song> songs, int pos) {
                 this->playlist->addMedia( QUrl( filenames.value( songs[i].id ) ) );
 
             }
-
         }
 
         if (pos > 0) {
@@ -685,9 +701,7 @@ void Phonograph::addItemsToPlaylist(QList<Song> songs, int pos) {
             this->playlist->insertMedia( pos, itemList );
 
         }
-
-    }
-
+    //}
 }
 
 /**
@@ -733,12 +747,9 @@ void Phonograph::updatePlaylist() {
                 // And insert in the right place
                 this->playlist->insertMedia( i, QUrl(item->song.filename) );
 
-            }
-
+           }
         }
-
     }
-
 }
 
 /**
@@ -872,8 +883,6 @@ void Phonograph::parseLyrics(QNetworkReply* reply) {
 
 void Phonograph::executeStatus() {
 
-
-
 }
 
 /**
@@ -890,8 +899,6 @@ void Phonograph::showStatus(QString msg) {
     progress->setWindowModality(Qt::WindowModal);
     progress->setValue( 1 );
     */
-
-
 
     if (this->isDialogShown == true) {
         hideStatus();
@@ -941,6 +948,47 @@ void Phonograph::hideStatus() {
 
 }
 
+/**
+ * @brief Phonograph::addSelectedItemsToCurrPlaylist
+ * Adds selected items from library (songs or artists) to current playing list
+ */
+void Phonograph::addSelectedItemsToCurrPlaylist()
+{
+    // Get the selected items
+    QList<QTreeWidgetItem *> selectedSongs = this->ui->library->selectedItems();
+
+    // Loop through them and extract Song objects
+    QList< Song > allSongs;
+    for (int i = 0; i < selectedSongs.count(); i++) {
+
+        // Cast to QSongItem to get Song object
+        QSongItem *item = dynamic_cast<QSongItem *>(selectedSongs[i]);
+        if (item) {
+
+            // Put it in list
+            allSongs.push_back( item->song );
+
+        } else {
+
+            for (int j = 0; j < selectedSongs[i]->childCount(); j++) {
+
+                QSongItem *childItem = dynamic_cast<QSongItem *>(selectedSongs[i]->child(j));
+                if (childItem) {
+
+                    // Put it in list
+                    allSongs.push_back( childItem->song );
+
+                }
+            }
+        }
+    }
+
+    // If there where songs then call addItemsToPlaylist to add them
+    if (allSongs.size() > 0) {
+        this->addItemsToPlaylist( allSongs );
+    }
+}
+
 /**************/
 /**** Events ****/
 /**************/
@@ -959,6 +1007,28 @@ void Phonograph::deletePlaylist() {
 
     // Delete the item from the list
     delete this->ui->savedPlaylists->item( this->ui->savedPlaylists->currentRow() );
+
+}
+
+/**
+ * @brief Phonograph::addToPlaylist
+ * Slot function for adding songs to a playlist
+ */
+void Phonograph::addToExistingPlaylist(QString isFromLibrary) {
+
+    PlaylistsDialog *playlists = new PlaylistsDialog(this, isFromLibrary, this->ui->library, (QListWidget*) this->ui->playlist);
+    playlists->setFixedSize(300, 437);
+    playlists->show();
+
+}
+
+/**
+ * @brief Phonograph::addToCurrPlaylist
+ * Slot function for adding songs to current playing list
+ */
+void Phonograph::addToCurrPlaylist() {
+
+    addSelectedItemsToCurrPlaylist();
 
 }
 
@@ -985,9 +1055,7 @@ void Phonograph::on_library_itemDoubleClicked(QTreeWidgetItem *item) {
         if (allSongs.size() > 0) {
             this->addItemsToPlaylist( allSongs );
         }
-
     }
-
 }
 
 void Phonograph::on_stop_clicked() {
@@ -1099,39 +1167,7 @@ void Phonograph::on_clearPlaylist_clicked() {
 
 void Phonograph::on_addPlaylistItem_clicked() {
 
-    // Get the selected items
-    QList<QTreeWidgetItem *> selectedSongs = this->ui->library->selectedItems();
-
-    // Loop through them and extract Song objects
-    QList< Song > allSongs;
-    for (int i = 0; i < selectedSongs.count(); i++) {
-
-        // Cast to QSongItem to get Song object
-        QSongItem *item = dynamic_cast<QSongItem *>(selectedSongs[i]);
-        if (item) {
-
-            // Put it in list
-            allSongs.push_back( item->song );
-
-        } else {
-
-            for (int j = 0; j < selectedSongs[i]->childCount(); j++) {
-
-                QSongItem *childItem = dynamic_cast<QSongItem *>(selectedSongs[i]->child(j));
-                if (childItem) {
-
-                    // Put it in list
-                    allSongs.push_back( childItem->song );
-
-                }
-            }
-        }
-    }
-
-    // If there where songs then call addItemsToPlaylist to add them
-    if (allSongs.size() > 0) {
-        this->addItemsToPlaylist( allSongs );
-    }
+    addSelectedItemsToCurrPlaylist();
 
 }
 
@@ -1226,8 +1262,9 @@ void Phonograph::on_savePlaylist_clicked() {
         return;
     }
 
-    this->savePlaylist( name );
-
+    this->savePlaylist(name);
+    this->ui->playlistName->setText("");
+    this->ui->libraryTabWidget->setCurrentIndex(1);
 }
 
 void Phonograph::on_searchLibraryText_textChanged(const QString &arg1) {
@@ -1271,9 +1308,7 @@ void Phonograph::on_searchLibraryText_textChanged(const QString &arg1) {
             item->setHidden( !item->text().toLower().contains(arg1.toLower()));
 
         }
-
     }
-
 }
 
 void Phonograph::on_searchPlaylistText_textChanged(const QString &arg1) {

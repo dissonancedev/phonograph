@@ -13,7 +13,8 @@ AboutDialog::~AboutDialog()
     delete ui;
 }
 
-void AboutDialog::switchLanguage() {
+void AboutDialog::switchLanguage()
+{
 
     // Get the app directory
     QString appDir = QApplication::applicationDirPath();

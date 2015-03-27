@@ -7,7 +7,6 @@
 class QSongItem: public QTreeWidgetItem
 {
 
-
 public:
     Song song;
 
