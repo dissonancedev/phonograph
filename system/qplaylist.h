@@ -38,6 +38,9 @@ public:
     // Static functions
     static QString getOriginalPlaylistName();
     static void deletePlaylist(QString name);
+
+    // Other
+    void removeItem(QString item);
 };
 
 #endif // QPLAYLIST_H

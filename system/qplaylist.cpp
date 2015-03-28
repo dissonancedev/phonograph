@@ -97,6 +97,17 @@ void QPlaylist::load() {
 
 }
 
+void QPlaylist::removeItem(QString item) {
+
+    for (int i=0; i<this->playlist.size(); i++) {
+        QString tmp = this->playlist[i].composer + QString(" - ") + this->playlist[i].performer1 + QString(" - ") + this->playlist[i].title;
+        if (QString::compare(item, tmp, Qt::CaseInsensitive) == 0) {
+            this->playlist.removeAt(i);
+        }
+    }
+
+}
+
 void QPlaylist::save() {
 
     QString filepath = QCoreApplication::applicationDirPath() + QString("/playlists/");
@@ -166,7 +177,7 @@ QString QPlaylist::getOriginalPlaylistName() {
 void QPlaylist::deletePlaylist(QString name) {
 
 #ifdef Q_OS_WIN32
-    QString path = QCoreApplication::applicationDirPath() + QString("\playlists\\");
+    QString path = QCoreApplication::applicationDirPath() + QString("\\playlists\\");
 #endif
 #ifdef Q_OS_LINUX
     QString path = QCoreApplication::applicationDirPath() + QString("/playlists/");

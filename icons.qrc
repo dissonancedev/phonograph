@@ -25,6 +25,8 @@
         <file>icons/playlist/edit-clear-list.png</file>
         <file>icons/playlist/edit-clear-locationbar-rtl.png</file>
         <file>icons/playlist/edit-delete-5.png</file>
+        <file>icons/playlist/edit-icon.png</file>
+        <file>icons/playlist/close-icon.png</file>
     </qresource>
     <qresource prefix="/phonograph/general">
         <file>icons/view-media-artist.png</file>

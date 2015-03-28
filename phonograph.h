@@ -33,6 +33,8 @@
 #include "system/qplaylist.h"
 #include "aboutdialog.h"
 #include "playlistsdialog.h"
+#include "playlistnamedialog.h"
+#include "playlistedit.h"
 
 namespace Ui {
     class Phonograph;
@@ -42,7 +44,7 @@ class Phonograph : public QMainWindow
 {
     Q_OBJECT
 
-public:
+public:  
     explicit Phonograph(QWidget *parent = 0);
     ~Phonograph();
 
@@ -52,8 +54,6 @@ public:
     void addItemToLibrary(QTreeWidgetItem *topLevel, Song song, int categorizeBy);
     void updatePlaylist();
 
-    // Playlist functiom
-    void loadPlaylists();
     void loadPlaylist(QString name);
     void savePlaylist(QString name);
 
@@ -79,6 +79,9 @@ public:
 
 private slots:
 
+    // Playlist functiom
+    void loadPlaylists();
+
     // System tray
     void iconActivated(QSystemTrayIcon::ActivationReason reason);
     void showMessage();
@@ -92,6 +95,9 @@ private slots:
 
     // Delete playlist
     void deletePlaylist();
+
+    // Edit playlist
+    void editPlaylist();
 
     // Add to stored playlist
     void addToExistingPlaylist(QString isFromLibrary);
@@ -165,7 +171,16 @@ private slots:
 
     void on_actionDansk_triggered(bool checked);
 
+    void on_delete_playlist_clicked();
+
+    void on_new_playlist_clicked();
+
+    void on_libraryTabWidget_currentChanged(int index);
+
+    void on_edit_playlist_clicked();
+
 private:
+
     // UI variable
     Ui::Phonograph *ui;
 

@@ -153,7 +153,7 @@
                <string>Library</string>
               </attribute>
               <layout class="QGridLayout" name="gridLayout_4">
-               <item row="0" column="0">
+               <item row="1" column="0" colspan="2">
                 <widget class="QLibraryWidget" name="library">
                  <property name="minimumSize">
                   <size>
@@ -210,7 +210,7 @@ color: rgb(255, 255, 255);</string>
                <string>Playlists</string>
               </attribute>
               <layout class="QGridLayout" name="gridLayout_5">
-               <item row="0" column="0">
+               <item row="0" column="0" colspan="4">
                 <widget class="QListWidget" name="savedPlaylists">
                  <property name="font">
                   <font>
@@ -228,6 +228,48 @@ color: rgb(255, 255, 255);</string>
                    <width>24</width>
                    <height>24</height>
                   </size>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QToolButton" name="new_playlist">
+                 <property name="text">
+                  <string>...</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="icons.qrc">
+                   <normaloff>:/multimedia/playlist/icons/playlist/document-new-5.png</normaloff>:/multimedia/playlist/icons/playlist/document-new-5.png</iconset>
+                 </property>
+                 <property name="autoRaise">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QToolButton" name="delete_playlist">
+                 <property name="text">
+                  <string>...</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="icons.qrc">
+                   <normaloff>:/multimedia/playlist/icons/playlist/close-icon.png</normaloff>:/multimedia/playlist/icons/playlist/close-icon.png</iconset>
+                 </property>
+                 <property name="autoRaise">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="2">
+                <widget class="QToolButton" name="edit_playlist">
+                 <property name="text">
+                  <string>...</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="icons.qrc">
+                   <normaloff>:/multimedia/playlist/icons/playlist/edit-icon.png</normaloff>:/multimedia/playlist/icons/playlist/edit-icon.png</iconset>
+                 </property>
+                 <property name="autoRaise">
+                  <bool>true</bool>
                  </property>
                 </widget>
                </item>
@@ -319,7 +361,7 @@ color: rgb(255, 255, 255);</string>
               <enum>QTabWidget::Rounded</enum>
              </property>
              <property name="currentIndex">
-              <number>1</number>
+              <number>0</number>
              </property>
              <property name="iconSize">
               <size>
@@ -462,14 +504,14 @@ color: rgb(255, 255, 255);</string>
                      <property name="bottomMargin">
                       <number>3</number>
                      </property>
-                     <item row="0" column="1">
-                      <widget class="QToolButton" name="removePlaylistItem">
+                     <item row="0" column="0">
+                      <widget class="QToolButton" name="addPlaylistItem">
                        <property name="text">
                         <string>...</string>
                        </property>
                        <property name="icon">
                         <iconset resource="icons.qrc">
-                         <normaloff>:/multimedia/playlist/icons/playlist/edit-delete-5.png</normaloff>:/multimedia/playlist/icons/playlist/edit-delete-5.png</iconset>
+                         <normaloff>:/multimedia/playlist/icons/playlist/edit-add.png</normaloff>:/multimedia/playlist/icons/playlist/edit-add.png</iconset>
                        </property>
                        <property name="iconSize">
                         <size>
@@ -482,14 +524,14 @@ color: rgb(255, 255, 255);</string>
                        </property>
                       </widget>
                      </item>
-                     <item row="0" column="0">
-                      <widget class="QToolButton" name="addPlaylistItem">
+                     <item row="0" column="1">
+                      <widget class="QToolButton" name="removePlaylistItem">
                        <property name="text">
                         <string>...</string>
                        </property>
                        <property name="icon">
                         <iconset resource="icons.qrc">
-                         <normaloff>:/multimedia/playlist/icons/playlist/edit-add.png</normaloff>:/multimedia/playlist/icons/playlist/edit-add.png</iconset>
+                         <normaloff>:/multimedia/playlist/icons/playlist/edit-delete-5.png</normaloff>:/multimedia/playlist/icons/playlist/edit-delete-5.png</iconset>
                        </property>
                        <property name="iconSize">
                         <size>
@@ -515,7 +557,7 @@ color: rgb(255, 255, 255);</string>
                        </property>
                       </spacer>
                      </item>
-                     <item row="0" column="6">
+                     <item row="0" column="5">
                       <widget class="QToolButton" name="savePlaylist">
                        <property name="text">
                         <string>...</string>
@@ -535,27 +577,7 @@ color: rgb(255, 255, 255);</string>
                        </property>
                       </widget>
                      </item>
-                     <item row="0" column="5">
-                      <widget class="QToolButton" name="createNewPlaylist">
-                       <property name="text">
-                        <string>...</string>
-                       </property>
-                       <property name="icon">
-                        <iconset resource="icons.qrc">
-                         <normaloff>:/multimedia/playlist/icons/playlist/document-new-5.png</normaloff>:/multimedia/playlist/icons/playlist/document-new-5.png</iconset>
-                       </property>
-                       <property name="iconSize">
-                        <size>
-                         <width>24</width>
-                         <height>24</height>
-                        </size>
-                       </property>
-                       <property name="autoRaise">
-                        <bool>true</bool>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="0" column="7">
+                     <item row="0" column="6">
                       <widget class="QToolButton" name="clearPlaylist">
                        <property name="text">
                         <string>...</string>

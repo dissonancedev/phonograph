@@ -145,8 +145,10 @@ Phonograph::Phonograph(QWidget *parent) :
     /** TO-DO: Difficulties in implementing the drag & drop functionality **/
     this->ui->library->setDragEnabled(true);
     this->ui->library->setDragDropMode(QAbstractItemView::DragOnly);
+    //this->ui->savedPlaylists->setDragEnabled(true);
+    //this->ui->savedPlaylists->setDragDropMode(QAbstractItemView::DragOnly);
     this->ui->playlist->setDragDropMode(QAbstractItemView::DragDrop);
-    this->ui->playlist->setAcceptDrops( true );
+    this->ui->playlist->setAcceptDrops(true);
     this->ui->playlist->setDefaultDropAction(Qt::CopyAction);
 
 }
@@ -281,6 +283,7 @@ void Phonograph::createContextMenus() {
     QAction* libraryAction3 = new QAction(tr("Add to current playlist"), this->ui->library);
     QAction* libraryAction4 = new QAction(tr("Remove from playlist"), this->ui->library);
     QAction* libraryAction5 = new QAction(tr("Add to playlist..."), this->ui->playlist);
+    QAction* libraryAction6 = new QAction(tr("Edit playlist"), this->ui->playlist);
 
      // Connect the signals
     QSignalMapper* mapper = new QSignalMapper(this);
@@ -292,8 +295,10 @@ void Phonograph::createContextMenus() {
     connect(libraryAction1, SIGNAL(triggered()), this, SLOT(deletePlaylist()));
     connect(libraryAction3, SIGNAL(triggered()), this, SLOT(addToCurrPlaylist()));
     connect(libraryAction4, SIGNAL(triggered()), this, SLOT(on_removePlaylistItem_clicked()));
+    connect(libraryAction6, SIGNAL(triggered()), this, SLOT(editPlaylist()));
 
     // Add the actions
+    this->ui->savedPlaylists->addAction(libraryAction6);
     this->ui->savedPlaylists->addAction(libraryAction1);
     this->ui->library->addAction(libraryAction2);
     this->ui->library->addAction(libraryAction3);
@@ -989,9 +994,9 @@ void Phonograph::addSelectedItemsToCurrPlaylist()
     }
 }
 
-/**************/
+/****************/
 /**** Events ****/
-/**************/
+/****************/
 
 /**
  * @brief Phonograph::deletePlaylist
@@ -999,15 +1004,34 @@ void Phonograph::addSelectedItemsToCurrPlaylist()
  */
 void Phonograph::deletePlaylist() {
 
-    // Get the selected playlist
-    QString playlist = this->ui->savedPlaylists->currentItem()->text();
+    if (this->ui->savedPlaylists->count() > 0) {
+        if (this->ui->savedPlaylists->selectedItems().count() > 0) {
+            // Get the selected playlist
+            QString playlist = this->ui->savedPlaylists->currentItem()->text();
 
-    // Delete it
-    QPlaylist::deletePlaylist( playlist );
+            // Delete it
+            QPlaylist::deletePlaylist( playlist );
 
-    // Delete the item from the list
-    delete this->ui->savedPlaylists->item( this->ui->savedPlaylists->currentRow() );
+            // Delete the item from the list
+            delete this->ui->savedPlaylists->item( this->ui->savedPlaylists->currentRow() );
+        }
+    }
+}
 
+/**
+ * @brief Phonograph::editPlaylist
+ * Slot function for editing a playlist
+ */
+void Phonograph::editPlaylist() {
+
+    if (this->ui->savedPlaylists->count() > 0) {
+        if (this->ui->savedPlaylists->selectedItems().count() > 0) {
+            PlaylistEditDialog *playlistEdit = new PlaylistEditDialog(this, this->ui->savedPlaylists->currentItem());
+            //connect(playlistName, SIGNAL(loadPlaylists()), this, SLOT(loadPlaylists()));
+            playlistEdit->setFixedSize(381, 437);
+            playlistEdit->show();
+        }
+    }
 }
 
 /**
@@ -1151,11 +1175,9 @@ void Phonograph::on_skip_backward_clicked() {
 void Phonograph::on_skip_forward_clicked() {
 
     if(this->playlist->nextIndex() != -1) {
-
-        this->playlist->next();
-
+        if (this->ui->playlist->count() >= this->playlist->nextIndex())
+            this->playlist->next();
     }
-
 }
 
 void Phonograph::on_clearPlaylist_clicked() {
@@ -1167,7 +1189,16 @@ void Phonograph::on_clearPlaylist_clicked() {
 
 void Phonograph::on_addPlaylistItem_clicked() {
 
-    addSelectedItemsToCurrPlaylist();
+    if (this->ui->libraryTabWidget->currentIndex() == 0) {
+        addSelectedItemsToCurrPlaylist();
+    }
+    else {
+        if (this->ui->savedPlaylists->count() > 0) {
+            if (this->ui->savedPlaylists->selectedItems().count() > 0) {
+                on_savedPlaylists_itemDoubleClicked(this->ui->savedPlaylists->currentItem());
+            }
+        }
+    }
 
 }
 
@@ -1425,4 +1456,28 @@ void Phonograph::on_actionDansk_triggered(bool checked) {
 
     }
 
+}
+
+void Phonograph::on_delete_playlist_clicked()
+{
+    deletePlaylist();
+}
+
+void Phonograph::on_new_playlist_clicked()
+{
+    PlaylistNameDialog *playlistName = new PlaylistNameDialog();
+    connect(playlistName, SIGNAL(loadPlaylists()), this, SLOT(loadPlaylists()));
+    playlistName->setFixedSize(320, 64);
+    playlistName->show();
+}
+
+void Phonograph::on_libraryTabWidget_currentChanged(int index)
+{
+    if (index == 0) this->ui->removePlaylistItem->setEnabled(true);
+    else this->ui->removePlaylistItem->setEnabled(false);
+}
+
+void Phonograph::on_edit_playlist_clicked()
+{
+    editPlaylist();
 }

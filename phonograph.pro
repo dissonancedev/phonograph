@@ -24,7 +24,9 @@ SOURCES += main.cpp\
     system/authentication.cpp \
     system/qplaylistwidget.cpp \
     system/qlibrarywidget.cpp \
-    playlistsdialog.cpp
+    playlistsdialog.cpp \
+    playlistnamedialog.cpp \
+    playlistedit.cpp
 
 HEADERS  += phonograph.h \
     system/musicdatabase.h \
@@ -38,12 +40,16 @@ HEADERS  += phonograph.h \
     system/authentication.h \
     system/qplaylistwidget.h \
     system/qlibrarywidget.h \
-    playlistsdialog.h
+    playlistsdialog.h \
+    playlistnamedialog.h \
+    playlistedit.h
 
 FORMS    += phonograph.ui \
     aboutdialog.ui \
     login.ui \
-    playlistsdialog.ui
+    playlistsdialog.ui \
+    playlistnamedialog.ui \
+    playlistedit.ui
 
 RESOURCES += icons.qrc \
     theme.qrc
