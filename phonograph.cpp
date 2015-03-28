@@ -784,20 +784,22 @@ void Phonograph::loadPlaylists() {
  */
 void Phonograph::loadPlaylist(QString name) {
 
-QThread::sleep(3);
-        // Create a playlist object
-        this->selectedPlaylist.setName( name );
+    QThread::sleep(3);
 
-        // Load the playlist
-        this->selectedPlaylist.load();
-        QList<Song> contents = this->selectedPlaylist.getPlaylist();
+    // Create a playlist object
+    this->selectedPlaylist.setName( name );
 
-        // Stop player in case it's playing the current playlist and clear the latter
-        this->on_stop_clicked();
-        this->ui->playlist->clear();
+    // Load the playlist
+    this->selectedPlaylist.load();
+    QList<Song> contents = this->selectedPlaylist.getPlaylist();
 
-        // Add the songs
-        this->addItemsToPlaylist( contents );
+    // Stop player in case it's playing the current playlist and clear the latter
+    this->on_stop_clicked();
+    this->ui->playlist->clear();
+    this->playlist->clear();
+
+    // Add the songs
+    this->addItemsToPlaylist( contents );
 
 }
 
@@ -1175,8 +1177,9 @@ void Phonograph::on_skip_backward_clicked() {
 void Phonograph::on_skip_forward_clicked() {
 
     if(this->playlist->nextIndex() != -1) {
-        if (this->ui->playlist->count() >= this->playlist->nextIndex())
+        if (this->ui->playlist->count() > this->playlist->nextIndex()) {
             this->playlist->next();
+        }
     }
 }
 
@@ -1216,7 +1219,7 @@ void Phonograph::on_removePlaylistItem_clicked() {
 
                 QPlaylistItem *playlistItem = dynamic_cast<QPlaylistItem *>(this->ui->playlist->item(j));
                 if (itemSelected->song.id == playlistItem->song.id) {
-                    delete this->ui->playlist->item(j);
+                    delete this->ui->playlist->item(j);                    
                     this->playlist->removeMedia(j);
                     updatePlaylist();
                 }
