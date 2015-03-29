@@ -9,6 +9,7 @@ PlaylistsDialog::PlaylistsDialog(QWidget *parent, QString isFromLibrary, QLibrar
     this->library = library;
     this->playlist = playlist;
     this->isFromLibrary = isFromLibrary;
+     this->ui->dialogPlaylistsList->clear();
     QDir directory(QCoreApplication::applicationDirPath() + QString("/playlists"));
     QStringList files = directory.entryList( QStringList("*.spl") );
 
