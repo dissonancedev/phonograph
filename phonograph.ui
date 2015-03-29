@@ -1316,7 +1316,6 @@ background-color: rgba(255, 255, 255, 0);</string>
     <addaction name="actionAdd_Item"/>
     <addaction name="actionRemove_Item"/>
     <addaction name="separator"/>
-    <addaction name="actionCreate_New_Playlist"/>
     <addaction name="actionSave_Playlist"/>
     <addaction name="separator"/>
     <addaction name="actionClear_playlist"/>
