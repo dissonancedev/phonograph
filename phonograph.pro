@@ -26,7 +26,8 @@ SOURCES += main.cpp\
     system/qlibrarywidget.cpp \
     playlistsdialog.cpp \
     playlistnamedialog.cpp \
-    playlistedit.cpp
+    playlistedit.cpp \
+    system/qlistwidgetdraggable.cpp
 
 HEADERS  += phonograph.h \
     system/musicdatabase.h \
@@ -42,7 +43,8 @@ HEADERS  += phonograph.h \
     system/qlibrarywidget.h \
     playlistsdialog.h \
     playlistnamedialog.h \
-    playlistedit.h
+    playlistedit.h \
+    system/qlistwidgetdraggable.h
 
 FORMS    += phonograph.ui \
     aboutdialog.ui \

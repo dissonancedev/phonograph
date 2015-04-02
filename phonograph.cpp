@@ -40,6 +40,10 @@ Phonograph::Phonograph(QWidget *parent) :
     QGraphicsDropShadowEffect *libraryEffect = new QGraphicsDropShadowEffect(this);
     QGraphicsDropShadowEffect *savedPlaylistEffect = new QGraphicsDropShadowEffect(this);
     QGraphicsDropShadowEffect *playlistEffect = new QGraphicsDropShadowEffect(this);
+    QGraphicsDropShadowEffect *descriptionLabelEffect = new QGraphicsDropShadowEffect(this);
+    QGraphicsDropShadowEffect *descriptionEffect = new QGraphicsDropShadowEffect(this);
+    QGraphicsDropShadowEffect *nowYearLabelEffect = new QGraphicsDropShadowEffect(this);
+    QGraphicsDropShadowEffect *nowYearEffect = new QGraphicsDropShadowEffect(this);
 
     nowPLayingEffect->setBlurRadius(1);
     nowPLayingEffect->setColor(QColor("#000000"));
@@ -101,6 +105,22 @@ Phonograph::Phonograph(QWidget *parent) :
     playlistEffect->setColor(QColor("#000000"));
     playlistEffect->setOffset(1,1);
 
+    descriptionLabelEffect->setBlurRadius(1);
+    descriptionLabelEffect->setColor(QColor("#000000"));
+    descriptionLabelEffect->setOffset(1,1);
+
+    descriptionEffect->setBlurRadius(1);
+    descriptionEffect->setColor(QColor("#000000"));
+    descriptionEffect->setOffset(1,1);
+
+    nowYearLabelEffect->setBlurRadius(1);
+    nowYearLabelEffect->setColor(QColor("#000000"));
+    nowYearLabelEffect->setOffset(1,1);
+
+    nowYearEffect->setBlurRadius(1);
+    nowYearEffect->setColor(QColor("#000000"));
+    nowYearEffect->setOffset(1,1);
+
     this->ui->playingNowLabel->setGraphicsEffect(nowPLayingEffect);
     this->ui->categorizeByLabel->setGraphicsEffect(categorizeByLabelEffect);
     this->ui->volume_label->setGraphicsEffect(volumeLabelEffect);
@@ -116,6 +136,13 @@ Phonograph::Phonograph(QWidget *parent) :
     this->ui->library->setGraphicsEffect(libraryEffect);
     this->ui->savePlaylist->setGraphicsEffect(savedPlaylistEffect);
     this->ui->playlist->setGraphicsEffect(playlistEffect);
+    this->ui->descriptionLabel->setGraphicsEffect(descriptionLabelEffect);
+    this->ui->descriptionField->setGraphicsEffect(descriptionEffect);
+    this->ui->nowYearLabel->setGraphicsEffect(nowYearLabelEffect);
+    this->ui->nowYear->setGraphicsEffect(nowYearEffect);
+
+    this->ui->descriptionField->setWordWrap(true);
+    this->ui->descriptionScrollArea->setFrameShape(QFrame::NoFrame);
 
     this->ui->libraryTabWidget->setStyleSheet("QTabWidget,QTabWidget::pane,QTabBar { background-color: rgb(117, 117, 117, 200); border: 0px; }");
     this->ui->tabWidget->setStyleSheet("QTabWidget,QTabWidget::pane,QTabBar { background-color: rgb(117, 117, 117, 200); border: 0px; }");
@@ -145,8 +172,8 @@ Phonograph::Phonograph(QWidget *parent) :
     /** TO-DO: Difficulties in implementing the drag & drop functionality **/
     this->ui->library->setDragEnabled(true);
     this->ui->library->setDragDropMode(QAbstractItemView::DragOnly);
-    //this->ui->savedPlaylists->setDragEnabled(true);
-    //this->ui->savedPlaylists->setDragDropMode(QAbstractItemView::DragOnly);
+    this->ui->savedPlaylists->setDragEnabled(true);
+    this->ui->savedPlaylists->setDragDropMode(QAbstractItemView::DragOnly);
     this->ui->playlist->setDragDropMode(QAbstractItemView::DragDrop);
     this->ui->playlist->setAcceptDrops(true);
     this->ui->playlist->setDefaultDropAction(Qt::CopyAction);
@@ -207,7 +234,7 @@ void Phonograph::loadSettings() {
     this->ui->mute->setChecked( settings.value( "player/mute" , false ).toBool() );
 
     // Application settings
-    this->ui->categorizeBySelect->setCurrentIndex( settings.value( "appl/categorizeby" , 0).toInt() );
+    //this->ui->categorizeBySelect->setCurrentIndex( settings.value( "appl/categorizeby" , 0).toInt() );
 
     // Set language
     this->currentLanguage = settings.value( "appl/language" , "en" ).toString();
@@ -278,19 +305,19 @@ void Phonograph::switchLanguage() {
 void Phonograph::createContextMenus() {
 
     // Create actions
-    QAction* libraryAction1 = new QAction("Delete playlist", ui->savedPlaylists);
+    QAction* libraryAction1 = new QAction(tr("Delete playlist"), ui->savedPlaylists);
     QAction* libraryAction2 = new QAction(tr("Add to playlist..."), this->ui->library);
     QAction* libraryAction3 = new QAction(tr("Add to current playlist"), this->ui->library);
     QAction* libraryAction4 = new QAction(tr("Remove from playlist"), this->ui->library);
     QAction* libraryAction5 = new QAction(tr("Add to playlist..."), this->ui->playlist);
-    QAction* libraryAction6 = new QAction(tr("Edit playlist"), this->ui->playlist);
+    QAction* libraryAction6 = new QAction(tr("View playlist"), this->ui->playlist);
 
      // Connect the signals
     QSignalMapper* mapper = new QSignalMapper(this);
     connect(libraryAction2, SIGNAL(triggered()), mapper, SLOT(map()));
     connect(libraryAction5, SIGNAL(triggered()), mapper, SLOT(map()));
-    mapper->setMapping(libraryAction2, "true");
-    mapper->setMapping(libraryAction5, "false");
+    mapper->setMapping(libraryAction2, "library");
+    mapper->setMapping(libraryAction5, "current");
     connect(mapper, SIGNAL(mapped(QString)), this, SLOT(addToExistingPlaylist(const QString&)));
     connect(libraryAction1, SIGNAL(triggered()), this, SLOT(deletePlaylist()));
     connect(libraryAction3, SIGNAL(triggered()), this, SLOT(addToCurrPlaylist()));
@@ -525,9 +552,16 @@ void Phonograph::setPlayingSongLabel(QMediaContent content) {
         }
 
         // Set the Playing now tab stuffz
-        this->ui->nowTitle->setText( currItem->song.title );
-        this->ui->nowComposer->setText( currItem->song.composer );
-        this->ui->nowPerformer->setText( currItem->song.performer1 );
+        this->ui->descriptionField->setText(currItem->song.description);
+        this->ui->descriptionField->setStyleSheet("font: 11pt; color: white");
+        this->ui->nowTitle->setText(currItem->song.title);
+        this->ui->nowTitle->setStyleSheet("font: 16pt; color: white");
+        this->ui->nowComposer->setText(currItem->song.composer);
+        this->ui->nowComposer->setStyleSheet("font: 16pt; color: white");
+        this->ui->nowPerformer->setText(currItem->song.performer1);
+        this->ui->nowPerformer->setStyleSheet("font: 16pt; color: white");
+        this->ui->nowYear->setText(currItem->song.year);
+        this->ui->nowYear->setStyleSheet("font: 16pt; color: white");
 
 
     } else { //the playlist has finished
@@ -556,8 +590,8 @@ bool Phonograph::updateLibrary() {
     QString line = fileStream.readAll().trimmed(); // Get the data trimmed
     QString username = line.split(",")[0];
     QString password = line.split(",")[1];
-    // QString username( "" );
-    // QString password( "" );
+    // QString username( "rebetoselida" );
+    // QString password( "giorgos.44" );
 
     // Create a music database object
     this->library = new MusicDatabase(host, port, username, password, dbname);
@@ -566,7 +600,7 @@ bool Phonograph::updateLibrary() {
     if (this->library->update()) {
         qDebug() << "Found " << this->library->songs.length() << " songs";
 
-        this->on_categorizeBySelect_currentIndexChanged( this->ui->categorizeBySelect->currentIndex() );
+        this->categorizeBySelect(this->ui->categorizeBySelect->currentIndex());
 
     } else {
         qDebug() << this->library->getLastError();
@@ -580,7 +614,7 @@ void Phonograph::addItemToLibrary(QTreeWidgetItem *topLevel, Song song, int cate
 
     // Create the new item
     QSongItem *newSong = new QSongItem();
-    newSong->setText(0, song.title);
+    newSong->setText(0, song.title + " (" + song.year + ")");
     newSong->setIcon(0, QIcon(":/phonograph/general/icons/songbird.png"));
     newSong->song = song;
 
@@ -996,6 +1030,43 @@ void Phonograph::addSelectedItemsToCurrPlaylist()
     }
 }
 
+// Method that categorizes the library according to the user's selection (Composer/Performer)
+void Phonograph::categorizeBySelect(int index) {
+
+    // Disable left sidebar since it shouldn't be touchable while updating
+    // but also to give the user the knowledge that it is updating
+    this->ui->sidebarleft->setEnabled( false );
+    showStatus( tr("Sorting...") );
+
+    // Clear library first
+    this->ui->library->clear();
+
+    // Add top level item
+    QTreeWidgetItem *topLevel = new QTreeWidgetItem( this->ui->library );
+    if (index == 0) {
+        topLevel->setText(0, "Composers"); // 0 --> Categorize by composers
+    } else {
+        topLevel->setText(0, "Singers"); // 1 --> Categorize by singers
+    }
+    topLevel->setIcon(0, QIcon(":/phonograph/general/icons/folder-sound.png"));
+
+    // Loop through the songs
+    for (int i = 0; i < this->library->songs.length(); i++) {
+
+        this->addItemToLibrary( topLevel , this->library->songs[i] , index );
+
+    }
+
+    // Sort and expand
+    this->ui->library->sortItems(0, Qt::AscendingOrder);
+    this->ui->library->expandItem( topLevel );
+
+    // Re-enable the left sidebar
+    this->ui->sidebarleft->setEnabled( true );
+    hideStatus();
+
+}
+
 /****************/
 /**** Events ****/
 /****************/
@@ -1029,8 +1100,7 @@ void Phonograph::editPlaylist() {
     if (this->ui->savedPlaylists->count() > 0) {
         if (this->ui->savedPlaylists->selectedItems().count() > 0) {
             PlaylistEditDialog *playlistEdit = new PlaylistEditDialog(this, this->ui->savedPlaylists->currentItem());
-            //connect(playlistName, SIGNAL(loadPlaylists()), this, SLOT(loadPlaylists()));
-            playlistEdit->setFixedSize(381, 437);
+            playlistEdit->setFixedSize(520, 437);
             playlistEdit->show();
         }
     }
@@ -1040,9 +1110,9 @@ void Phonograph::editPlaylist() {
  * @brief Phonograph::addToPlaylist
  * Slot function for adding songs to a playlist
  */
-void Phonograph::addToExistingPlaylist(QString isFromLibrary) {
+void Phonograph::addToExistingPlaylist(QString source) {
 
-    PlaylistsDialog *playlists = new PlaylistsDialog(this, isFromLibrary, this->ui->library, (QListWidget*) this->ui->playlist);
+    PlaylistsDialog *playlists = new PlaylistsDialog(this, source, this->ui->library, (QListWidget*) this->ui->playlist);
     playlists->setFixedSize(300, 437);
     playlists->show();
 
@@ -1113,27 +1183,22 @@ void Phonograph::on_play_clicked(bool checked) {
     if (checked) {
 
         if (this->player->state() == QMediaPlayer::PausedState) {
-
             this->player->play();
 
         }  else if (!this->playlist->isEmpty()) {
-
             int current = this->ui->playlist->currentRow();
-            this->playlist->setCurrentIndex( current );
-            this->player->play();
-
+            if (current > -1) {
+                this->playlist->setCurrentIndex( current );
+                this->player->play();
+            }
         }
 
     } else {
 
         if (this->player->state() == QMediaPlayer::PlayingState) {
-
             this->player->pause();
-
         }
-
     }
-
 }
 
 void Phonograph::on_playlist_itemDoubleClicked() {
@@ -1202,7 +1267,6 @@ void Phonograph::on_addPlaylistItem_clicked() {
             }
         }
     }
-
 }
 
 void Phonograph::on_removePlaylistItem_clicked() {
@@ -1233,7 +1297,7 @@ void Phonograph::on_shuffle_clicked(bool checked) {
     if (checked) {
 
         this->ui->toolButton->setChecked(false);
-        this->playlist->shuffle();
+        this->playlist->setPlaybackMode(QMediaPlaylist::Random);
 
     } else {
 
@@ -1381,37 +1445,7 @@ void Phonograph::on_savedPlaylists_itemDoubleClicked(QListWidgetItem *item) {
 
 void Phonograph::on_categorizeBySelect_currentIndexChanged(int index) {
 
-    // Disable left sidebar since it shouldn't be touchable while updating
-    // but also to give the user the knowledge that it is updating
-    this->ui->sidebarleft->setEnabled( false );
-    showStatus( tr("Sorting...") );
-
-    // Clear library first
-    this->ui->library->clear();
-
-    // Add top level item
-    QTreeWidgetItem *topLevel = new QTreeWidgetItem( this->ui->library );
-    if (index == 0) {
-        topLevel->setText(0, "Composers"); // 0 --> Categorize by composers
-    } else {
-        topLevel->setText(0, "Singers"); // 1 --> Categorize by singers
-    }
-    topLevel->setIcon(0, QIcon(":/phonograph/general/icons/folder-sound.png"));
-
-    // Loop through the songs
-    for (int i = 0; i < this->library->songs.length(); i++) {
-
-        this->addItemToLibrary( topLevel , this->library->songs[i] , index );
-
-    }
-
-    // Sort and expand
-    this->ui->library->sortItems(0, Qt::AscendingOrder);
-    this->ui->library->expandItem( topLevel );
-
-    // Re-enable the left sidebar
-    this->ui->sidebarleft->setEnabled( true );
-    hideStatus();
+    this->categorizeBySelect(index);
 
 }
 

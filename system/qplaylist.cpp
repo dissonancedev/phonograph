@@ -88,6 +88,7 @@ void QPlaylist::load() {
             stream >> tmp.title;
             stream >> tmp.composer;
             stream >> tmp.performer1;
+            stream >> tmp.year;
 
             this->playlist.push_back( tmp );
         }
@@ -110,7 +111,12 @@ void QPlaylist::removeItem(QString item) {
 
 void QPlaylist::save() {
 
-    QString filepath = QCoreApplication::applicationDirPath() + QString("/playlists/");
+    #ifdef Q_OS_WIN32
+        QString filepath = QCoreApplication::applicationDirPath() + QString("\\playlists\\");
+    #endif
+    #ifdef Q_OS_LINUX
+        QString filepath = QCoreApplication::applicationDirPath() + QString("/playlists/");
+    #endif
 
     if (!QDir(filepath).exists()) QDir().mkdir(filepath);
 
@@ -144,6 +150,7 @@ void QPlaylist::save() {
             stream << playlist[i].title;
             stream << playlist[i].composer;
             stream << playlist[i].performer1;
+            stream << playlist[i].year;
 
         }
 
@@ -155,7 +162,7 @@ void QPlaylist::save() {
 QString QPlaylist::getOriginalPlaylistName() {
 
 #ifdef Q_OS_WIN32
-    QString path = QCoreApplication::applicationDirPath() + QString("\playlists\\");
+    QString path = QCoreApplication::applicationDirPath() + QString("\\playlists\\");
 #endif
 #ifdef Q_OS_LINUX
     QString path = QCoreApplication::applicationDirPath() + QString("/playlists/");

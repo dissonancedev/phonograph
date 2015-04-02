@@ -99,9 +99,6 @@ private slots:
     // Edit playlist
     void editPlaylist();
 
-    // Add to stored playlist
-    void addToExistingPlaylist(QString isFromLibrary);
-
     // Add to current playing list
     void addToCurrPlaylist();
 
@@ -178,6 +175,12 @@ private slots:
     void on_libraryTabWidget_currentChanged(int index);
 
     void on_edit_playlist_clicked();
+
+    void categorizeBySelect(int index);
+
+public slots:
+    // Add to stored playlist
+    void addToExistingPlaylist(QString source);
 
 private:
 

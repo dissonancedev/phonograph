@@ -1,15 +1,15 @@
 #include "playlistsdialog.h"
 #include "ui_playlistsdialog.h"
 
-PlaylistsDialog::PlaylistsDialog(QWidget *parent, QString isFromLibrary, QLibraryWidget *library, QListWidget *playlist) :
+PlaylistsDialog::PlaylistsDialog(QWidget *parent, QString source, QLibraryWidget *library, QListWidget *playlist) :
     QDialog(parent),
     ui(new Ui::PlaylistsDialog)
 {
     ui->setupUi(this);
     this->library = library;
     this->playlist = playlist;
-    this->isFromLibrary = isFromLibrary;
-     this->ui->dialogPlaylistsList->clear();
+    this->source = source;
+    this->ui->dialogPlaylistsList->clear();
     QDir directory(QCoreApplication::applicationDirPath() + QString("/playlists"));
     QStringList files = directory.entryList( QStringList("*.spl") );
 
@@ -42,7 +42,7 @@ void PlaylistsDialog::on_buttonBox_accepted()
         playlistSelected->load();
         QList<Song> contents = playlistSelected->getPlaylist();
 
-        if (isFromLibrary == "true") {
+        if (source == "library") {
 
             QList<QTreeWidgetItem *> selectedItems = library->selectedItems();
 
@@ -73,7 +73,7 @@ void PlaylistsDialog::on_buttonBox_accepted()
             }
         }
 
-        else {
+        else if (source == "current"){
 
             QList<QListWidgetItem *> selectedItems = playlist->selectedItems();
             for (int i = 0; i < selectedItems.count(); i++) {
@@ -84,6 +84,18 @@ void PlaylistsDialog::on_buttonBox_accepted()
             }
         }
 
+        else if (source == "playlist") {
+
+             Phonograph *mainWindow = (Phonograph *)this->getParentWindow();
+             PlaylistEditDialog *plEdit = (PlaylistEditDialog *) mainWindow->findChild<PlaylistEditDialog *>("PlaylistEditDialog");
+
+             QListWidgetItem* selectedItem = plEdit->selectedSong;
+
+             QPlaylistItem *item = dynamic_cast<QPlaylistItem *> (selectedItem);
+             allSongs.push_back( item->song );
+
+        }
+
         // If there where songs then call addItemsToPlaylist to add them
         if (allSongs.size() > 0) {
             contents.append(allSongs);
@@ -92,5 +104,18 @@ void PlaylistsDialog::on_buttonBox_accepted()
         playlistSelected->setPlayist(contents);
         playlistSelected->save();
     }
+
+}
+
+/**
+ * @brief QPlaylistWidget::getParentWindow
+ * @return The widget's parent window
+ */
+QWidget* PlaylistsDialog::getParentWindow() {
+
+    // Loop until we reach the top level wiget
+    QWidget *widget = this;
+    widget = widget->parentWidget();
+    return widget;
 
 }

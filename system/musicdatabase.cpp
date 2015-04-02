@@ -120,7 +120,7 @@ bool MusicDatabase::update() {
     if (this->connect()) {
 
         // Query to fetch all songs
-        QString sqlQuery = "SELECT rec_id, name, composer, singer1 FROM rebetikosongs.song";
+        QString sqlQuery = "SELECT rec_id, name, composer, singer1, date_rec, description FROM rebetikosongs.song";
 
         // Execute the query
         QSqlQuery resultSet = this->database.exec(sqlQuery);
@@ -152,6 +152,20 @@ bool MusicDatabase::update() {
                     temp.performer1 = "Unknown";
                 } else {
                     temp.performer1 = resultSet.value(3).toString();
+                }
+
+                // Fix empty year labels
+                if (resultSet.value(4).toString().isEmpty()) {
+                    temp.year = "Unknown";
+                } else {
+                    temp.year = resultSet.value(4).toString();
+                }
+
+                // Fix empty description labels
+                if (resultSet.value(5).toString().isEmpty()) {
+                    temp.description = "Unknown";
+                } else {
+                    temp.description = resultSet.value(5).toString();
                 }
 
                 // Append it to the list

@@ -28,6 +28,7 @@ void QLibraryWidget::mouseMoveEvent(QMouseEvent * event) {
             obj["id"] = songItem->song.id;
             obj["performer1"] = songItem->song.performer1;
             obj["title"] = songItem->song.title;
+            obj["year"] = songItem->song.year;
 
             // Push in the array
             array.push_back( obj );
@@ -44,6 +45,7 @@ void QLibraryWidget::mouseMoveEvent(QMouseEvent * event) {
                 obj["id"] = songItem->song.id;
                 obj["performer1"] = songItem->song.performer1;
                 obj["title"] = songItem->song.title;
+                obj["year"] = songItem->song.year;
 
                 // Push in the array
                 array.push_back( obj );

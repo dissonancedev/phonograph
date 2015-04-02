@@ -4,7 +4,7 @@ DatabaseCache::DatabaseCache() {
 
     // Set filename
     #ifdef Q_OS_WIN32
-        filename =  QCoreApplication::applicationDirPath() + QString("\dbcache.dat");
+        filename =  QCoreApplication::applicationDirPath() + QString("\\dbcache.dat");
     #endif
     #ifdef Q_OS_LINUX
         filename =  QCoreApplication::applicationDirPath() + QString("/dbcache.dat");
@@ -64,6 +64,8 @@ void DatabaseCache::loadCache() {
             stream >> tmp.title;
             stream >> tmp.composer;
             stream >> tmp.performer1;
+            stream >> tmp.year;
+            stream >> tmp.description;
 
             songs.push_back( tmp );
         }
@@ -98,6 +100,8 @@ void DatabaseCache::saveCache() {
             stream << songs[i].title;
             stream << songs[i].composer;
             stream << songs[i].performer1;
+            stream << songs[i].year;
+            stream << songs[i].description;
 
         }
 

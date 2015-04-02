@@ -65,10 +65,7 @@ void QPlaylistWidget::dropEvent(QDropEvent * event) {
 
         return;
 
-    }
-
-    // Show message
-    mainWindow->showStatus( tr("Adding...") );
+    }    
 
     // Get data
     QByteArray data = event->mimeData()->data("application/json");
@@ -77,28 +74,46 @@ void QPlaylistWidget::dropEvent(QDropEvent * event) {
     QJsonDocument doc = QJsonDocument::fromJson( data );
 
     // Get the array of songs
-    QJsonArray songs = doc.array();
+    QJsonArray array = doc.array();
 
-    if (songs.count() > 0) {
 
-        QList< Song > listOfSongs;
-        Song tmp;
-        for (int i = 0; i < songs.count(); i++) {
+    if (array.count() > 0) {
 
-            // Convert Json object to Song object
-            tmp.composer = songs[i].toObject().value( "composer" ).toString();
-            tmp.filename = songs[i].toObject().value( "filename" ).toString();
-            tmp.id = songs[i].toObject().value( "id" ).toInt();
-            tmp.performer1 = songs[i].toObject().value( "performer1" ).toString();
-            tmp.title = songs[i].toObject().value( "title" ).toString();
+        if (array[0].toObject().contains("playlist")) {
 
-            // Push in song list
-            listOfSongs.push_back( tmp );
+            // Show message
+            mainWindow->showStatus( tr("Loading playlist...") );
 
+            mainWindow->loadPlaylist(array[0].toObject().value( "playlist" ).toString());
         }
 
-        // Add songs to playlist
-        mainWindow->addItemsToPlaylist( listOfSongs );
+        else {
+
+
+            // Show message
+            mainWindow->showStatus( tr("Adding...") );
+
+            QList< Song > listOfSongs;
+            Song tmp;
+            for (int i = 0; i < array.count(); i++) {
+
+                // Convert Json object to Song object
+                tmp.composer = array[i].toObject().value( "composer" ).toString();
+                tmp.filename = array[i].toObject().value( "filename" ).toString();
+                tmp.id = array[i].toObject().value( "id" ).toInt();
+                tmp.performer1 = array[i].toObject().value( "performer1" ).toString();
+                tmp.title = array[i].toObject().value( "title" ).toString();
+                tmp.year = array[i].toObject().value( "year" ).toString();
+
+                // Push in song list
+                listOfSongs.push_back( tmp );
+
+            }
+
+            // Add songs to playlist
+            mainWindow->addItemsToPlaylist( listOfSongs );
+
+        }
 
     }
 

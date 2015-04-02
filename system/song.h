@@ -9,6 +9,8 @@ public:
     QString title;
     QString composer;
     QString performer1;
+    QString year;
+    QString description;
     QString filename;
     static QString base_filename;
 };
