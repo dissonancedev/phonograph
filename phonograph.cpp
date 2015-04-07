@@ -590,8 +590,8 @@ bool Phonograph::updateLibrary() {
     QString line = fileStream.readAll().trimmed(); // Get the data trimmed
     QString username = line.split(",")[0];
     QString password = line.split(",")[1];
-    // QString username( "rebetoselida" );
-    // QString password( "giorgos.44" );
+    // QString username( "" );
+    // QString password( "" );
 
     // Create a music database object
     this->library = new MusicDatabase(host, port, username, password, dbname);
