@@ -19,6 +19,7 @@ Phonograph::Phonograph(QWidget *parent) :
 
     // Setup the flags
     this->isDialogShown = false;
+    this->wasMinimized = false;
 
     /** Setup some CSS **/
     ui->mainframe->setStyleSheet( "QFrame#mainframe { border-image: url(:/images/background/theme/diskos-25-leivadia.jpg); }" );
@@ -590,8 +591,8 @@ bool Phonograph::updateLibrary() {
     QString line = fileStream.readAll().trimmed(); // Get the data trimmed
     QString username = line.split(",")[0];
     QString password = line.split(",")[1];
-    // QString username( "" );
-    // QString password( "" );
+    //QString username( "" );
+    //QString password( "" );
 
     // Create a music database object
     this->library = new MusicDatabase(host, port, username, password, dbname);
